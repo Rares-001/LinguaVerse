@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:LinguaVerse.ViewModel"
-             x:Class="LinguaVerse.Views.MainPage">
+             x:Class="LinguaVerse.Views.SecondPage">
     <ContentPage.BindingContext>
-        <vm:QuizViewModel />
+        <vm:SecondQuizViewModel />
     </ContentPage.BindingContext>
 
     <StackLayout Padding="20">
@@ -23,8 +23,5 @@
 
         <Button Text="Check" Command="{Binding CheckAnswersCommand}" />
         <Label Text="{Binding Result}" FontSize="Large" TextColor="Red" />
-        <Button Text="Next Page"
-                Command="{Binding NavigateCommand}"
-                IsVisible="{Binding IsResultVisible}" />
     </StackLayout>
 </ContentPage>
