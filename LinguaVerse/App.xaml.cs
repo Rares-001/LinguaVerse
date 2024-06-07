@@ -1,4 +1,6 @@
-﻿namespace LinguaVerse
+﻿using LinguaVerse.Views;
+
+namespace LinguaVerse
 {
     public partial class App : Application
     {
@@ -6,7 +8,7 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new DashboardPage();
         }
     }
 }
