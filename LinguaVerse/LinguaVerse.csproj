@@ -65,8 +65,12 @@
 	<ItemGroup>
 	  <Folder Include="Model\" />
 	  <Folder Include="Service\" />
-	  <Folder Include="ViewModel\" />
-	  <Folder Include="Views\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\LanguageSelection.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
