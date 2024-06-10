@@ -1,4 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿// MauiProgram.cs
+using Microsoft.Maui;
+using Microsoft.Maui.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using LinguaVerse.DAL;
+using LinguaVerse.ViewModel;
+using LinguaVerse.Views;
 
 namespace LinguaVerse
 {
@@ -12,14 +18,18 @@ namespace LinguaVerse
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-#endif
+            // Configure DI
+            var connectionString = "Host=localhost;Database=LinguaVerseDB;Username=postgres;Password=admin";
+            builder.Services.AddSingleton(new Database(connectionString));
+            builder.Services.AddTransient<UserRepository>();
+            builder.Services.AddTransient<LoginViewModel>();
+            builder.Services.AddTransient<LoginPage>();
 
-            return builder.Build();
+            var mauiApp = builder.Build();
+            var serviceProvider = mauiApp.Services;
+            return mauiApp;
         }
     }
 }
