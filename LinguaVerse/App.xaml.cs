@@ -1,6 +1,6 @@
-﻿// App.xaml.cs
-using LinguaVerse.Views;
+﻿using LinguaVerse.Views;
 using Microsoft.Extensions.DependencyInjection;
+using LinguaVerse.Seeders;
 
 namespace LinguaVerse
 {
@@ -11,6 +11,14 @@ namespace LinguaVerse
             InitializeComponent();
 
             MainPage = new NavigationPage(serviceProvider.GetService<LoginPage>());
+
+            SeedDatabase(serviceProvider);
+        }
+
+        private async void SeedDatabase(IServiceProvider serviceProvider)
+        {
+            var dataSeeder = serviceProvider.GetService<DataSeeder>();
+            await dataSeeder.SeedDataAsync();
         }
     }
 }

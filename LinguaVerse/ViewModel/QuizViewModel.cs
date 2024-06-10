@@ -1,18 +1,45 @@
-﻿using LinguaVerse.Model;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using LinguaVerse.DAL;
+using LinguaVerse.Model;
+using Microsoft.Maui.Controls;
 
 namespace LinguaVerse.ViewModel
 {
     public class QuizViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Question> Questions { get; set; }
-        private string _result = string.Empty;
-        private int _points = 0;
+        private readonly UserRepository _userRepository;
+        private readonly int _userId;
 
+        public QuizViewModel() { }
+
+        // Constructor for dependency injection
+        public QuizViewModel(UserRepository userRepository, int userId)
+        {
+            _userRepository = userRepository;
+            _userId = userId;
+
+            LoadQuestions();
+            CheckAnswersCommand = new Command(CheckAnswers);
+            NavigateCommand = new Command(Navigate);
+        }
+
+        private ObservableCollection<Model.Question> _questions = new ObservableCollection<Model.Question>();
+        public ObservableCollection<Model.Question> Questions
+        {
+            get => _questions;
+            set
+            {
+                _questions = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _result = string.Empty;
         public string Result
         {
             get => _result;
@@ -24,6 +51,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        private int _points = 0;
         public int Points
         {
             get => _points;
@@ -48,44 +76,14 @@ namespace LinguaVerse.ViewModel
         public ICommand CheckAnswersCommand { get; }
         public ICommand NavigateCommand { get; }
 
-        public QuizViewModel()
+        private async void LoadQuestions()
         {
-            Questions = new ObservableCollection<Question>
+            var quizzes = await _userRepository.GetQuizzesAsync();
+            if (quizzes.Any())
             {
-                new Question
-        {
-            QuestionText = "How do you say 'Hello' in Italian?",
-            Answer = "Ciao",
-            Choices = new ObservableCollection<string> { "Ciao", "Bonjour", "Hola", "Hallo" }
-        },
-        new Question
-        {
-            QuestionText = "What is the Italian word for 'Thank you'?",
-            Answer = "Grazie",
-            Choices = new ObservableCollection<string> { "Gracias", "Merci", "Danke", "Grazie" }
-        },
-        new Question
-        {
-            QuestionText = "How do you say 'Goodbye' in Italian?",
-            Answer = "Arrivederci",
-            Choices = new ObservableCollection<string> { "Adiós", "Auf Wiedersehen", "Arrivederci", "Au revoir" }
-        },
-        new Question
-        {
-            QuestionText = "What is the translation of 'Please' in Italian?",
-            Answer = "Per favore",
-            Choices = new ObservableCollection<string> { "Por favor", "S'il vous plaît", "Bitte", "Per favore" }
-        },
-        new Question
-        {
-            QuestionText = "How do you say 'Yes' in Italian?",
-            Answer = "Sì",
-            Choices = new ObservableCollection<string> { "Oui", "Sí", "Ja", "Sì" }
-        },
-            };
-
-            CheckAnswersCommand = new Command(CheckAnswers);
-            NavigateCommand = new Command(Navigate);
+                var questions = await _userRepository.GetQuestionsAsync(quizzes.First().QuizID);
+                Questions = new ObservableCollection<Model.Question>(questions);
+            }
         }
 
         private void CheckAnswers()
@@ -97,13 +95,12 @@ namespace LinguaVerse.ViewModel
 
         private async void Navigate()
         {
-            // Pass the points to the next page
             var nextPage = new Views.SecondPage();
             ((SecondQuizViewModel)nextPage.BindingContext).Points = this.Points;
             await Application.Current.MainPage.Navigation.PushAsync(nextPage);
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

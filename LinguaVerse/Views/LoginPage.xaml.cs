@@ -1,5 +1,4 @@
-﻿// Views/LoginPage.xaml.cs
-using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui.Controls;
 using LinguaVerse.ViewModel;
 
 namespace LinguaVerse.Views

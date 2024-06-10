@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 
@@ -37,36 +38,34 @@ namespace LinguaVerse.ViewModel
 
         private async void OnItalianClicked()
         {
-            System.Diagnostics.Debug.WriteLine("Italian clicked");
             await ShowOptionsAsync();
         }
 
         private async void OnEnglishClicked()
         {
-            System.Diagnostics.Debug.WriteLine("English clicked");
             await ShowOptionsAsync();
         }
 
         private async Task ShowOptionsAsync()
         {
+
             await Task.Delay(300); 
-            System.Diagnostics.Debug.WriteLine("Showing options");
             IsOptionsVisible = true;
         }
 
-        private void OnTestClicked()
+        private async void OnTestClicked()
         {
-            // to implement
+            
         }
 
-        private void OnQuizClicked()
+        private async void OnQuizClicked()
         {
-            // to implement
+            await Application.Current.MainPage.Navigation.PushAsync(new Views.QuizPage());
         }
 
-        private void OnFlashcardsClicked()
+        private async void OnFlashcardsClicked()
         {
-            // to implement
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -20,7 +20,9 @@
                            WidthRequest="30"
                            HeightRequest="30"
                            Grid.Column="1"
-                           HorizontalOptions="End" />
+                           HorizontalOptions="End" />c:\users\husar\source\repos\linguaverse\linguaverse\views\dashboardpage.xaml.cs
+c:\users\husar\source\repos\linguaverse\linguaverse\views\dashboardpage.xaml
+
                 </Grid>
 
                 <!-- Welcome Section -->

@@ -1,9 +1,10 @@
-﻿using LinguaVerse.Model;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using LinguaVerse.Model;
+using Microsoft.Maui.Controls;
 
 namespace LinguaVerse.ViewModel
 {
@@ -69,7 +70,7 @@ namespace LinguaVerse.ViewModel
             Result = correctAnswers == Questions.Count ? "Correct" : "Wrong";
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

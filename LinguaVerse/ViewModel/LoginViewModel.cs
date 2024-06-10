@@ -1,5 +1,4 @@
-﻿// ViewModel/LoginViewModel.cs
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using LinguaVerse.DAL;
@@ -18,7 +17,7 @@ namespace LinguaVerse.ViewModel
             CheckDatabaseConnection();
         }
 
-        private string _username;
+        private string _username = string.Empty;
         public string Username
         {
             get => _username;
@@ -29,7 +28,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
-        private string _password;
+        private string _password = string.Empty;
         public string Password
         {
             get => _password;
@@ -40,7 +39,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
-        private string _connectionStatus;
+        private string _connectionStatus = string.Empty;
         public string ConnectionStatus
         {
             get => _connectionStatus;
@@ -51,7 +50,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
-        private string _registrationStatus;
+        private string _registrationStatus = string.Empty;
         public string RegistrationStatus
         {
             get => _registrationStatus;
@@ -62,7 +61,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
-        private string _loginStatus;
+        private string _loginStatus = string.Empty;
         public string LoginStatus
         {
             get => _loginStatus;
@@ -73,7 +72,10 @@ namespace LinguaVerse.ViewModel
             }
         }
 
-        public ICommand RegisterCommand => new Command(async () =>
+        public ICommand RegisterCommand => new Command(async () => await RegisterUser());
+        public ICommand LoginCommand => new Command(async () => await LoginUser());
+
+        private async Task RegisterUser()
         {
             var isSuccess = await _userRepository.RegisterUser(Username, Password);
             if (isSuccess)
@@ -86,9 +88,9 @@ namespace LinguaVerse.ViewModel
                 RegistrationStatus = "Registration Failed";
                 await Application.Current.MainPage.DisplayAlert("Error", "Registration Failed", "OK");
             }
-        });
+        }
 
-        public ICommand LoginCommand => new Command(async () =>
+        private async Task LoginUser()
         {
             var isSuccess = await _userRepository.LoginUser(Username, Password);
             if (isSuccess)
@@ -96,8 +98,11 @@ namespace LinguaVerse.ViewModel
                 LoginStatus = "Login Successful";
                 await Application.Current.MainPage.DisplayAlert("Success", "Login Successful", "OK");
 
+                // Get the user ID
+                var user = await _userRepository.GetUserByUsername(Username);
+
                 // Navigate to DashboardPage
-                var dashboardViewModel = new DashboardViewModel(_userRepository, Username);
+                var dashboardViewModel = new DashboardViewModel(_userRepository, user.UserID);
                 await Application.Current.MainPage.Navigation.PushAsync(new Views.DashboardPage { BindingContext = dashboardViewModel });
             }
             else
@@ -105,7 +110,7 @@ namespace LinguaVerse.ViewModel
                 LoginStatus = "Login Failed";
                 await Application.Current.MainPage.DisplayAlert("Error", "Login Failed", "OK");
             }
-        });
+        }
 
         private async void CheckDatabaseConnection()
         {

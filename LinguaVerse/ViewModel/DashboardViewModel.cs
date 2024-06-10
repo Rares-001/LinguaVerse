@@ -2,9 +2,10 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using LinguaVerse.DAL;
+using LinguaVerse.Model;
 using Microsoft.Maui.Controls;
 
 namespace LinguaVerse.ViewModel
@@ -12,17 +13,18 @@ namespace LinguaVerse.ViewModel
     public class DashboardViewModel : INotifyPropertyChanged
     {
         private readonly UserRepository _userRepository;
+        private readonly int _userId;
 
-        public DashboardViewModel(UserRepository userRepository, string username)
+        public DashboardViewModel(UserRepository userRepository, int userId)
         {
             _userRepository = userRepository;
-            Username = username;
-            LoadUserData(username);
+            _userId = userId;
 
+            LoadUserData();
             NavigateToLanguageSelectionCommand = new Command(NavigateToLanguageSelection);
         }
 
-        private string _username;
+        private string _username = string.Empty;
         public string Username
         {
             get => _username;
@@ -33,7 +35,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
-        private string _welcomeMessage;
+        private string _welcomeMessage = string.Empty;
         public string WelcomeMessage
         {
             get => _welcomeMessage;
@@ -55,7 +57,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
-        private ObservableCollection<string> _dailyStreaks;
+        private ObservableCollection<string> _dailyStreaks = new ObservableCollection<string>();
         public ObservableCollection<string> DailyStreaks
         {
             get => _dailyStreaks;
@@ -66,7 +68,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
-        private ObservableCollection<CourseProgress> _courseProgress;
+        private ObservableCollection<CourseProgress> _courseProgress = new ObservableCollection<CourseProgress>();
         public ObservableCollection<CourseProgress> CourseProgress
         {
             get => _courseProgress;
@@ -77,7 +79,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
-        private ObservableCollection<FeaturedCourse> _featuredCourses;
+        private ObservableCollection<FeaturedCourse> _featuredCourses = new ObservableCollection<FeaturedCourse>();
         public ObservableCollection<FeaturedCourse> FeaturedCourses
         {
             get => _featuredCourses;
@@ -88,11 +90,23 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        private ObservableCollection<UserProgress> _userProgresses = new ObservableCollection<UserProgress>();
+        public ObservableCollection<UserProgress> UserProgresses
+        {
+            get => _userProgresses;
+            set
+            {
+                _userProgresses = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand NavigateToLanguageSelectionCommand { get; }
 
-        private async void LoadUserData(string username)
+        private async void LoadUserData()
         {
-            var user = await _userRepository.GetUserByUsername(username);
+            var user = await _userRepository.GetUserById(_userId);
+            Username = user.Username;
             WelcomeMessage = $"Welcome back, {user.Username}";
 
             var dailyStreaks = await _userRepository.GetDailyStreaks(user.UserID);
@@ -117,6 +131,18 @@ namespace LinguaVerse.ViewModel
                     FlagIcon = fc.FlagIcon
                 });
             FeaturedCourses = new ObservableCollection<FeaturedCourse>(featuredCourses);
+
+            var userProgresses = (await _userRepository.GetUserProgressAsync(user.UserID))
+                .Select(up => new UserProgress
+                {
+                    UserProgressID = up.UserProgressID,
+                    UserID = up.UserID,
+                    QuizID = up.QuizID,
+                    Score = up.Score,
+                    CompletionTime = up.CompletionTime,
+                    AttemptDate = up.AttemptDate
+                });
+            UserProgresses = new ObservableCollection<UserProgress>(userProgresses);
         }
 
         private async void NavigateToLanguageSelection()
@@ -124,7 +150,7 @@ namespace LinguaVerse.ViewModel
             await Application.Current.MainPage.Navigation.PushAsync(new Views.LanguageSelection());
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -134,17 +160,27 @@ namespace LinguaVerse.ViewModel
 
     public class CourseProgress
     {
-        public string CourseName { get; set; }
+        public string CourseName { get; set; } = string.Empty;
         public float Progress { get; set; }
-        public string Level { get; set; }
+        public string Level { get; set; } = string.Empty;
     }
 
     public class FeaturedCourse
     {
-        public string CourseName { get; set; }
+        public string CourseName { get; set; } = string.Empty;
         public int Duration { get; set; }
         public int Questions { get; set; }
-        public string Level { get; set; }
-        public string FlagIcon { get; set; }
+        public string Level { get; set; } = string.Empty;
+        public string FlagIcon { get; set; } = string.Empty;
+    }
+
+    public class UserProgress
+    {
+        public int UserProgressID { get; set; }
+        public int UserID { get; set; }
+        public int QuizID { get; set; }
+        public int Score { get; set; }
+        public int CompletionTime { get; set; }
+        public DateTime AttemptDate { get; set; }
     }
 }

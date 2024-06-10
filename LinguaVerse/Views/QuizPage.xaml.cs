@@ -3,9 +3,9 @@ using LinguaVerse.ViewModel;
 
 namespace LinguaVerse.Views
 {
-    public partial class SecondPage : ContentPage
+    public partial class QuizPage : ContentPage
     {
-        public SecondPage()
+        public QuizPage()
         {
             InitializeComponent();
         }

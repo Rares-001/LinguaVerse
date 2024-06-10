@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using LinguaVerse.DAL;
 using LinguaVerse.ViewModel;
 using LinguaVerse.Views;
+using Npgsql;
+using System.Data;
+using LinguaVerse.Seeders;
 
 namespace LinguaVerse
 {
@@ -22,14 +25,16 @@ namespace LinguaVerse
 
             // Configure DI
             var connectionString = "Host=localhost;Database=LinguaVerseDB;Username=postgres;Password=admin";
-            builder.Services.AddSingleton(new Database(connectionString));
+            builder.Services.AddTransient<IDbConnection>(sp => new NpgsqlConnection(connectionString));
             builder.Services.AddTransient<UserRepository>();
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<DashboardViewModel>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<DashboardPage>();
+            builder.Services.AddTransient<DataSeeder>();
 
             return builder.Build();
         }
     }
 }
+

@@ -66,12 +66,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Model\" />
 	  <Folder Include="Service\" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\QuizPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
