@@ -3,12 +3,12 @@ using Microsoft.Maui.Controls;
 
 namespace LinguaVerse.Views
 {
-    public partial class MainPage : ContentPage
+    public partial class SecondPage : ContentPage
     {
-        public MainPage()
+        public SecondPage()
         {
             InitializeComponent();
-            BindingContext = new QuizViewModel();
+            BindingContext = new SecondQuizViewModel(); 
         }
     }
 }
