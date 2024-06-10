@@ -9,21 +9,64 @@ namespace LinguaVerse.ViewModel
     {
         public ICommand ItalianCommand { get; }
         public ICommand EnglishCommand { get; }
+        public ICommand TestCommand { get; }
+        public ICommand QuizCommand { get; }
+        public ICommand FlashcardsCommand { get; }
+
+        private bool _isOptionsVisible;
+        public bool IsOptionsVisible
+        {
+            get => _isOptionsVisible;
+            set
+            {
+                _isOptionsVisible = value;
+                OnPropertyChanged();
+            }
+        }
 
         public LanguageSelectionViewModel()
         {
             ItalianCommand = new Command(OnItalianClicked);
             EnglishCommand = new Command(OnEnglishClicked);
+            TestCommand = new Command(OnTestClicked);
+            QuizCommand = new Command(OnQuizClicked);
+            FlashcardsCommand = new Command(OnFlashcardsClicked);
+
+            IsOptionsVisible = false;
         }
 
-        private void OnItalianClicked()
+        private async void OnItalianClicked()
         {
-            // to add logic
+            System.Diagnostics.Debug.WriteLine("Italian clicked");
+            await ShowOptionsAsync();
         }
 
-        private void OnEnglishClicked()
+        private async void OnEnglishClicked()
         {
-            // to add logic
+            System.Diagnostics.Debug.WriteLine("English clicked");
+            await ShowOptionsAsync();
+        }
+
+        private async Task ShowOptionsAsync()
+        {
+            await Task.Delay(300); 
+            System.Diagnostics.Debug.WriteLine("Showing options");
+            IsOptionsVisible = true;
+        }
+
+        private void OnTestClicked()
+        {
+            // to implement
+        }
+
+        private void OnQuizClicked()
+        {
+            // to implement
+        }
+
+        private void OnFlashcardsClicked()
+        {
+            // to implement
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

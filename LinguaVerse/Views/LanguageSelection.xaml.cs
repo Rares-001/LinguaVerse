@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Controls;
+using LinguaVerse.ViewModel;
 
 namespace LinguaVerse.Views
 {
@@ -7,14 +8,23 @@ namespace LinguaVerse.Views
         public LanguageSelection()
         {
             InitializeComponent();
+            this.BindingContextChanged += OnBindingContextChanged;
         }
 
-        private async void OnButtonClicked(object sender, EventArgs e)
+        private void OnBindingContextChanged(object sender, System.EventArgs e)
         {
-            if (sender is Button button)
+            if (BindingContext is LanguageSelectionViewModel viewModel)
             {
-                await button.ScaleTo(1.2, 100);
-                await button.ScaleTo(1, 100);
+                viewModel.PropertyChanged += OnViewModelPropertyChanged;
+            }
+        }
+
+        private async void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(LanguageSelectionViewModel.IsOptionsVisible) && OptionsSection.IsVisible)
+            {
+                System.Diagnostics.Debug.WriteLine("Animating options section");
+                await OptionsSection.FadeTo(1, 500);
             }
         }
     }
