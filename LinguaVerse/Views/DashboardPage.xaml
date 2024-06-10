@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LinguaVerse.Views.DashboardPage">
+    
+    <ContentPage.Content>
+		<ScrollView>
+        <StackLayout>
+            <!-- Header -->
+            <Grid Padding="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label Text="LinguaVerse"
+                       FontSize="Large"
+                       TextColor="White"
+                       HorizontalOptions="Center" />
+                <Image Source="bell_icon.png"
+                       WidthRequest="30"
+                       HeightRequest="30"
+                       Grid.Column="1"
+                       HorizontalOptions="End" />
+            </Grid>
+
+            <!-- Welcome Section -->
+            <StackLayout Padding="20">
+                <Label Text="Welcome back, User xxx"
+                       FontSize="Medium"
+                       TextColor="White" />
+				
+            </StackLayout>
+
+            <!-- Daily Streaks -->
+            <StackLayout Padding="20">
+                <Label Text="Daily streaks:"
+                       FontSize="Medium"
+                       TextColor="White" />
+				
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+					<Frame BackgroundColor="White" CornerRadius="25" WidthRequest="80" HeightRequest="60">
+						<Label Text="Mon" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+					</Frame>
+					
+                    <Frame BackgroundColor="White" CornerRadius="25" WidthRequest="80" HeightRequest="60">
+                        <Label Text="Tue" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                    </Frame>
+					
+                    <Frame BackgroundColor="White" BorderColor="White" CornerRadius="25" WidthRequest="80" HeightRequest="60">
+                        <Label Text="Wed" HorizontalOptions="Center" VerticalOptions="Center" TextColor="#2C2F5B" />
+                    </Frame>
+					
+                    <Frame BackgroundColor="White" BorderColor="White" CornerRadius="25" WidthRequest="80" HeightRequest="60">
+                        <Label Text="Thu" HorizontalOptions="Center" VerticalOptions="Center" TextColor="#2C2F5B" />
+                    </Frame>
+					
+                    <Frame BackgroundColor="White" BorderColor="White" CornerRadius="25" WidthRequest="80" HeightRequest="60">
+                        <Label Text="Fri" HorizontalOptions="Center" VerticalOptions="Center" TextColor="#2C2F5B" />
+                    </Frame>
+					
+                    <Frame BackgroundColor="White" BorderColor="White" CornerRadius="25" WidthRequest="80" HeightRequest="60">
+                        <Label Text="Sat" HorizontalOptions="Center" VerticalOptions="Center" TextColor="#2C2F5B" />
+                    </Frame>
+					
+                    <Frame BackgroundColor="White" BorderColor="#2C2F5B" CornerRadius="25" WidthRequest="80" HeightRequest="60">
+                        <Label Text="Sun" HorizontalOptions="Center" VerticalOptions="Center" TextColor="#2C2F5B" />
+                    </Frame>
+					
+                </StackLayout>
+            </StackLayout>
+
+            <!-- Progress Section -->
+            <StackLayout Padding="20">
+                <Label Text="Your Progress:"
+                       FontSize="Medium"
+                       TextColor="White" />
+				
+                <Grid ColumnSpacing="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Frame BackgroundColor="White" BorderColor="#2C2F5B" CornerRadius="10" Padding="10">
+                        <StackLayout>
+							
+                            <Label Text="Beginner"
+                                   FontSize="Small"
+                                   TextColor="Black" />
+							
+                            <Label Text="Aa"
+                                   FontSize="Medium"
+                                   FontAttributes="Bold"
+                                   TextColor="Black" />
+							
+                            <Label Text="English"
+                                   FontSize="Small"
+                                   TextColor="Black" />
+							
+                            <ProgressBar Progress="0.4"
+                                         BackgroundColor="LightGray"
+                                         ProgressColor="#2C2F5B" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame BackgroundColor="White" BorderColor="#2C2F5B" CornerRadius="10" Padding="10" Grid.Column="1">
+                        <StackLayout>
+                            <Label Text="Intermediate"
+                                   FontSize="Small"
+                                   TextColor="Black" />
+                            <Label Text="Bb"
+                                   FontSize="Medium"
+                                   FontAttributes="Bold"
+                                   TextColor="Black" />
+                            <Label Text="Italian"
+                                   FontSize="Small"
+                                   TextColor="Black" />
+                            <ProgressBar Progress="0.6"
+                                         BackgroundColor="LightGray"
+                                         ProgressColor="#2C2F5B" />
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+            </StackLayout>
+
+            <!-- Featured Courses Section -->
+            <StackLayout Padding="20">
+                <Label Text="Featured Courses:"
+                       FontSize="Medium"
+                       TextColor="White" />
+                <StackLayout>
+                    <Frame BackgroundColor="White" CornerRadius="10" Padding="10" Margin="0,10,0,0">
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Image Source="us_flag.png"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   HorizontalOptions="Start" />
+                            <StackLayout Grid.Column="1">
+                                <Label Text="English"
+                                       FontSize="Medium"
+                                       FontAttributes="Bold"
+                                       TextColor="Black" />
+                                <Label Text="30 mins    10 questions"
+                                       FontSize="Small"
+                                       TextColor="Gray" />
+                            </StackLayout>
+                            <Label Text="Beginner"
+                                   FontSize="Small"
+                                   TextColor="Gray"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Center"
+                                   Grid.Column="2" />
+                        </Grid>
+                    </Frame>
+                    <Frame BackgroundColor="White" CornerRadius="10" Padding="10" Margin="0,10,0,0">
+
+                    </Frame>
+                    <Frame BackgroundColor="White" CornerRadius="10" Padding="10" Margin="0,10,0,0">
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Image Source="it_flag.png"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   HorizontalOptions="Start" />
+                            <StackLayout Grid.Column="1">
+                                <Label Text="Italiano"
+                                       FontSize="Medium"
+                                       FontAttributes="Bold"
+                                       TextColor="Black" />
+                                <Label Text="70 mins    70 questions"
+                                       FontSize="Small"
+                                       TextColor="Gray" />
+                            </StackLayout>
+                            <Label Text="Intermediate"
+                                   FontSize="Small"
+                                   TextColor="Gray"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Center"
+                                   Grid.Column="2" />
+                        </Grid>
+                    </Frame>
+                </StackLayout>
+            </StackLayout>
+
+            <!-- Navigation Bar -->
+            <StackLayout Orientation="Horizontal" HeightRequest="60" Padding="10">
+            </StackLayout>
+        </StackLayout>
+			</ScrollView>
+    </ContentPage.Content>
+</ContentPage>
