@@ -95,6 +95,10 @@ namespace LinguaVerse.ViewModel
             {
                 LoginStatus = "Login Successful";
                 await Application.Current.MainPage.DisplayAlert("Success", "Login Successful", "OK");
+
+                // Navigate to DashboardPage
+                var dashboardViewModel = new DashboardViewModel(Username);
+                await Application.Current.MainPage.Navigation.PushAsync(new Views.DashboardPage { BindingContext = dashboardViewModel });
             }
             else
             {

@@ -25,11 +25,11 @@ namespace LinguaVerse
             builder.Services.AddSingleton(new Database(connectionString));
             builder.Services.AddTransient<UserRepository>();
             builder.Services.AddTransient<LoginViewModel>();
+            builder.Services.AddTransient<DashboardViewModel>();
             builder.Services.AddTransient<LoginPage>();
+            builder.Services.AddTransient<DashboardPage>();
 
-            var mauiApp = builder.Build();
-            var serviceProvider = mauiApp.Services;
-            return mauiApp;
+            return builder.Build();
         }
     }
 }
