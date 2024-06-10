@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LinguaVerse.Views.LanguageSelection">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Padding="20">
+            <Label Text="LinguaVerse" 
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center" 
+                   FontSize="Large"/>
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" HorizontalOptions="Center">
+                <Button Grid.Row="0" Grid.Column="0" Text="Italian" Command="{Binding ItalianCommand}" Margin="10" />
+                <Button Grid.Row="0" Grid.Column="1" Text="English" Command="{Binding EnglishCommand}" Margin="10" />
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
