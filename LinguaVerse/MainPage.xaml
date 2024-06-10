@@ -23,20 +23,13 @@
 
         <Label Text="FlashCards" FontSize="24" HorizontalOptions="Center" TextColor="White"/>
 
-        <Frame BackgroundColor="White" CornerRadius="10" Padding="10">
+        <Frame x:Name="CardFrame" BackgroundColor="White" CornerRadius="10" Padding="10">
             <StackLayout>
                 <Label Text="English" FontSize="14" HorizontalOptions="Start" TextColor="Black"/>
-                <Label Text="{Binding CurrentFlashcard.Question}" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" TextColor="Black"/>
+                <Label x:Name="CardLabel" Text="{Binding CurrentFlashcard.Question}" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" TextColor="Black"/>
             </StackLayout>
         </Frame>
 
-        <Frame BackgroundColor="White" CornerRadius="10" Padding="10">
-            <StackLayout>
-                <Label Text="English" FontSize="14" HorizontalOptions="Start" TextColor="Black"/>
-                <Label Text="{Binding CurrentFlashcard.Answer}" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" TextColor="Black"/>
-            </StackLayout>
-        </Frame>
-
-        <Button Text="Next" Command="{Binding NextCommand}" />
+        <Button Text="Flip" Clicked="OnFlipButtonClicked" />
     </VerticalStackLayout>
 </ContentPage>
