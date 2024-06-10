@@ -22,7 +22,7 @@ namespace LinguaVerse.ViewModels
         {
             Flashcards = new ObservableCollection<Flashcard>
             {
-                new Flashcard { Question = "How can you make Polly Happy?", Answer = "Buy her 1000 chocalates." },
+                new Flashcard { Question = "What is .NET MAUI?", Answer = "A framework for building cross-platform apps." },
                 new Flashcard { Question = "What is C#?", Answer = "A programming language developed by Microsoft." },
                 new Flashcard { Question = "What is XAML?", Answer = "A markup language for designing UI in .NET applications." }
             };
@@ -36,7 +36,6 @@ namespace LinguaVerse.ViewModels
 
         private void ShowAnswer()
         {
-          
         }
 
         private void PreviousFlashcard()
@@ -59,7 +58,7 @@ namespace LinguaVerse.ViewModels
 
         private void Flip()
         {
-            // This is handled in the MainPage.xaml.cs 
+            // This is handled in the MainPage.xaml.cs
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

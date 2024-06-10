@@ -31,5 +31,6 @@
         </Frame>
 
         <Button Text="Flip" Clicked="OnFlipButtonClicked" />
+        <Button Text="Next" Command="{Binding NextCommand}" />
     </VerticalStackLayout>
 </ContentPage>
