@@ -18,48 +18,83 @@ namespace LinguaVerse.Seeders
 
         public async Task SeedDataAsync()
         {
-            // Insert quizzes
-            var quizzes = new List<Quiz>
+            try
             {
-                new Quiz { Title = "Basic Italian Phrases", Category = "Language", Level = "Beginner" },
-                new Quiz { Title = "Advanced Italian Grammar", Category = "Language", Level = "Advanced" }
-            };
+                if (_connection.State == ConnectionState.Closed)
+                {
+                    _connection.Open(); // Use the synchronous Open method
+                }
 
-            foreach (var quiz in quizzes)
-            {
-                await _connection.ExecuteAsync(
-                    "INSERT INTO public.\"Quizzes\" (\"Title\", \"Category\", \"Level\") VALUES (@Title, @Category, @Level)",
-                    quiz
-                );
-            }
+                // Insert quizzes
+                var quizzes = new List<Quiz>
+                {
+                    new Quiz { Title = "Basic Italian Phrases", Category = "Language", Level = "Beginner" },
+                    new Quiz { Title = "Advanced Italian Grammar", Category = "Language", Level = "Advanced" }
+                };
 
-            // Insert questions
-            var questions = new List<Question>
-            {
-                new Question { QuizID = 1, QuestionText = "How do you say \"Hello\" in Italian?", Answer = "Ciao", Choices = new ObservableCollection<string> { "Ciao", "Bonjour", "Hola", "Hallo" } },
-                new Question { QuizID = 1, QuestionText = "What is the Italian word for \"Thank you\"?", Answer = "Grazie", Choices = new ObservableCollection<string> { "Gracias", "Merci", "Danke", "Grazie" } },
-                new Question { QuizID = 1, QuestionText = "How do you say \"Goodbye\" in Italian?", Answer = "Arrivederci", Choices = new ObservableCollection<string> { "Adiós", "Auf Wiedersehen", "Arrivederci", "Au revoir" } },
-                new Question { QuizID = 1, QuestionText = "What is the translation of \"Please\" in Italian?", Answer = "Per favore", Choices = new ObservableCollection<string> { "Por favor", "S'il vous plaît", "Bitte", "Per favore" } },
-                new Question { QuizID = 1, QuestionText = "How do you say \"Yes\" in Italian?", Answer = "Sì", Choices = new ObservableCollection<string> { "Oui", "Sí", "Ja", "Sì" } },
+                foreach (var quiz in quizzes)
+                {
+                    var existingQuiz = await _connection.QueryFirstOrDefaultAsync<Quiz>(
+                        "SELECT * FROM public.\"Quizzes\" WHERE \"Title\" = @Title AND \"Category\" = @Category AND \"Level\" = @Level",
+                        quiz
+                    );
 
-                new Question { QuizID = 2, QuestionText = "Which of the following is a subjunctive form of \"essere\" in Italian?", Answer = "sia", Choices = new ObservableCollection<string> { "sono", "sei", "sia", "siamo" } },
-                new Question { QuizID = 2, QuestionText = "How do you say \"I would have eaten\" in Italian?", Answer = "Avrei mangiato", Choices = new ObservableCollection<string> { "Avrei mangiato", "Ho mangiato", "Mangerei", "Sto mangiando" } },
-            };
-
-            foreach (var question in questions)
-            {
-                await _connection.ExecuteAsync(
-                    "INSERT INTO public.\"Questions\" (\"QuizID\", \"QuestionText\", \"Answer\", \"Choices\") VALUES (@QuizID, @QuestionText, @Answer, @Choices)",
-                    new
+                    if (existingQuiz == null)
                     {
-                        question.QuizID,
-                        question.QuestionText,
-                        question.Answer,
-                        Choices = question.Choices.ToArray() 
+                        await _connection.ExecuteAsync(
+                            "INSERT INTO public.\"Quizzes\" (\"Title\", \"Category\", \"Level\") VALUES (@Title, @Category, @Level)",
+                            quiz
+                        );
                     }
-                );
-            }
+                }
 
+                // Insert questions
+                var questions = new List<Question>
+                {
+                    new Question { QuizID = 1, QuestionText = "How do you say \"Hello\" in Italian?", Answer = "Ciao", Choices = new ObservableCollection<string> { "Ciao", "Bonjour", "Hola", "Hallo" } },
+                    new Question { QuizID = 1, QuestionText = "What is the Italian word for \"Thank you\"?", Answer = "Grazie", Choices = new ObservableCollection<string> { "Gracias", "Merci", "Danke", "Grazie" } },
+                    new Question { QuizID = 1, QuestionText = "How do you say \"Goodbye\" in Italian?", Answer = "Arrivederci", Choices = new ObservableCollection<string> { "Adiós", "Auf Wiedersehen", "Arrivederci", "Au revoir" } },
+                    new Question { QuizID = 1, QuestionText = "What is the translation of \"Please\" in Italian?", Answer = "Per favore", Choices = new ObservableCollection<string> { "Por favor", "S'il vous plaît", "Bitte", "Per favore" } },
+                    new Question { QuizID = 1, QuestionText = "How do you say \"Yes\" in Italian?", Answer = "Sì", Choices = new ObservableCollection<string> { "Oui", "Sí", "Ja", "Sì" } },
+
+                    new Question { QuizID = 2, QuestionText = "Which of the following is a subjunctive form of \"essere\" in Italian?", Answer = "sia", Choices = new ObservableCollection<string> { "sono", "sei", "sia", "siamo" } },
+                    new Question { QuizID = 2, QuestionText = "How do you say \"I would have eaten\" in Italian?", Answer = "Avrei mangiato", Choices = new ObservableCollection<string> { "Avrei mangiato", "Ho mangiato", "Mangerei", "Sto mangiando" } },
+                };
+
+                foreach (var question in questions)
+                {
+                    var existingQuestion = await _connection.QueryFirstOrDefaultAsync<Question>(
+                        "SELECT * FROM public.\"Questions\" WHERE \"QuizID\" = @QuizID AND \"QuestionText\" = @QuestionText AND \"Answer\" = @Answer",
+                        new
+                        {
+                            question.QuizID,
+                            question.QuestionText,
+                            question.Answer
+                        }
+                    );
+
+                    if (existingQuestion == null)
+                    {
+                        await _connection.ExecuteAsync(
+                            "INSERT INTO public.\"Questions\" (\"QuizID\", \"QuestionText\", \"Answer\", \"Choices\") VALUES (@QuizID, @QuestionText, @Answer, @Choices)",
+                            new
+                            {
+                                question.QuizID,
+                                question.QuestionText,
+                                question.Answer,
+                                Choices = question.Choices.ToArray()
+                            }
+                        );
+                    }
+                }
+            }
+            finally
+            {
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close(); // Use the synchronous Close method
+                }
+            }
         }
     }
 }

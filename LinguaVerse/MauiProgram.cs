@@ -1,13 +1,14 @@
-﻿// MauiProgram.cs
-using Microsoft.Maui;
-using Microsoft.Maui.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Dapper;
 using LinguaVerse.DAL;
+using LinguaVerse.Services;
 using LinguaVerse.ViewModel;
 using LinguaVerse.Views;
-using Npgsql;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui;
+using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Maui.Hosting;
 using System.Data;
-using LinguaVerse.Seeders;
+using Npgsql;
 
 namespace LinguaVerse
 {
@@ -23,18 +24,36 @@ namespace LinguaVerse
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
 
+            // Register custom type handler
+            SqlMapper.AddTypeHandler(new ObservableCollectionTypeHandler());
+
             // Configure DI
             var connectionString = "Host=localhost;Database=LinguaVerseDB;Username=postgres;Password=admin";
-            builder.Services.AddTransient<IDbConnection>(sp => new NpgsqlConnection(connectionString));
+            builder.Services.AddSingleton<IDbConnection>(sp => new NpgsqlConnection(connectionString));
             builder.Services.AddTransient<UserRepository>();
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<DashboardViewModel>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<DashboardPage>();
-            builder.Services.AddTransient<DataSeeder>();
+            builder.Services.AddTransient<LanguageSelectionViewModel>();
+
+            // Register QuizPage with dependencies
+            builder.Services.AddTransient<QuizPage>(sp =>
+            {
+                var userRepository = sp.GetRequiredService<UserRepository>();
+                var userId = 1; 
+                return new QuizPage(new QuizViewModel(userRepository, userId));
+            });
+
+            // Register DashboardPage with dependencies
+            builder.Services.AddTransient<DashboardPage>(sp =>
+            {
+                var userRepository = sp.GetRequiredService<UserRepository>();
+                var userId = 1; 
+                return new DashboardPage(new DashboardViewModel(userRepository, userId));
+            });
 
             return builder.Build();
         }
     }
 }
-

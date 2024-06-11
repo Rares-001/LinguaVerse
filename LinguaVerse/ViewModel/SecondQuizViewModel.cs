@@ -6,6 +6,7 @@ using System.Windows.Input;
 using LinguaVerse.Model;
 using Microsoft.Maui.Controls;
 
+// PAGE TO BE REMOVED FROM THE PROJECT
 namespace LinguaVerse.ViewModel
 {
     public class SecondQuizViewModel : INotifyPropertyChanged

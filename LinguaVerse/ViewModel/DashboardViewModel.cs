@@ -13,15 +13,21 @@ namespace LinguaVerse.ViewModel
     public class DashboardViewModel : INotifyPropertyChanged
     {
         private readonly UserRepository _userRepository;
-        private readonly int _userId;
+        private int _userId;
 
         public DashboardViewModel(UserRepository userRepository, int userId)
         {
             _userRepository = userRepository;
             _userId = userId;
 
-            LoadUserData();
+            _userRepository = userRepository;
             NavigateToLanguageSelectionCommand = new Command(NavigateToLanguageSelection);
+        }
+
+        public void Initialize(int userId)
+        {
+            _userId = userId;
+            LoadUserData();
         }
 
         private string _username = string.Empty;
@@ -57,8 +63,8 @@ namespace LinguaVerse.ViewModel
             }
         }
 
-        private ObservableCollection<string> _dailyStreaks = new ObservableCollection<string>();
-        public ObservableCollection<string> DailyStreaks
+        private ObservableCollection<DailyStreak> _dailyStreaks = new ObservableCollection<DailyStreak>();
+        public ObservableCollection<DailyStreak> DailyStreaks
         {
             get => _dailyStreaks;
             set
@@ -105,12 +111,35 @@ namespace LinguaVerse.ViewModel
 
         private async void LoadUserData()
         {
+            System.Diagnostics.Debug.WriteLine($"Loading data for user ID: {_userId}");
+
             var user = await _userRepository.GetUserById(_userId);
+            if (user == null)
+            {
+                System.Diagnostics.Debug.WriteLine($"User with ID {_userId} not found.");
+                await Application.Current.MainPage.DisplayAlert("Error", "User not found", "OK");
+                return;
+            }
+
             Username = user.Username;
             WelcomeMessage = $"Welcome back, {user.Username}";
 
-            var dailyStreaks = await _userRepository.GetDailyStreaks(user.UserID);
-            DailyStreaks = new ObservableCollection<string>(dailyStreaks);
+            var dailyStreaks = await _userRepository.GetDailyStreaks(_userId);
+            DailyStreaks = new ObservableCollection<DailyStreak>(dailyStreaks.Select(ds => new DailyStreak
+            {
+                Day = ds,
+                IsCompleted = ds.Completed 
+            }));
+        
+
+        var today = DateTime.Now.DayOfWeek.ToString();
+            for (int i = 0; i < DailyStreaks.Count; i++)
+            {
+                if (DailyStreaks[i] == today)
+                {
+                    DailyStreaks[i] = $"✔️ {DailyStreaks[i]}"; 
+                }
+            }
 
             var courseProgress = (await _userRepository.GetCourseProgress(user.UserID))
                 .Select(cp => new CourseProgress
@@ -174,13 +203,4 @@ namespace LinguaVerse.ViewModel
         public string FlagIcon { get; set; } = string.Empty;
     }
 
-    public class UserProgress
-    {
-        public int UserProgressID { get; set; }
-        public int UserID { get; set; }
-        public int QuizID { get; set; }
-        public int Score { get; set; }
-        public int CompletionTime { get; set; }
-        public DateTime AttemptDate { get; set; }
-    }
 }

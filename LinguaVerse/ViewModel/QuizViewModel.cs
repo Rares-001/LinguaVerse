@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -15,7 +16,10 @@ namespace LinguaVerse.ViewModel
         private readonly UserRepository _userRepository;
         private readonly int _userId;
 
-        public QuizViewModel() { }
+        // Parameterless constructor for XAML
+        public QuizViewModel()
+        {
+        }
 
         // Constructor for dependency injection
         public QuizViewModel(UserRepository userRepository, int userId)
@@ -28,8 +32,8 @@ namespace LinguaVerse.ViewModel
             NavigateCommand = new Command(Navigate);
         }
 
-        private ObservableCollection<Model.Question> _questions = new ObservableCollection<Model.Question>();
-        public ObservableCollection<Model.Question> Questions
+        private ObservableCollection<Question> _questions = new ObservableCollection<Question>();
+        public ObservableCollection<Question> Questions
         {
             get => _questions;
             set
@@ -82,16 +86,45 @@ namespace LinguaVerse.ViewModel
             if (quizzes.Any())
             {
                 var questions = await _userRepository.GetQuestionsAsync(quizzes.First().QuizID);
-                Questions = new ObservableCollection<Model.Question>(questions);
+                Questions = new ObservableCollection<Question>(questions);
+
+                // Debugging output
+                System.Diagnostics.Debug.WriteLine($"Fetched {Questions.Count} questions from database.");
+            }
+            else
+            {
+                // Debugging output
+                System.Diagnostics.Debug.WriteLine("No quizzes found in database.");
             }
         }
 
-        private void CheckAnswers()
+        private async void CheckAnswers()
         {
             int correctAnswers = Questions.Count(q => q.Answer == q.SelectedAnswer);
             Points += correctAnswers * 2; // 2 points for each correct answer
             Result = correctAnswers == Questions.Count ? "Correct" : "Wrong";
+
+            // Save user progress
+            var userProgress = new DAL.UserProgress
+            {
+                UserID = _userId,
+                QuizID = Questions.First().QuizID,
+                Score = correctAnswers,
+                CompletionTime = DateTime.Now.Second, // TO BE REMOVED
+                AttemptDate = DateTime.Now // TO BE REMOVED
+            };
+
+            await _userRepository.SaveUserProgressAsync(userProgress);
+
+            // Update daily streak
+            string today = DateTime.Now.DayOfWeek.ToString().Substring(0, 3); 
+            await _userRepository.UpdateDailyStreak(_userId, today, true);
+
+            // Update the UI for daily streaks
+            var dailyStreaks = await _userRepository.GetDailyStreaks(_userId);
+            DashboardViewModel.UpdateDailyStreaks(dailyStreaks);
         }
+
 
         private async void Navigate()
         {

@@ -3,11 +3,15 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
+using Microsoft.Extensions.DependencyInjection;
+using LinguaVerse.Views; // Add this
 
 namespace LinguaVerse.ViewModel
 {
     public class LanguageSelectionViewModel : INotifyPropertyChanged
     {
+        private readonly IServiceProvider _serviceProvider;
+
         public ICommand ItalianCommand { get; }
         public ICommand EnglishCommand { get; }
         public ICommand TestCommand { get; }
@@ -25,8 +29,16 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        // Parameterless constructor for XAML compatibility
         public LanguageSelectionViewModel()
         {
+        }
+
+        // Constructor for dependency injection
+        public LanguageSelectionViewModel(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+
             ItalianCommand = new Command(OnItalianClicked);
             EnglishCommand = new Command(OnEnglishClicked);
             TestCommand = new Command(OnTestClicked);
@@ -48,24 +60,24 @@ namespace LinguaVerse.ViewModel
 
         private async Task ShowOptionsAsync()
         {
-
-            await Task.Delay(300); 
+            await Task.Delay(300);
             IsOptionsVisible = true;
         }
 
         private async void OnTestClicked()
         {
-            
+
         }
 
         private async void OnQuizClicked()
         {
-            await Application.Current.MainPage.Navigation.PushAsync(new Views.QuizPage());
+            var quizPage = _serviceProvider.GetRequiredService<QuizPage>();
+            await Application.Current.MainPage.Navigation.PushAsync(quizPage);
         }
 
         private async void OnFlashcardsClicked()
         {
-            
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

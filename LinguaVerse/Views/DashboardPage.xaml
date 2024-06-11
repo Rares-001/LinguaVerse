@@ -37,15 +37,16 @@
                            FontSize="Medium"
                            TextColor="White" />
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center"
-                                 bindable:BindableLayout.ItemsSource="{Binding DailyStreaks}">
+             bindable:BindableLayout.ItemsSource="{Binding DailyStreaks}">
                         <bindable:BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Frame BackgroundColor="White" CornerRadius="25" WidthRequest="80" HeightRequest="60">
-                                    <Label Text="{Binding}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                                <Frame BackgroundColor="{Binding IsCompleted, Converter={StaticResource BooleanToColorConverter}}" CornerRadius="25" WidthRequest="80" HeightRequest="60">
+                                    <Label Text="{Binding Day}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
                                 </Frame>
                             </DataTemplate>
                         </bindable:BindableLayout.ItemTemplate>
                     </StackLayout>
+
                 </StackLayout>
 
                 <!-- Progress Section -->
@@ -87,6 +88,7 @@
                     <Label Text="Featured Courses:"
                            FontSize="Medium"
                            TextColor="White" />
+                    
                     <StackLayout bindable:BindableLayout.ItemsSource="{Binding FeaturedCourses}">
                         <bindable:BindableLayout.ItemTemplate>
                             <DataTemplate>
