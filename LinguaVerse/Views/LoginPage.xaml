@@ -1,0 +1,73 @@
+﻿<!-- Views/LoginPage.xaml -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LinguaVerse.Views.LoginPage">
+
+    <!-- <StackLayout Padding="20">
+        <Entry Placeholder="Username" Text="{Binding Username}" />
+        <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="True" />
+        <Button Text="Register" Command="{Binding RegisterCommand}" />
+        <Label Text="{Binding RegistrationStatus}" TextColor="Green" />
+        <Button Text="Login" Command="{Binding LoginCommand}" />
+        
+        <Label Text="{Binding LoginStatus}" TextColor="Green" />
+        <Label Text="{Binding ConnectionStatus}" TextColor="Blue" />
+    </StackLayout> -->
+
+    <VerticalStackLayout Padding="30" VerticalOptions="CenterAndExpand">
+        <Label Text="LinguaVerse"
+               FontSize="48"
+               HorizontalOptions="Center"
+               TextColor="Orange" />
+
+        <Label Text="Login"
+               FontSize="32"
+               HorizontalOptions="Center"
+               Margin="0,10,0,20" />
+
+        <Frame BorderColor="Purple" CornerRadius="5" Padding="0" Margin="0,20,0,0" WidthRequest="250" HorizontalOptions="Center">
+            <Entry x:Name="usernameEntry"
+                   Placeholder="Username"
+                   Text="{Binding Username}"
+                   Keyboard="Text"
+                   BackgroundColor="White"
+                   TextColor="Black"
+                   HeightRequest="40" />
+        </Frame>
+
+        <Frame BorderColor="Purple" CornerRadius="5" Padding="0" Margin="0,10,0,0" WidthRequest="250" HorizontalOptions="Center">
+            <Entry x:Name="passwordEntry"
+                   Placeholder="Password"
+                   Text="{Binding Password}"
+                   IsPassword="True"
+                   BackgroundColor="White"
+                   TextColor="Black"
+                   HeightRequest="40" />
+        </Frame>
+
+        <Button Text="Login"
+                BackgroundColor="Purple"
+                TextColor="White"
+                Command="{Binding LoginCommand}"
+                Margin="0,20,0,0"
+                WidthRequest="250"
+                HorizontalOptions="Center"/>
+
+        <Button Text="Register"
+            BackgroundColor="Purple"
+            TextColor="White"
+            Command="{Binding LoginCommand}"
+            Margin="0,20,0,0"
+            WidthRequest="250"
+            HorizontalOptions="Center"/>
+
+
+        <Label x:Name="messageLabel"
+               Text=""
+               TextColor="Red"
+               HorizontalOptions="Center"
+               Margin="10,20,10,0" />
+    </VerticalStackLayout>
+</ContentPage>
+
+   
