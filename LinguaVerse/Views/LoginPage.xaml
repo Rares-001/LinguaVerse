@@ -4,11 +4,14 @@
              x:Class="LinguaVerse.Views.LoginPage">
 
     <!-- <StackLayout Padding="20">
+    
+    <StackLayout Padding="20">
         <Entry Placeholder="Username" Text="{Binding Username}" />
         <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="True" />
         <Button Text="Register" Command="{Binding RegisterCommand}" />
         <Label Text="{Binding RegistrationStatus}" TextColor="Green" />
         <Button Text="Login" Command="{Binding LoginCommand}" />
+
         
         <Label Text="{Binding LoginStatus}" TextColor="Green" />
         <Label Text="{Binding ConnectionStatus}" TextColor="Blue" />
@@ -70,4 +73,8 @@
     </VerticalStackLayout>
 </ContentPage>
 
-   
+        <Label Text="{Binding LoginStatus}" TextColor="Green" />
+        <Label Text="{Binding ConnectionStatus}" TextColor="Blue" />
+    </StackLayout>
+</ContentPage>
+

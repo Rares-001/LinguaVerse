@@ -3,13 +3,13 @@
     x:Class="LinguaVerse.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:LinguaVerse"
+    xmlns:views="clr-namespace:LinguaVerse.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="LinguaVerse">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Login"
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Route="LoginPage" />
 
 </Shell>

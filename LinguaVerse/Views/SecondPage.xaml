@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:LinguaVerse.ViewModel"
+             x:Class="LinguaVerse.Views.SecondPage">
+    <ContentPage.BindingContext>
+        <vm:SecondQuizViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="20">
+        <Label Text="{Binding Points, StringFormat='Points: {0}'}" HorizontalOptions="End" FontSize="Large" TextColor="Black" />
+        <CollectionView ItemsSource="{Binding Questions}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout>
+                        <Label Text="{Binding QuestionText}" FontSize="Medium" />
+                        <Picker ItemsSource="{Binding Choices}"
+                                SelectedItem="{Binding SelectedAnswer, Mode=TwoWay}" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Check" Command="{Binding CheckAnswersCommand}" />
+        <Label Text="{Binding Result}" FontSize="Large" TextColor="Red" />
+    </StackLayout>
+</ContentPage>

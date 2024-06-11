@@ -67,4 +67,4 @@ public partial class LogIn : ContentPage
     }
 }
 
-}
+
