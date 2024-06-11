@@ -32,5 +32,22 @@ namespace LinguaVerse
             }
             await CardFrame.RotateYTo(0, 250, Easing.Linear);
         }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            if (BindingContext is ViewModels.FlashcardViewModel viewModel)
+            {
+                viewModel.PropertyChanged += ViewModel_PropertyChanged;
+            }
+        }
+
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModels.FlashcardViewModel.CurrentFlashcard))
+            {
+                CardLabel.Text = (BindingContext as ViewModels.FlashcardViewModel)?.CurrentFlashcard.Question;
+            }
+        }
     }
 }
