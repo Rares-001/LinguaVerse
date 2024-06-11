@@ -1,4 +1,3 @@
-﻿// MauiProgram.cs
 using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +21,14 @@ namespace LinguaVerse
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
+
+
+#if DEBUG
+    		builder.Logging.AddDebug();
+#endif
+
+            // Configure DI
+            var connectionString = "Host=localhost;Database=LinguaVerse;Username=postgres;Password=Polly55";
 
             // Configure DI
             var connectionString = "Host=localhost;Database=LinguaVerseDB;Username=postgres;Password=admin";
