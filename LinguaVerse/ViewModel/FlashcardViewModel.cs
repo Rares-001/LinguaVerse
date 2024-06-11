@@ -9,6 +9,7 @@ namespace LinguaVerse.ViewModels
     public class FlashcardViewModel : INotifyPropertyChanged
     {
         private int _currentIndex;
+        private bool _isAnswerVisible;
 
         public ObservableCollection<Flashcard> Flashcards { get; set; }
         public Flashcard CurrentFlashcard => Flashcards[_currentIndex];
@@ -32,10 +33,12 @@ namespace LinguaVerse.ViewModels
             NextCommand = new Command(NextFlashcard);
             FlipCommand = new Command(Flip);
             _currentIndex = 0;
+            _isAnswerVisible = false;
         }
 
         private void ShowAnswer()
         {
+            IsAnswerVisible = true;
         }
 
         private void PreviousFlashcard()
@@ -44,6 +47,7 @@ namespace LinguaVerse.ViewModels
             {
                 _currentIndex--;
                 OnPropertyChanged(nameof(CurrentFlashcard));
+                IsAnswerVisible = false;
             }
         }
 
@@ -53,12 +57,23 @@ namespace LinguaVerse.ViewModels
             {
                 _currentIndex++;
                 OnPropertyChanged(nameof(CurrentFlashcard));
+                IsAnswerVisible = false;
             }
         }
 
         private void Flip()
         {
-            // This is handled in the MainPage.xaml.cs
+            // This is handled in the MainPage.xaml.cs 
+        }
+
+        public bool IsAnswerVisible
+        {
+            get => _isAnswerVisible;
+            set
+            {
+                _isAnswerVisible = value;
+                OnPropertyChanged();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

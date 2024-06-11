@@ -18,13 +18,17 @@ namespace LinguaVerse
         private async Task FlipCard()
         {
             await CardFrame.RotateYTo(90, 250, Easing.Linear);
-            if (CardLabel.Text == (BindingContext as ViewModels.FlashcardViewModel).CurrentFlashcard.Question)
+            var viewModel = BindingContext as ViewModels.FlashcardViewModel;
+            if (viewModel != null)
             {
-                CardLabel.Text = (BindingContext as ViewModels.FlashcardViewModel).CurrentFlashcard.Answer;
-            }
-            else
-            {
-                CardLabel.Text = (BindingContext as ViewModels.FlashcardViewModel).CurrentFlashcard.Question;
+                if (CardLabel.Text == viewModel.CurrentFlashcard.Question)
+                {
+                    CardLabel.Text = viewModel.CurrentFlashcard.Answer;
+                }
+                else
+                {
+                    CardLabel.Text = viewModel.CurrentFlashcard.Question;
+                }
             }
             await CardFrame.RotateYTo(0, 250, Easing.Linear);
         }
