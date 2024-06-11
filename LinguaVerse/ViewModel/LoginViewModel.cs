@@ -4,16 +4,20 @@ using System.Windows.Input;
 using LinguaVerse.DAL;
 using Microsoft.Maui.Controls;
 using System.Threading.Tasks;
+using LinguaVerse.Views;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LinguaVerse.ViewModel
 {
     public class LoginViewModel : INotifyPropertyChanged
     {
         private readonly UserRepository _userRepository;
+        private readonly IServiceProvider _serviceProvider;
 
-        public LoginViewModel(UserRepository userRepository)
+        public LoginViewModel(UserRepository userRepository, IServiceProvider serviceProvider)
         {
             _userRepository = userRepository;
+            _serviceProvider = serviceProvider;
             CheckDatabaseConnection();
         }
 
@@ -100,10 +104,19 @@ namespace LinguaVerse.ViewModel
 
                 // Get the user ID
                 var user = await _userRepository.GetUserByUsername(Username);
+                if (user == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "User not found after login", "OK");
+                    return;
+                }
+
+                System.Diagnostics.Debug.WriteLine($"Logged in user ID: {user.UserID}");
 
                 // Navigate to DashboardPage
-                var dashboardViewModel = new DashboardViewModel(_userRepository, user.UserID);
-                await Application.Current.MainPage.Navigation.PushAsync(new Views.DashboardPage { BindingContext = dashboardViewModel });
+                var dashboardPage = _serviceProvider.GetRequiredService<DashboardPage>();
+                var dashboardViewModel = dashboardPage.BindingContext as DashboardViewModel;
+                dashboardViewModel?.Initialize(user.UserID);
+                await Application.Current.MainPage.Navigation.PushAsync(dashboardPage);
             }
             else
             {

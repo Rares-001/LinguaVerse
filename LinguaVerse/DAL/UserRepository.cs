@@ -4,6 +4,7 @@ using System.Data;
 using System.Threading.Tasks;
 using Npgsql;
 using LinguaVerse.Model;
+using System.Collections.ObjectModel;
 
 namespace LinguaVerse.DAL
 {
@@ -80,8 +81,14 @@ namespace LinguaVerse.DAL
         public async Task<User> GetUserById(int userId)
         {
             const string query = "SELECT * FROM \"User\" WHERE userID = @UserId";
-            return await _connection.QuerySingleOrDefaultAsync<User>(query, new { UserId = userId });
+            var user = await _connection.QuerySingleOrDefaultAsync<User>(query, new { UserId = userId });
+            if (user == null)
+            {
+                System.Diagnostics.Debug.WriteLine($"User with ID {userId} not found in the database.");
+            }
+            return user;
         }
+
 
         public async Task<IEnumerable<string>> GetDailyStreaks(int userId)
         {
@@ -90,6 +97,13 @@ namespace LinguaVerse.DAL
                 new { UserId = userId }
             );
         }
+
+        public async Task UpdateDailyStreak(int userId, string day, bool completed)
+        {
+            const string query = "UPDATE \"DailyStreaks\" SET completed = @Completed WHERE userID = @UserId AND day = @Day";
+            await _connection.ExecuteAsync(query, new { UserId = userId, Day = day, Completed = completed });
+        }
+
 
         public async Task<IEnumerable<CourseProgress>> GetCourseProgress(int userId)
         {
@@ -115,7 +129,7 @@ namespace LinguaVerse.DAL
 
         public async Task SaveUserProgressAsync(UserProgress userProgress)
         {
-            const string query = "INSERT INTO \"UserProgress\" (userID, quizID, score, completionTime, attemptDate) VALUES (@UserID, @QuizID, @Score, @CompletionTime, @AttemptDate)";
+            const string query = "INSERT INTO \"UserProgress\" (\"UserID\", \"QuizID\", \"Score\", \"CompletionTime\", \"AttemptDate\") VALUES (@UserID, @QuizID, @Score, @CompletionTime, @AttemptDate)";
             await _connection.ExecuteAsync(query, userProgress);
         }
 
@@ -156,17 +170,29 @@ namespace LinguaVerse.DAL
             }
         }
 
-        public async Task<IEnumerable<Model.Quiz>> GetQuizzesAsync()
+        public async Task<IEnumerable<Quiz>> GetQuizzesAsync()
         {
-            const string query = "SELECT * FROM Quizzes";
-            return await _connection.QueryAsync<Model.Quiz>(query);
+            const string query = "SELECT * FROM \"Quizzes\"";
+            return await _connection.QueryAsync<Quiz>(query);
         }
 
-        public async Task<IEnumerable<Model.Question>> GetQuestionsAsync(int quizId)
+        public async Task<IEnumerable<Question>> GetQuestionsAsync(int quizId)
         {
-            const string query = "SELECT * FROM Questions WHERE QuizID = @QuizID";
-            return await _connection.QueryAsync<Model.Question>(query, new { QuizID = quizId });
+            const string query = "SELECT * FROM \"Questions\" WHERE \"QuizID\" = @QuizID";
+            var questions = await _connection.QueryAsync<Question>(query, new { QuizID = quizId });
+
+            // Convert Choices from string array to ObservableCollection<string>
+            foreach (var question in questions)
+            {
+                question.Choices = new ObservableCollection<string>(question.Choices); 
+            }
+
+            return questions;
         }
+
+
+
+
     }
 
     public class User
@@ -192,32 +218,5 @@ namespace LinguaVerse.DAL
         public int Questions { get; set; }
         public string Level { get; set; }
         public string FlagIcon { get; set; }
-    }
-
-    public class UserProgress
-    {
-        public int UserProgressID { get; set; }
-        public int UserID { get; set; }
-        public int QuizID { get; set; }
-        public int Score { get; set; }
-        public int CompletionTime { get; set; }
-        public DateTime AttemptDate { get; set; }
-    }
-
-    public class Quiz
-    {
-        public int QuizID { get; set; }
-        public string Title { get; set; }
-        public string Category { get; set; }
-        public string Level { get; set; }
-    }
-
-    public class Question
-    {
-        public int QuestionID { get; set; }
-        public int QuizID { get; set; }
-        public string QuestionText { get; set; }
-        public string Answer { get; set; }
-        public IEnumerable<string> Choices { get; set; }
     }
 }

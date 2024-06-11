@@ -8,7 +8,7 @@ namespace LinguaVerse.Model
         public int QuizID { get; set; }
         public string QuestionText { get; set; }
         public string Answer { get; set; }
-        public string? SelectedAnswer { get; set; }
+        public string SelectedAnswer { get; set; }
         public ObservableCollection<string> Choices { get; set; }
     }
 }

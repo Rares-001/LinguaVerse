@@ -7,28 +7,30 @@
         <viewModel:QuizViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout Padding="10">
-            <Label Text="Quiz"
-                   FontSize="Large"
-                   HorizontalOptions="Center" />
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Label Text="Quiz"
+                       FontSize="Large"
+                       HorizontalOptions="Center" />
 
-            <CollectionView ItemsSource="{Binding Questions}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout Padding="5">
-                            <Label Text="{Binding QuestionText}" FontSize="Medium" />
-                            <Picker ItemsSource="{Binding Choices}" SelectedItem="{Binding SelectedAnswer}" />
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                <CollectionView ItemsSource="{Binding Questions}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="5">
+                                <Label Text="{Binding QuestionText}" FontSize="Medium" />
+                                <Picker ItemsSource="{Binding Choices}" SelectedItem="{Binding SelectedAnswer}" />
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-            <Button Text="Check Answers"
-                    Command="{Binding CheckAnswersCommand}"
-                    HorizontalOptions="Center" />
-            <Label Text="{Binding Result}"
-                   IsVisible="{Binding IsResultVisible}"
-                   HorizontalOptions="Center" />
-        </StackLayout>
+                <Button Text="Check Answers"
+                        Command="{Binding CheckAnswersCommand}"
+                        HorizontalOptions="Center" />
+                <Label Text="{Binding Result}"
+                       IsVisible="{Binding IsResultVisible}"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
