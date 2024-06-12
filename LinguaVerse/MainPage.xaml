@@ -30,6 +30,7 @@
             </StackLayout>
         </Frame>
 
+        <Image Source="flashcard_image.png" HeightRequest="200" HorizontalOptions="Center" VerticalOptions="Center"/>
         <Button Text="Flip" Clicked="OnFlipButtonClicked" />
         <Button Text="Next" Command="{Binding NextCommand}" />
     </VerticalStackLayout>
