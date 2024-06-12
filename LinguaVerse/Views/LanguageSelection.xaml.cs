@@ -21,10 +21,10 @@ namespace LinguaVerse.Views
 
         private async void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(LanguageSelectionViewModel.IsOptionsVisible) && OptionsSection.IsVisible)
+            if (e.PropertyName == nameof(LanguageSelectionViewModel.IsOptionsVisible) && OptionsSection1.IsVisible)
             {
                 System.Diagnostics.Debug.WriteLine("Animating options section");
-                await OptionsSection.FadeTo(1, 500);
+                await OptionsSection1.FadeTo(1, 500);
             }
         }
     }
