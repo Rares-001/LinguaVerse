@@ -1,22 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:LinguaVerse.Views"
              x:Class="LinguaVerse.App">
-    <Application.Resources>
-        <!-- Application resource dictionary -->
-        <ResourceDictionary>
-            <Style TargetType="Label">
-                <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="VerticalOptions" Value="Center" />
-                <Setter Property="FontSize" Value="18" />
-            </Style>
-            <Style TargetType="Button">
-                <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="BackgroundColor" Value="#3F3364" />
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="HeightRequest" Value="50" />
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-            </Style>
-        </ResourceDictionary>
-    </Application.Resources>
+    <Application.MainPage>
+        <NavigationPage>
+            <x:Arguments>
+                <views:MainPage />
+            </x:Arguments>
+        </NavigationPage>
+    </Application.MainPage>
 </Application>

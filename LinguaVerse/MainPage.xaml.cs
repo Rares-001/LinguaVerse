@@ -1,58 +1,88 @@
 ﻿using Microsoft.Maui.Controls;
+using LinguaVerse.ViewModel;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace LinguaVerse
+namespace LinguaVerse.Views
 {
     public partial class MainPage : ContentPage
     {
+        private MemoryCardViewModel viewModel;
+        private Model.MemoryCard firstCard, secondCard;
+        private readonly Color[] cardColors = { Colors.Red, Colors.Green, Colors.Blue, Colors.Orange };
+
         public MainPage()
         {
             InitializeComponent();
-        }
 
-        private async void OnFlipButtonClicked(object sender, EventArgs e)
-        {
-            await FlipCard();
-        }
-
-        private async Task FlipCard()
-        {
-            await CardFrame.RotateYTo(90, 250, Easing.Linear);
-            var viewModel = BindingContext as ViewModels.FlashcardViewModel;
-            if (viewModel != null)
+            viewModel = new MemoryCardViewModel();
+            BindingContext = viewModel;
+            for (int i = 0; i < viewModel.Cards.Count; i++)
             {
-                if (CardLabel.Text == viewModel.CurrentFlashcard.Question)
+                var cardButton = new Button
                 {
-                    CardLabel.Text = viewModel.CurrentFlashcard.Answer;
+                    Text = "Flip",
+                    BackgroundColor = cardColors[i],
+                    TextColor = Colors.White,
+                    FontAttributes = FontAttributes.Bold,
+                    FontSize = 24,
+                    WidthRequest = 150,
+                    HeightRequest = 150
+                };
+                cardButton.Clicked += OnCardClicked;
+                cardButton.BindingContext = viewModel.Cards[i];
+
+                cardGrid.Children.Add(cardButton);
+                Grid.SetRow(cardButton, i / 2);
+                Grid.SetColumn(cardButton, i % 2);
+            }
+        }
+
+        private async void OnCardClicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var card = button.BindingContext as Model.MemoryCard;
+
+            if (firstCard == null)
+            {
+                firstCard = card;
+                button.Text = card.Text;
+                button.IsEnabled = false;
+            }
+            else if (secondCard == null)
+            {
+                secondCard = card;
+                button.Text = card.Text;
+                button.IsEnabled = false;
+
+                if (firstCard.Match == secondCard.Text)
+                {
+                    await DisplayAlert("Match", "You've found a match!", "Next");
+
+                    foreach (var btn in cardGrid.Children.OfType<Button>())
+                    {
+                        btn.Text = "Flip";
+                        btn.IsEnabled = true;
+                    }
+
+                    firstCard = secondCard = null;
                 }
                 else
                 {
-                    CardLabel.Text = viewModel.CurrentFlashcard.Question;
+                    await Task.Delay(1000);
+
+                    foreach (var btn in cardGrid.Children.OfType<Button>())
+                    {
+                        if (btn.BindingContext == firstCard || btn.BindingContext == secondCard)
+                        {
+                            btn.Text = "Flip";
+                            btn.IsEnabled = true;
+                        }
+                    }
+
+                    firstCard = secondCard = null;
                 }
             }
-            await CardFrame.RotateYTo(0, 250, Easing.Linear);
-        }
-
-        protected override void OnBindingContextChanged()
-        {
-            base.OnBindingContextChanged();
-            if (BindingContext is ViewModels.FlashcardViewModel viewModel)
-            {
-                viewModel.PropertyChanged += ViewModel_PropertyChanged;
-            }
-        }
-
-        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(ViewModels.FlashcardViewModel.CurrentFlashcard))
-            {
-                CardLabel.Text = (BindingContext as ViewModels.FlashcardViewModel)?.CurrentFlashcard.Question;
-            }
-        }
-
-        private async void OnCloseButtonClicked(object sender, EventArgs e)
-        {
-            await Navigation.PopAsync();
         }
     }
 }
