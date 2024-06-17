@@ -14,6 +14,7 @@ namespace LinguaVerse.ViewModel
     public class QuizViewModel : INotifyPropertyChanged
     {
         private readonly UserRepository _userRepository;
+        private readonly DashboardViewModel _dashboardViewModel;
         private readonly int _userId;
 
         // Parameterless constructor for XAML
@@ -22,14 +23,17 @@ namespace LinguaVerse.ViewModel
         }
 
         // Constructor for dependency injection
-        public QuizViewModel(UserRepository userRepository, int userId)
+        public QuizViewModel(UserRepository userRepository, DashboardViewModel dashboardViewModel, int userId)
         {
             _userRepository = userRepository;
+            _dashboardViewModel = dashboardViewModel;
             _userId = userId;
 
-            LoadQuestions();
+            LoadQuestionsCommand = new Command(async () => await LoadQuestions());
             CheckAnswersCommand = new Command(CheckAnswers);
             NavigateCommand = new Command(Navigate);
+
+            LoadQuestions(); // Load questions initially
         }
 
         private ObservableCollection<Question> _questions = new ObservableCollection<Question>();
@@ -77,53 +81,68 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        public ICommand LoadQuestionsCommand { get; }
         public ICommand CheckAnswersCommand { get; }
         public ICommand NavigateCommand { get; }
 
-        private async void LoadQuestions()
+        private async Task LoadQuestions()
         {
-            var quizzes = await _userRepository.GetQuizzesAsync();
-            if (quizzes.Any())
+            try
             {
-                var questions = await _userRepository.GetQuestionsAsync(quizzes.First().QuizID);
-                Questions = new ObservableCollection<Question>(questions);
+                Questions.Clear(); // Clear existing questions before loading new ones
 
-                // Debugging output
-                System.Diagnostics.Debug.WriteLine($"Fetched {Questions.Count} questions from database.");
+                var quizzes = await _userRepository.GetQuizzesAsync();
+                if (quizzes.Any())
+                {
+                    var quiz = quizzes.First();
+                    var questions = await _userRepository.GetQuestionsAsync(quiz.QuizID);
+                    Questions = new ObservableCollection<Question>(questions);
+                    System.Diagnostics.Debug.WriteLine($"Fetched {Questions.Count} questions from database.");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("No quizzes found in database.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Debugging output
-                System.Diagnostics.Debug.WriteLine("No quizzes found in database.");
+                System.Diagnostics.Debug.WriteLine($"Error loading questions: {ex.Message}");
             }
         }
 
         private async void CheckAnswers()
         {
             int correctAnswers = Questions.Count(q => q.Answer == q.SelectedAnswer);
-            Points += correctAnswers * 2; // 2 points for each correct answer
+            Points += correctAnswers * 2; // 2 points for each correct answer, missing implementation 
             Result = correctAnswers == Questions.Count ? "Correct" : "Wrong";
 
-            // Save user progress
-            var userProgress = new DAL.UserProgress
+            var userProgress = new UserProgress
             {
                 UserID = _userId,
                 QuizID = Questions.First().QuizID,
                 Score = correctAnswers,
-                CompletionTime = DateTime.Now.Second, // TO BE REMOVED
-                AttemptDate = DateTime.Now // TO BE REMOVED
+                CompletionTime = DateTime.Now.Second,
+                AttemptDate = DateTime.Now
             };
 
             await _userRepository.SaveUserProgressAsync(userProgress);
 
-            // Update daily streak
+            // Update the daily streak for today
             string today = DateTime.Now.DayOfWeek.ToString().Substring(0, 3); 
+            System.Diagnostics.Debug.WriteLine($"Updating daily streak for today: {today}");
             await _userRepository.UpdateDailyStreak(_userId, today, true);
 
-            // Update the UI for daily streaks
-            var dailyStreaks = await _userRepository.GetDailyStreaks(_userId);
-            DashboardViewModel.UpdateDailyStreaks(dailyStreaks);
+            // Fetch the updated daily streak from the database and log it
+            var updatedDailyStreaks = await _userRepository.GetDailyStreaks(_userId);
+            foreach (var streak in updatedDailyStreaks)
+            {
+                System.Diagnostics.Debug.WriteLine($"Day: {streak.Day}, IsCompleted: {streak.IsCompleted}");
+            }
+
+            _dashboardViewModel.UpdateDailyStreaks(updatedDailyStreaks); // Notify DashboardViewModel
         }
+
+
 
 
         private async void Navigate()

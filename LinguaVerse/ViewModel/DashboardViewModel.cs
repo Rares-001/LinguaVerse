@@ -7,6 +7,7 @@ using System.Windows.Input;
 using LinguaVerse.DAL;
 using LinguaVerse.Model;
 using Microsoft.Maui.Controls;
+using static LinguaVerse.DAL.UserRepository;
 
 namespace LinguaVerse.ViewModel
 {
@@ -19,14 +20,7 @@ namespace LinguaVerse.ViewModel
         {
             _userRepository = userRepository;
             _userId = userId;
-
-            _userRepository = userRepository;
             NavigateToLanguageSelectionCommand = new Command(NavigateToLanguageSelection);
-        }
-
-        public void Initialize(int userId)
-        {
-            _userId = userId;
             LoadUserData();
         }
 
@@ -125,21 +119,27 @@ namespace LinguaVerse.ViewModel
             WelcomeMessage = $"Welcome back, {user.Username}";
 
             var dailyStreaks = await _userRepository.GetDailyStreaks(_userId);
+            if (!dailyStreaks.Any())
+            {
+                // Initialize default daily streaks
+                dailyStreaks = new List<DailyStreak>
+                {
+                    new DailyStreak { Day = "Mon", IsCompleted = false },
+                    new DailyStreak { Day = "Tue", IsCompleted = false },
+                    new DailyStreak { Day = "Wed", IsCompleted = false },
+                    new DailyStreak { Day = "Thu", IsCompleted = false },
+                    new DailyStreak { Day = "Fri", IsCompleted = false },
+                    new DailyStreak { Day = "Sat", IsCompleted = false },
+                    new DailyStreak { Day = "Sun", IsCompleted = false }
+                };
+            }
+
+            dailyStreaks = dailyStreaks.OrderBy(ds => GetDayOrder(ds.Day)).ToList();
             DailyStreaks = new ObservableCollection<DailyStreak>(dailyStreaks.Select(ds => new DailyStreak
             {
-                Day = ds,
-                IsCompleted = ds.Completed 
+                Day = ds.Day,
+                IsCompleted = ds.IsCompleted
             }));
-        
-
-        var today = DateTime.Now.DayOfWeek.ToString();
-            for (int i = 0; i < DailyStreaks.Count; i++)
-            {
-                if (DailyStreaks[i] == today)
-                {
-                    DailyStreaks[i] = $"✔️ {DailyStreaks[i]}"; 
-                }
-            }
 
             var courseProgress = (await _userRepository.GetCourseProgress(user.UserID))
                 .Select(cp => new CourseProgress
@@ -174,33 +174,38 @@ namespace LinguaVerse.ViewModel
             UserProgresses = new ObservableCollection<UserProgress>(userProgresses);
         }
 
+        private int GetDayOrder(string day)
+        {
+            return day switch
+            {
+                "Mon" => 1,
+                "Tue" => 2,
+                "Wed" => 3,
+                "Thu" => 4,
+                "Fri" => 5,
+                "Sat" => 6,
+                "Sun" => 7,
+                _ => 8,
+            };
+        }
+
+        public void UpdateDailyStreaks(IEnumerable<DailyStreak> dailyStreaks)
+        {
+            // Order the days correctly
+            dailyStreaks = dailyStreaks.OrderBy(ds => GetDayOrder(ds.Day)).ToList();
+            DailyStreaks = new ObservableCollection<DailyStreak>(dailyStreaks);
+        }
+
         private async void NavigateToLanguageSelection()
         {
             await Application.Current.MainPage.Navigation.PushAsync(new Views.LanguageSelection());
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-
-    public class CourseProgress
-    {
-        public string CourseName { get; set; } = string.Empty;
-        public float Progress { get; set; }
-        public string Level { get; set; } = string.Empty;
-    }
-
-    public class FeaturedCourse
-    {
-        public string CourseName { get; set; } = string.Empty;
-        public int Duration { get; set; }
-        public int Questions { get; set; }
-        public string Level { get; set; } = string.Empty;
-        public string FlagIcon { get; set; } = string.Empty;
-    }
-
 }

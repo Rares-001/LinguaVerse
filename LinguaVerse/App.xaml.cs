@@ -1,20 +1,21 @@
-﻿using LinguaVerse.Views;
-using Microsoft.Extensions.DependencyInjection;
+﻿using LinguaVerse.ViewModel;
+using LinguaVerse.Views;
 using Microsoft.Maui.Controls;
+using System;
 
 namespace LinguaVerse
 {
     public partial class App : Application
     {
-        public static IServiceProvider Services { get; private set; }
+        public static IServiceProvider Services { get; internal set; }
+        public static int CurrentUserId { get; set; }  // Store the current user ID
 
         public App(IServiceProvider serviceProvider)
         {
             InitializeComponent();
-
             Services = serviceProvider;
 
-            MainPage = new NavigationPage(serviceProvider.GetService<LoginPage>());
+            MainPage = new NavigationPage(new LoginPage(Services.GetService<LoginViewModel>()));
         }
     }
 }

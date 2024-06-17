@@ -4,6 +4,7 @@ using LinguaVerse.Services;
 using LinguaVerse.ViewModel;
 using LinguaVerse.Views;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
@@ -27,31 +28,26 @@ namespace LinguaVerse
             // Register custom type handler
             SqlMapper.AddTypeHandler(new ObservableCollectionTypeHandler());
 
-            // Configure DI
+            // Connection string
             var connectionString = "Host=localhost;Database=LinguaVerseDB;Username=postgres;Password=admin";
+            builder.Services.AddSingleton(connectionString); // Register the connection string
+
+            // Register services
             builder.Services.AddSingleton<IDbConnection>(sp => new NpgsqlConnection(connectionString));
             builder.Services.AddTransient<UserRepository>();
             builder.Services.AddTransient<LoginViewModel>();
-            builder.Services.AddTransient<DashboardViewModel>();
             builder.Services.AddTransient<LoginPage>();
-            builder.Services.AddTransient<DashboardPage>();
             builder.Services.AddTransient<LanguageSelectionViewModel>();
+            builder.Services.AddTransient<LanguageSelection>();
+            builder.Services.AddTransient<DashboardPage>();
+            builder.Services.AddTransient<Func<int, DashboardViewModel>>(sp => userId => new DashboardViewModel(sp.GetRequiredService<UserRepository>(), userId));
+            builder.Services.AddTransient<Func<UserRepository, DashboardViewModel, int, QuizViewModel>>(sp =>
+                (userRepository, dashboardViewModel, userId) => new QuizViewModel(userRepository, dashboardViewModel, userId));
+            builder.Services.AddTransient<QuizPage>(sp => new QuizPage(sp.GetRequiredService<Func<UserRepository, DashboardViewModel, int, QuizViewModel>>()(sp.GetRequiredService<UserRepository>(), sp.GetRequiredService<Func<int, DashboardViewModel>>()(App.CurrentUserId), App.CurrentUserId)));
 
-            // Register QuizPage with dependencies
-            builder.Services.AddTransient<QuizPage>(sp =>
-            {
-                var userRepository = sp.GetRequiredService<UserRepository>();
-                var userId = 1; 
-                return new QuizPage(new QuizViewModel(userRepository, userId));
-            });
-
-            // Register DashboardPage with dependencies
-            builder.Services.AddTransient<DashboardPage>(sp =>
-            {
-                var userRepository = sp.GetRequiredService<UserRepository>();
-                var userId = 1; 
-                return new DashboardPage(new DashboardViewModel(userRepository, userId));
-            });
+            // Configure logging
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
 
             return builder.Build();
         }

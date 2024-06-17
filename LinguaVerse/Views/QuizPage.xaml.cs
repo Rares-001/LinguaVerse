@@ -1,5 +1,4 @@
-﻿// QuizPage.xaml.cs
-using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui.Controls;
 using LinguaVerse.ViewModel;
 
 namespace LinguaVerse.Views
@@ -10,6 +9,13 @@ namespace LinguaVerse.Views
         {
             InitializeComponent();
             BindingContext = viewModel;
+        }
+
+        // Default constructor for XAML preview
+        public QuizPage()
+        {
+            InitializeComponent();
+            BindingContext = new QuizViewModel();
         }
     }
 }

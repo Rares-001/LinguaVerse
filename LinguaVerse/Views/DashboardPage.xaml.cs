@@ -1,5 +1,5 @@
-﻿using Microsoft.Maui.Controls;
-using LinguaVerse.ViewModel;
+﻿using LinguaVerse.ViewModel;
+using Microsoft.Maui.Controls;
 
 namespace LinguaVerse.Views
 {

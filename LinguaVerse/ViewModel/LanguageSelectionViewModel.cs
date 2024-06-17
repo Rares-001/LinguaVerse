@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using Microsoft.Extensions.DependencyInjection;
-using LinguaVerse.Views; // Add this
+using LinguaVerse.Views;
 
 namespace LinguaVerse.ViewModel
 {
@@ -66,7 +66,7 @@ namespace LinguaVerse.ViewModel
 
         private async void OnTestClicked()
         {
-
+            // Implementation missing
         }
 
         private async void OnQuizClicked()
@@ -77,7 +77,7 @@ namespace LinguaVerse.ViewModel
 
         private async void OnFlashcardsClicked()
         {
-
+            // Implementation missing
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

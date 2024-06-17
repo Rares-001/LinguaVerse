@@ -67,7 +67,7 @@ namespace LinguaVerse.ViewModel
         private void CheckAnswers()
         {
             int correctAnswers = Questions.Count(q => q.Answer == q.SelectedAnswer);
-            Points += correctAnswers * 2; // 2 points for each correct answer
+            Points += correctAnswers * 2; // 2 points for each correct answer, still missing
             Result = correctAnswers == Questions.Count ? "Correct" : "Wrong";
         }
 

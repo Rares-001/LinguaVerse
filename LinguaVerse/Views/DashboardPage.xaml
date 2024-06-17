@@ -1,8 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:LinguaVerse.ViewModel"
              xmlns:bindable="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
-             x:Class="LinguaVerse.Views.DashboardPage">
+             xmlns:converters="clr-namespace:LinguaVerse.Converters"
+             x:Class="LinguaVerse.Views.DashboardPage"
+             BindingContext="{Binding Source={StaticResource ViewModelLocator}, Path=DashboardViewModel}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
@@ -21,7 +30,6 @@
                            HeightRequest="30"
                            Grid.Column="1"
                            HorizontalOptions="End" />
-
                 </Grid>
 
                 <!-- Welcome Section -->
@@ -37,16 +45,16 @@
                            FontSize="Medium"
                            TextColor="White" />
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center"
-             bindable:BindableLayout.ItemsSource="{Binding DailyStreaks}">
+                                 bindable:BindableLayout.ItemsSource="{Binding DailyStreaks}">
                         <bindable:BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Frame BackgroundColor="{Binding IsCompleted, Converter={StaticResource BooleanToColorConverter}}" CornerRadius="25" WidthRequest="80" HeightRequest="60">
+                                <Frame BackgroundColor="{Binding IsCompleted, Converter={StaticResource BooleanToColorConverter}}" 
+                                       CornerRadius="25" WidthRequest="80" HeightRequest="60">
                                     <Label Text="{Binding Day}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
                                 </Frame>
                             </DataTemplate>
                         </bindable:BindableLayout.ItemTemplate>
                     </StackLayout>
-
                 </StackLayout>
 
                 <!-- Progress Section -->
@@ -88,7 +96,7 @@
                     <Label Text="Featured Courses:"
                            FontSize="Medium"
                            TextColor="White" />
-                    
+
                     <StackLayout bindable:BindableLayout.ItemsSource="{Binding FeaturedCourses}">
                         <bindable:BindableLayout.ItemTemplate>
                             <DataTemplate>
