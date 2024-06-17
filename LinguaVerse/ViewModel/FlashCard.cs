@@ -4,5 +4,6 @@
     {
         public string Question { get; set; }
         public string Answer { get; set; }
+        public string ImagePath { get; set; } // Add this line
     }
 }
