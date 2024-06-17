@@ -22,7 +22,7 @@ namespace LinguaVerse.ViewModels
         {
             Flashcards = new ObservableCollection<Flashcard>
             {
-                 new Flashcard { Question = "What is C#?", Answer = "A programming language developed by Microsoft." },
+                new Flashcard { Question = "What is C#?", Answer = "A programming language developed by Microsoft." },
                 new Flashcard { Question = "What are the key features of C#?", Answer = "Some key features include:Object-oriented," +
                 "Type-safe," +
                 "Scalable and updateable," +
@@ -34,10 +34,7 @@ namespace LinguaVerse.ViewModels
                 new Flashcard { Question = "What is the purpose of the using statement in C#?", Answer = "The using statement ensures that resources are disposed of correctly. " +
                 "It is typically used for handling IDisposable objects like file streams, database connections, etc.," +
                 "ensuring they are properly closed and disposed of when they are no longer needed." },
-                new Flashcard { Question = "What is the purpose of the using statement in C#?", Answer = "The using statement ensures that resources are disposed of correctly." +
-                " It is typically used for handling IDisposable objects like file streams, database connections, etc., ensuring they are properly closed and disposed" +
-                " of when they are no longer needed." },
-                new Flashcard { Question = "What is inheritance in C#?", Answer = " Inheritance is a fundamental concept of object-oriented programming" +
+                new Flashcard { Question = "What is inheritance in C#?", Answer = "Inheritance is a fundamental concept of object-oriented programming" +
                 " that allows a class to inherit properties and methods from another class." },
                 new Flashcard { Question = "What is an interface in C#?", Answer = "An interface is a contract that defines a set of methods " +
                 "and properties that a class must implement." +
@@ -47,7 +44,6 @@ namespace LinguaVerse.ViewModels
                 " They can be used to pass methods as arguments to other methods, allowing for dynamic method invocation. " },
                 new Flashcard { Question = "What is XAML?", Answer = "A markup language for designing UI in .NET applications." },
                 new Flashcard { Question = "What is .NET MAUI?", Answer = "A framework for building cross-platform apps." },
-                new Flashcard { Question = "What is C#?", Answer = "A programming language developed by Microsoft." },
             };
 
             ShowAnswerCommand = new Command(ShowAnswer);
@@ -59,7 +55,7 @@ namespace LinguaVerse.ViewModels
 
         private void ShowAnswer()
         {
-            // Not used in this example, but kept for completeness
+            
         }
 
         private void PreviousFlashcard()
@@ -82,7 +78,7 @@ namespace LinguaVerse.ViewModels
 
         private void Flip()
         {
-            // This is handled in the MainPage.xaml.cs code-behind
+            // This is handled in the MainPage.xaml.cs 
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
