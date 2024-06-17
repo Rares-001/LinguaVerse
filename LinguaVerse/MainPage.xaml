@@ -18,7 +18,7 @@
             </Grid.ColumnDefinitions>
             <Label Text="LinguaVerse" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" FontSize="14" TextColor="White"/>
             <Button Text="X" Grid.Column="1" WidthRequest="40" HeightRequest="40" CornerRadius="20" BackgroundColor="Transparent" BorderColor="Navy" BorderWidth="2"/>
-            <Button Text="🔔" Grid.Column="2" WidthRequest="40" HeightRequest="40" CornerRadius="20" BackgroundColor="Transparent" BorderColor="Navy" BorderWidth="2"/>
+            <Button Text="🔔" Grid.Column="2" WidthRequest="45" HeightRequest="40" CornerRadius="20" BackgroundColor="Transparent" BorderColor="Navy" BorderWidth="2"/>
         </Grid>
 
         <Label Text="FlashCards" FontSize="24" HorizontalOptions="Center" TextColor="White"/>
@@ -30,8 +30,17 @@
             </StackLayout>
         </Frame>
 
-        <Image Source="{Binding CurrentFlashcard.ImagePath}" HeightRequest="80" HorizontalOptions="Center" VerticalOptions="Center"/>
-        <Button Text="Flip" Clicked="OnFlipButtonClicked" />
-        <Button Text="Next" Command="{Binding NextCommand}" />
+        <Image Source="{Binding CurrentFlashcard.ImagePath}" HeightRequest="180" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Text="Previous" Command="{Binding PreviousCommand}" Grid.Column="0" HorizontalOptions="Start" WidthRequest="100" />
+            <Button Text="Flip" Clicked="OnFlipButtonClicked" Grid.Column="1" HorizontalOptions="Center" WidthRequest="150" HeightRequest="50"/>
+            <Button Text="Next" Command="{Binding NextCommand}" Grid.Column="2" HorizontalOptions="End" WidthRequest="150" HeightRequest="50"/>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

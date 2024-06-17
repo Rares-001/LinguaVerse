@@ -78,7 +78,7 @@ namespace LinguaVerse.ViewModels
 
         private void Flip()
         {
-            // This is handled in the MainPage.xaml.cs code-behind
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
