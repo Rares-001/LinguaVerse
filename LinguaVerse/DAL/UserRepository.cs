@@ -234,6 +234,9 @@ namespace LinguaVerse.DAL
             });
         }
 
+
+
+
         public async Task SaveUserProgressAsync(UserProgress userProgress)
         {
             _logger.LogInformation("Saving user progress for user ID: {UserID}, Quiz ID: {QuizID}, Score: {Score}", userProgress.UserID, userProgress.QuizID, userProgress.Score);
@@ -243,6 +246,7 @@ namespace LinguaVerse.DAL
                 await connection.ExecuteAsync(query, userProgress);
             });
         }
+
 
         public async Task<bool> ResetPassword(string username, string newPassword)
         {
@@ -316,7 +320,11 @@ namespace LinguaVerse.DAL
             });
         }
 
-        public class User
+    }
+
+
+
+    public class User
         {
             public int UserID { get; set; }
             public string Username { get; set; }
@@ -341,4 +349,3 @@ namespace LinguaVerse.DAL
             public string FlagIcon { get; set; }
         }
     }
-}

@@ -15,6 +15,7 @@ namespace LinguaVerse
             InitializeComponent();
             Services = serviceProvider;
 
+            // Set the initial MainPage to the LoginPage
             MainPage = new NavigationPage(new LoginPage(Services.GetService<LoginViewModel>()));
         }
     }

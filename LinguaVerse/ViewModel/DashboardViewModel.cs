@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using LinguaVerse.DAL;
 using LinguaVerse.Model;
+using LinguaVerse.Views;
 using Microsoft.Maui.Controls;
 using static LinguaVerse.DAL.UserRepository;
 
@@ -15,12 +16,14 @@ namespace LinguaVerse.ViewModel
     {
         private readonly UserRepository _userRepository;
         private int _userId;
+        public ICommand NavigateToQuizHistoryCommand { get; }
 
         public DashboardViewModel(UserRepository userRepository, int userId)
         {
             _userRepository = userRepository;
             _userId = userId;
             NavigateToLanguageSelectionCommand = new Command(NavigateToLanguageSelection);
+            NavigateToQuizHistoryCommand = new Command(NavigateToQuizHistory);
             LoadUserData();
         }
 
@@ -207,5 +210,14 @@ namespace LinguaVerse.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private async void NavigateToQuizHistory()
+        {
+            var quizHistoryViewModel = App.Services.GetRequiredService<Func<int, QuizHistoryViewModel>>()(App.CurrentUserId);
+            var quizHistoryPage = new QuizHistoryPage(quizHistoryViewModel);
+            await Application.Current.MainPage.Navigation.PushAsync(quizHistoryPage);
+        }
+
+
     }
 }

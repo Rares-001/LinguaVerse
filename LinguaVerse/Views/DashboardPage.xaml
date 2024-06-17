@@ -6,6 +6,7 @@
              x:Class="LinguaVerse.Views.DashboardPage"
              BindingContext="{Binding Source={StaticResource ViewModelLocator}, Path=DashboardViewModel}">
 
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:BooleanToColorConverter x:Key="BooleanToColorConverter" />
@@ -143,7 +144,9 @@
                 <!-- Navigation Bar -->
                 <StackLayout Orientation="Horizontal" HeightRequest="60" Padding="10">
                     <Button Text="Select Language" Command="{Binding NavigateToLanguageSelectionCommand}" />
+                    <Button Text="Quiz History" Command="{Binding NavigateToQuizHistoryCommand}" />
                 </StackLayout>
+
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

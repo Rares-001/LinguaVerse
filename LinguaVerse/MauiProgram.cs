@@ -40,10 +40,14 @@ namespace LinguaVerse
             builder.Services.AddTransient<LanguageSelectionViewModel>();
             builder.Services.AddTransient<LanguageSelection>();
             builder.Services.AddTransient<DashboardPage>();
-            builder.Services.AddTransient<Func<int, DashboardViewModel>>(sp => userId => new DashboardViewModel(sp.GetRequiredService<UserRepository>(), userId));
+            builder.Services.AddTransient<QuizHistoryPage>();
+            builder.Services.AddTransient<Func<int, QuizHistoryViewModel>>(sp => userId => new QuizHistoryViewModel(sp.GetRequiredService<UserRepository>(), userId));
             builder.Services.AddTransient<Func<UserRepository, DashboardViewModel, int, QuizViewModel>>(sp =>
                 (userRepository, dashboardViewModel, userId) => new QuizViewModel(userRepository, dashboardViewModel, userId));
             builder.Services.AddTransient<QuizPage>(sp => new QuizPage(sp.GetRequiredService<Func<UserRepository, DashboardViewModel, int, QuizViewModel>>()(sp.GetRequiredService<UserRepository>(), sp.GetRequiredService<Func<int, DashboardViewModel>>()(App.CurrentUserId), App.CurrentUserId)));
+
+            // Registering Func<int, DashboardViewModel>
+            builder.Services.AddTransient<Func<int, DashboardViewModel>>(sp => userId => new DashboardViewModel(sp.GetRequiredService<UserRepository>(), userId));
 
             // Configure logging
             builder.Logging.AddConsole();

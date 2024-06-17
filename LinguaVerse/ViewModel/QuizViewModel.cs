@@ -17,12 +17,12 @@ namespace LinguaVerse.ViewModel
         private readonly DashboardViewModel _dashboardViewModel;
         private readonly int _userId;
 
-        // Parameterless constructor for XAML
         public QuizViewModel()
         {
+            // This constructor should not be used at runtime
+            // You can put some default initialization here if needed
         }
 
-        // Constructor for dependency injection
         public QuizViewModel(UserRepository userRepository, DashboardViewModel dashboardViewModel, int userId)
         {
             _userRepository = userRepository;
@@ -81,6 +81,17 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        private bool _showResults = false;
+        public bool ShowResults
+        {
+            get => _showResults;
+            set
+            {
+                _showResults = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand LoadQuestionsCommand { get; }
         public ICommand CheckAnswersCommand { get; }
         public ICommand NavigateCommand { get; }
@@ -90,12 +101,17 @@ namespace LinguaVerse.ViewModel
             try
             {
                 Questions.Clear(); // Clear existing questions before loading new ones
+                ShowResults = false; // Reset the results visibility
 
                 var quizzes = await _userRepository.GetQuizzesAsync();
                 if (quizzes.Any())
                 {
                     var quiz = quizzes.First();
                     var questions = await _userRepository.GetQuestionsAsync(quiz.QuizID);
+                    foreach (var question in questions)
+                    {
+                        question.IsCorrect = null; // Reset the state of each question
+                    }
                     Questions = new ObservableCollection<Question>(questions);
                     System.Diagnostics.Debug.WriteLine($"Fetched {Questions.Count} questions from database.");
                 }
@@ -112,15 +128,22 @@ namespace LinguaVerse.ViewModel
 
         private async void CheckAnswers()
         {
-            int correctAnswers = Questions.Count(q => q.Answer == q.SelectedAnswer);
-            Points += correctAnswers * 2; // 2 points for each correct answer, missing implementation 
+            foreach (var question in Questions)
+            {
+                question.IsCorrect = question.Answer == question.SelectedAnswer;
+                System.Diagnostics.Debug.WriteLine($"Question: {question.QuestionText}, Selected: {question.SelectedAnswer}, Correct: {question.IsCorrect}");
+            }
+
+            int correctAnswers = Questions.Count(q => q.IsCorrect == true);
+            int score = correctAnswers * 2; // 2 points for each correct answer
+            Points = score;  // Update the points property
             Result = correctAnswers == Questions.Count ? "Correct" : "Wrong";
 
             var userProgress = new UserProgress
             {
                 UserID = _userId,
                 QuizID = Questions.First().QuizID,
-                Score = correctAnswers,
+                Score = score,
                 CompletionTime = DateTime.Now.Second,
                 AttemptDate = DateTime.Now
             };
@@ -128,22 +151,14 @@ namespace LinguaVerse.ViewModel
             await _userRepository.SaveUserProgressAsync(userProgress);
 
             // Update the daily streak for today
-            string today = DateTime.Now.DayOfWeek.ToString().Substring(0, 3); 
-            System.Diagnostics.Debug.WriteLine($"Updating daily streak for today: {today}");
+            string today = DateTime.Now.DayOfWeek.ToString().Substring(0, 3);
             await _userRepository.UpdateDailyStreak(_userId, today, true);
 
-            // Fetch the updated daily streak from the database and log it
-            var updatedDailyStreaks = await _userRepository.GetDailyStreaks(_userId);
-            foreach (var streak in updatedDailyStreaks)
-            {
-                System.Diagnostics.Debug.WriteLine($"Day: {streak.Day}, IsCompleted: {streak.IsCompleted}");
-            }
+            var dailyStreaks = await _userRepository.GetDailyStreaks(_userId);
+            _dashboardViewModel.UpdateDailyStreaks(dailyStreaks); // Notify DashboardViewModel
 
-            _dashboardViewModel.UpdateDailyStreaks(updatedDailyStreaks); // Notify DashboardViewModel
+            ShowResults = true; // Show the results after checking answers
         }
-
-
-
 
         private async void Navigate()
         {

@@ -1,11 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:LinguaVerse.ViewModel"
+             xmlns:converters="clr-namespace:LinguaVerse.Converters"
              x:Class="LinguaVerse.Views.QuizPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.BindingContext>
         <viewModel:QuizViewModel />
     </ContentPage.BindingContext>
+
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="10">
@@ -18,7 +25,23 @@
                         <DataTemplate>
                             <StackLayout Padding="5">
                                 <Label Text="{Binding QuestionText}" FontSize="Medium" />
-                                <Picker ItemsSource="{Binding Choices}" SelectedItem="{Binding SelectedAnswer}" />
+                                <Frame Padding="0" HasShadow="True" CornerRadius="5">
+                                    <Frame.Style>
+                                        <Style TargetType="Frame">
+                                            <Setter Property="BorderColor" Value="Transparent" />
+                                            <Style.Triggers>
+                                                <DataTrigger TargetType="Frame" Binding="{Binding IsCorrect}" Value="True">
+                                                    <Setter Property="BorderColor" Value="{Binding IsCorrect, Converter={StaticResource BooleanToColorConverter}}" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Frame" Binding="{Binding IsCorrect}" Value="False">
+                                                    <Setter Property="BorderColor" Value="{Binding IsCorrect, Converter={StaticResource BooleanToColorConverter}}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Frame.Style>
+                                    <Picker ItemsSource="{Binding Choices}" SelectedItem="{Binding SelectedAnswer}" />
+                                </Frame>
+                                <Label Text="{Binding Explanation}" FontSize="Small" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewModel:QuizViewModel}}, Path=ShowResults}" />
                             </StackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -28,6 +51,9 @@
                         Command="{Binding CheckAnswersCommand}"
                         HorizontalOptions="Center" />
                 <Label Text="{Binding Result}"
+                       IsVisible="{Binding IsResultVisible}"
+                       HorizontalOptions="Center" />
+                <Label Text="{Binding Points, StringFormat='Score: {0}'}"
                        IsVisible="{Binding IsResultVisible}"
                        HorizontalOptions="Center" />
             </StackLayout>

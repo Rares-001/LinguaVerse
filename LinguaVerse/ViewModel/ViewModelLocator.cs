@@ -13,5 +13,6 @@ namespace LinguaVerse.ViewModel
         );
         public LoginViewModel LoginViewModel => App.Services.GetRequiredService<LoginViewModel>();
         public LanguageSelectionViewModel LanguageSelectionViewModel => App.Services.GetRequiredService<LanguageSelectionViewModel>();
+        public QuizHistoryViewModel QuizHistoryViewModel => App.Services.GetRequiredService<Func<int, QuizHistoryViewModel>>()(App.CurrentUserId);
     }
 }

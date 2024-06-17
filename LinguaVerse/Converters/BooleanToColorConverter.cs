@@ -8,11 +8,11 @@ namespace LinguaVerse.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool isCompleted)
+            if (value is bool isCorrect)
             {
-                return isCompleted ? Colors.Green : Colors.Gray;
+                return isCorrect ? Colors.Green : Colors.Red;
             }
-            return Colors.Gray;
+            return Colors.Transparent;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
