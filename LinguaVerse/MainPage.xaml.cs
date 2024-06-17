@@ -49,5 +49,10 @@ namespace LinguaVerse
                 CardLabel.Text = (BindingContext as ViewModels.FlashcardViewModel)?.CurrentFlashcard.Question;
             }
         }
+
+        private async void OnCloseButtonClicked(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
+        }
     }
 }

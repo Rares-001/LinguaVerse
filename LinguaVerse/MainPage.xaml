@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Text="LinguaVerse" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" FontSize="14" TextColor="White"/>
-            <Button Text="X" Grid.Column="1" WidthRequest="40" HeightRequest="40" CornerRadius="20" BackgroundColor="Transparent" BorderColor="Navy" BorderWidth="2"/>
+            <Button Text="X" Grid.Column="1" WidthRequest="40" HeightRequest="40" CornerRadius="20" BackgroundColor="Transparent" BorderColor="Navy" BorderWidth="2" Clicked="OnCloseButtonClicked"/>
             <Button Text="🔔" Grid.Column="2" WidthRequest="45" HeightRequest="40" CornerRadius="20" BackgroundColor="Transparent" BorderColor="Navy" BorderWidth="2"/>
         </Grid>
 
