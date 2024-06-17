@@ -30,7 +30,7 @@
             </StackLayout>
         </Frame>
 
-        <Image Source="flashcard_image.png" HeightRequest="100" HorizontalOptions="Center" VerticalOptions="Center"/>
+        <Image Source="dotnet_bot.png" HeightRequest="100" HorizontalOptions="Center" VerticalOptions="Center"/>
         <Button Text="Flip" Clicked="OnFlipButtonClicked" />
         <Button Text="Next" Command="{Binding NextCommand}" />
     </VerticalStackLayout>
