@@ -3,7 +3,7 @@ LinguaVerse is an innovative hybrid app designed to make learning Italian or Eng
 To ensure the functionality of the application, a valid database is essential. LinguaVerse utilizes PostgreSQL for its database management. Please follow the detailed instructions below to set up the required database:
 
 Install pgAdmin:
-- Download and install the specified version of pgAdmin from the following link: pgAdmin 4 v7.8 for Windows.
+- Download and install the specified version of pgAdmin from the following link: https://www.postgresql.org/ftp/pgadmin/pgadmin4/v7.8/windows/ .
 
 Create a New Database:
 - Open pgAdmin and create a new database. The process involves accessing the "Create Database" option as shown in the screenshot below:
