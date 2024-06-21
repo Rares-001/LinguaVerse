@@ -1,13 +1,13 @@
-﻿using LinguaVerse.ViewModel;
-using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui.Controls;
+using LinguaVerse.ViewModel;
 
 namespace LinguaVerse.Views
 {
-    public partial class TestPage1 : ContentPage
+    public partial class TestPage2English : ContentPage
     {
-        private TestViewModel _viewModel;
+        private TestViewModelEnglish _viewModel;
 
-        public TestPage1(TestViewModel viewModel)
+        public TestPage2English(TestViewModelEnglish viewModel)
         {
             InitializeComponent();
             _viewModel = viewModel;

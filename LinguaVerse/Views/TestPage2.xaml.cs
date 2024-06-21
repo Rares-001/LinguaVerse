@@ -1,18 +1,23 @@
 ﻿using LinguaVerse.ViewModel;
+using Microsoft.Maui.Controls;
 
 namespace LinguaVerse.Views
 {
     public partial class TestPage2 : ContentPage
     {
-        public TestPage2()
-        {
-            InitializeComponent();
-        }
+        private TestViewModel _viewModel;
 
         public TestPage2(TestViewModel viewModel)
         {
             InitializeComponent();
-            BindingContext = viewModel;
+            _viewModel = viewModel;
+            BindingContext = _viewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            _viewModel.LoadQuestionsCommand.Execute(null);
         }
     }
 }

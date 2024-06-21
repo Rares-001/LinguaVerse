@@ -14,6 +14,7 @@ namespace LinguaVerse.ViewModel
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<LanguageSelectionViewModel> _logger;
+        private string _selectedLanguage;
 
         public ICommand ItalianCommand { get; }
         public ICommand EnglishCommand { get; }
@@ -69,11 +70,13 @@ namespace LinguaVerse.ViewModel
 
         private async void OnItalianClicked()
         {
+            _selectedLanguage = "Italian";
             await ShowOptionsAsync();
         }
 
         private async void OnEnglishClicked()
         {
+            _selectedLanguage = "English";
             await ShowOptionsAsync();
         }
 
@@ -90,24 +93,66 @@ namespace LinguaVerse.ViewModel
 
         private async void OnQuizClicked()
         {
-            var quizPage = _serviceProvider.GetRequiredService<QuizPage>();
+            var quizPage = _selectedLanguage == "Italian"
+                ? (ContentPage)_serviceProvider.GetRequiredService(typeof(QuizPageItalian))
+                : (ContentPage)_serviceProvider.GetRequiredService(typeof(QuizPage));
             await Application.Current.MainPage.Navigation.PushAsync(quizPage);
         }
 
         private async void OnFlashcardsClicked()
         {
-            // Implementation missing
+            var flashcardsPage = _serviceProvider.GetRequiredService<FlashcardsPage>();
+            await Application.Current.MainPage.Navigation.PushAsync(flashcardsPage);
         }
 
         private async void NavigateToTestPage(int testId)
         {
-            _logger.LogInformation($"Navigating to Test Page {testId}.");
-            var testPage = _serviceProvider.GetRequiredService<TestPage1>();
+            _logger.LogInformation($"Navigating to {_selectedLanguage} Test Page {testId}.");
 
-            var testViewModelFactory = _serviceProvider.GetRequiredService<Func<UserRepository, DashboardViewModel, int, int, TestViewModel>>();
-            var dashboardViewModelFactory = _serviceProvider.GetRequiredService<Func<int, DashboardViewModel>>();
-            var testViewModel = testViewModelFactory(_serviceProvider.GetRequiredService<UserRepository>(), dashboardViewModelFactory(App.CurrentUserId), App.CurrentUserId, testId);
-            testPage.BindingContext = testViewModel;
+            ContentPage testPage;
+            if (_selectedLanguage == "Italian")
+            {
+                var testViewModelFactory = _serviceProvider.GetRequiredService<Func<UserRepository, DashboardViewModel, int, int, TestViewModel>>();
+                var dashboardViewModelFactory = _serviceProvider.GetRequiredService<Func<int, DashboardViewModel>>();
+                var testViewModel = testViewModelFactory(_serviceProvider.GetRequiredService<UserRepository>(), dashboardViewModelFactory(App.CurrentUserId), App.CurrentUserId, testId);
+
+                switch (testId)
+                {
+                    case 1:
+                        testPage = new TestPage1(testViewModel);
+                        break;
+                    case 2:
+                        testPage = new TestPage2(testViewModel);
+                        break;
+                    case 3:
+                        testPage = new TestPage3(testViewModel);
+                        break;
+                    case 4:
+                        testPage = new TestPage4(testViewModel);
+                        break;
+                    default:
+                        testPage = new TestPage1(testViewModel);
+                        break;
+                }
+            }
+            else
+            {
+                var testViewModelEnglishFactory = _serviceProvider.GetRequiredService<Func<UserRepository, int, int, TestViewModelEnglish>>();
+                var testViewModelEnglish = testViewModelEnglishFactory(_serviceProvider.GetRequiredService<UserRepository>(), App.CurrentUserId, testId);
+
+                switch (testId)
+                {
+                    case 1:
+                        testPage = new TestPage1English(testViewModelEnglish);
+                        break;
+                    case 2:
+                        testPage = new TestPage2English(testViewModelEnglish);
+                        break;
+                    default:
+                        testPage = new TestPage1English(testViewModelEnglish);
+                        break;
+                }
+            }
 
             await Application.Current.MainPage.Navigation.PushAsync(testPage);
         }

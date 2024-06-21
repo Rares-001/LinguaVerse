@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:LinguaVerse.ViewModel"
+             x:Class="LinguaVerse.Views.FlashcardsPage"
+             BackgroundColor="#D8956D">
+
+    <ContentPage.BindingContext>
+        <local:FlashcardViewModel />
+    </ContentPage.BindingContext>
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Text="LinguaVerse" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" FontSize="14" TextColor="White"/>
+            <Button Text="X" Grid.Column="1" WidthRequest="40" HeightRequest="40" CornerRadius="20" BackgroundColor="Transparent" BorderColor="Navy" BorderWidth="2" Clicked="OnCloseButtonClicked"/>
+            <Button Text="🔔" Grid.Column="2" WidthRequest="45" HeightRequest="40" CornerRadius="20" BackgroundColor="Transparent" BorderColor="Navy" BorderWidth="2"/>
+        </Grid>
+
+        <Label Text="FlashCards" FontSize="24" HorizontalOptions="Center" TextColor="White"/>
+
+        <Frame x:Name="CardFrame" BackgroundColor="White" CornerRadius="10" Padding="10">
+            <StackLayout>
+                <Label Text="English" FontSize="14" HorizontalOptions="Start" TextColor="Black"/>
+                <Label x:Name="CardLabel" Text="{Binding CurrentFlashcard.Question}" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" TextColor="Black"/>
+            </StackLayout>
+        </Frame>
+
+        <Image Source="{Binding CurrentFlashcard.ImagePath}" HeightRequest="180" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Text="Previous" Command="{Binding PreviousCommand}" Grid.Column="0" HorizontalOptions="Start" WidthRequest="100" />
+            <Button Text="Flip" Clicked="OnFlipButtonClicked" Grid.Column="1" HorizontalOptions="Center" WidthRequest="150" HeightRequest="50"/>
+            <Button Text="Next" Command="{Binding NextCommand}" Grid.Column="2" HorizontalOptions="End" WidthRequest="150" HeightRequest="50"/>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

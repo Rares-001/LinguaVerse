@@ -3,11 +3,11 @@ using Microsoft.Maui.Controls;
 
 namespace LinguaVerse.Views
 {
-    public partial class TestPage1 : ContentPage
+    public partial class TestPage4English : ContentPage
     {
         private TestViewModel _viewModel;
 
-        public TestPage1(TestViewModel viewModel)
+        public TestPage4English(TestViewModel viewModel)
         {
             InitializeComponent();
             _viewModel = viewModel;

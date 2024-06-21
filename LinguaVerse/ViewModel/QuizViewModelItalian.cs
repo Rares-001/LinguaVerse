@@ -11,17 +11,17 @@ using Microsoft.Maui.Controls;
 
 namespace LinguaVerse.ViewModel
 {
-    public class QuizViewModel : INotifyPropertyChanged
+    public class QuizViewModelItalian : INotifyPropertyChanged
     {
         private readonly UserRepository _userRepository;
         private readonly DashboardViewModel _dashboardViewModel;
         private readonly int _userId;
 
-        public QuizViewModel()
+        public QuizViewModelItalian()
         {
         }
 
-        public QuizViewModel(UserRepository userRepository, DashboardViewModel dashboardViewModel, int userId)
+        public QuizViewModelItalian(UserRepository userRepository, DashboardViewModel dashboardViewModel, int userId)
         {
             _userRepository = userRepository;
             _dashboardViewModel = dashboardViewModel;
@@ -104,7 +104,7 @@ namespace LinguaVerse.ViewModel
                 if (quizzes.Any())
                 {
                     var quiz = quizzes.First();
-                    var questions = await _userRepository.GetQuestionsAsync(quiz.QuizID); // Remove the language parameter
+                    var questions = await _userRepository.GetQuestionsAsync(quiz.QuizID); // Removed the language parameter
                     foreach (var question in questions)
                     {
                         question.IsCorrect = null; // Reset the state of each question

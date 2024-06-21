@@ -7,8 +7,9 @@ using System.Windows.Input;
 using LinguaVerse.DAL;
 using LinguaVerse.Model;
 using LinguaVerse.Views;
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls;
-using static LinguaVerse.DAL.UserRepository;
+using System.Diagnostics;
 
 namespace LinguaVerse.ViewModel
 {
@@ -16,15 +17,22 @@ namespace LinguaVerse.ViewModel
     {
         private readonly UserRepository _userRepository;
         private int _userId;
-        public ICommand NavigateToQuizHistoryCommand { get; }
+        private readonly ILogger<DashboardViewModel> _logger;
 
-        public DashboardViewModel(UserRepository userRepository, int userId)
+        public ICommand NavigateToQuizHistoryCommand { get; }
+        public ICommand NavigateToLanguageSelectionCommand { get; }
+        public ICommand NavigateToTestPage1Command { get; }
+
+        public DashboardViewModel(UserRepository userRepository, int userId, ILogger<DashboardViewModel> logger)
         {
             _userRepository = userRepository;
             _userId = userId;
+            _logger = logger;
+
             NavigateToLanguageSelectionCommand = new Command(NavigateToLanguageSelection);
             NavigateToQuizHistoryCommand = new Command(NavigateToQuizHistory);
-            NavigateToTestPage1Command = new Command(NavigateToTestPage1); 
+            NavigateToTestPage1Command = new Command(NavigateToTestPage1);
+
             LoadUserData();
         }
 
@@ -56,8 +64,12 @@ namespace LinguaVerse.ViewModel
             get => _progress;
             set
             {
-                _progress = value;
-                OnPropertyChanged();
+                if (_progress != value)
+                {
+                    _progress = value;
+                    _logger.LogInformation($"Progress value set: {_progress}");
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -105,16 +117,14 @@ namespace LinguaVerse.ViewModel
             }
         }
 
-        public ICommand NavigateToLanguageSelectionCommand { get; }
-
         public async void LoadUserData()
         {
-            System.Diagnostics.Debug.WriteLine($"Loading data for user ID: {_userId}");
+            _logger.LogInformation($"Loading data for user ID: {_userId}");
 
             var user = await _userRepository.GetUserById(_userId);
             if (user == null)
             {
-                System.Diagnostics.Debug.WriteLine($"User with ID {_userId} not found.");
+                _logger.LogWarning($"User with ID {_userId} not found.");
                 await Application.Current.MainPage.DisplayAlert("Error", "User not found", "OK");
                 return;
             }
@@ -125,7 +135,6 @@ namespace LinguaVerse.ViewModel
             var dailyStreaks = await _userRepository.GetDailyStreaks(_userId);
             if (!dailyStreaks.Any())
             {
-                // Initialize default daily streaks
                 dailyStreaks = new List<DailyStreak>
                 {
                     new DailyStreak { Day = "Mon", IsCompleted = false },
@@ -145,37 +154,40 @@ namespace LinguaVerse.ViewModel
                 IsCompleted = ds.IsCompleted
             }));
 
-            var courseProgress = (await _userRepository.GetCourseProgress(user.UserID))
-                .Select(cp => new CourseProgress
-                {
-                    CourseName = cp.CourseName,
-                    Progress = cp.Progress,
-                    Level = cp.Level
-                });
-            CourseProgress = new ObservableCollection<CourseProgress>(courseProgress);
+            var courseProgress = (await _userRepository.GetCourseProgress(user.UserID)).ToList();
+            _logger.LogInformation($"Course Progress Count: {courseProgress.Count}");
+            CourseProgress = new ObservableCollection<CourseProgress>(courseProgress.Select(cp => new CourseProgress
+            {
+                CourseName = cp.CourseName,
+                Progress = cp.Progress,
+                Level = cp.Level
+            }));
 
-            var featuredCourses = (await _userRepository.GetFeaturedCourses())
-                .Select(fc => new FeaturedCourse
-                {
-                    CourseName = fc.CourseName,
-                    Duration = fc.Duration,
-                    Questions = fc.Questions,
-                    Level = fc.Level,
-                    FlagIcon = fc.FlagIcon
-                });
-            FeaturedCourses = new ObservableCollection<FeaturedCourse>(featuredCourses);
+            var featuredCourses = (await _userRepository.GetFeaturedCourses()).ToList();
+            _logger.LogInformation($"Featured Courses Count: {featuredCourses.Count}");
+            FeaturedCourses = new ObservableCollection<FeaturedCourse>(featuredCourses.Select(fc => new FeaturedCourse
+            {
+                CourseName = fc.CourseName,
+                Duration = fc.Duration,
+                Questions = fc.Questions,
+                Level = fc.Level,
+                FlagIcon = fc.FlagIcon
+            }));
 
-            var userProgresses = (await _userRepository.GetUserProgressAsync(user.UserID))
-                .Select(up => new UserProgress
-                {
-                    UserProgressID = up.UserProgressID,
-                    UserID = up.UserID,
-                    QuizID = up.QuizID,
-                    Score = up.Score,
-                    CompletionTime = up.CompletionTime,
-                    AttemptDate = up.AttemptDate
-                });
-            UserProgresses = new ObservableCollection<UserProgress>(userProgresses);
+            var userProgresses = (await _userRepository.GetUserProgressAsync(user.UserID)).ToList();
+            _logger.LogInformation($"User Progresses Count: {userProgresses.Count}");
+            UserProgresses = new ObservableCollection<UserProgress>(userProgresses.Select(up => new UserProgress
+            {
+                UserProgressID = up.UserProgressID,
+                UserID = up.UserID,
+                QuizID = up.QuizID,
+                Score = up.Score,
+                CompletionTime = up.CompletionTime,
+                AttemptDate = up.AttemptDate
+            }));
+
+            Progress = await _userRepository.CalculateUserProgressAsync(_userId);
+            _logger.LogInformation($"Final Progress value set: {Progress}");
         }
 
         private int GetDayOrder(string day)
@@ -195,7 +207,6 @@ namespace LinguaVerse.ViewModel
 
         public void UpdateDailyStreaks(IEnumerable<DailyStreak> dailyStreaks)
         {
-            // Order the days correctly
             dailyStreaks = dailyStreaks.OrderBy(ds => GetDayOrder(ds.Day)).ToList();
             DailyStreaks = new ObservableCollection<DailyStreak>(dailyStreaks);
         }
@@ -205,13 +216,6 @@ namespace LinguaVerse.ViewModel
             await Application.Current.MainPage.Navigation.PushAsync(new Views.LanguageSelection());
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private async void NavigateToQuizHistory()
         {
             var quizHistoryViewModel = App.Services.GetRequiredService<Func<int, QuizHistoryViewModel>>()(App.CurrentUserId);
@@ -219,12 +223,18 @@ namespace LinguaVerse.ViewModel
             await Application.Current.MainPage.Navigation.PushAsync(quizHistoryPage);
         }
 
-        public ICommand NavigateToTestPage1Command { get; }
         private async void NavigateToTestPage1()
         {
-            var testPage = new TestPage1(); 
+            var testViewModel = new TestViewModel(_userRepository, this, _userId, 1, App.Services.GetRequiredService<ILogger<TestViewModel>>());
+            var testPage = new TestPage1(testViewModel);
             await Application.Current.MainPage.Navigation.PushAsync(testPage);
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

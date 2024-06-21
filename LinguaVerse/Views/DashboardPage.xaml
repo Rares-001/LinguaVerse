@@ -4,147 +4,117 @@
              xmlns:bindable="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
              xmlns:converters="clr-namespace:LinguaVerse.Converters"
              x:Class="LinguaVerse.Views.DashboardPage"
+             BackgroundColor="#1E1E2C"
              BindingContext="{Binding Source={StaticResource ViewModelLocator}, Path=DashboardViewModel}">
-
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+            <Style TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#252539" />
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="HasShadow" Value="True" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout>
+            <StackLayout Spacing="20" Padding="20">
                 <!-- Header -->
-                <Grid Padding="20">
+                <Grid Padding="0, 20, 0, 20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Label Text="LinguaVerse"
-                           FontSize="Large"
-                           TextColor="White"
+                           FontSize="32"
+                           FontAttributes="Bold"
                            HorizontalOptions="Center" />
                     <Image Source="bell_icon.png"
                            WidthRequest="30"
                            HeightRequest="30"
                            Grid.Column="1"
-                           HorizontalOptions="End" />
+                           HorizontalOptions="End"
+                           VerticalOptions="Center">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BellTapCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
                 </Grid>
 
                 <!-- Welcome Section -->
-                <StackLayout Padding="20">
+                <Frame Padding="20">
                     <Label Text="{Binding WelcomeMessage}"
-                           FontSize="Medium"
-                           TextColor="White" />
-                </StackLayout>
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center" />
+                </Frame>
 
                 <!-- Daily Streaks -->
-                <StackLayout Padding="20">
-                    <Label Text="Daily streaks:"
-                           FontSize="Medium"
-                           TextColor="White" />
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center"
-                                 bindable:BindableLayout.ItemsSource="{Binding DailyStreaks}">
-                        <bindable:BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Frame BackgroundColor="{Binding IsCompleted, Converter={StaticResource BooleanToColorConverter}}" 
-                                       CornerRadius="25" WidthRequest="80" HeightRequest="60">
-                                    <Label Text="{Binding Day}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
-                                </Frame>
-                            </DataTemplate>
-                        </bindable:BindableLayout.ItemTemplate>
-                    </StackLayout>
-                </StackLayout>
-
-                <!-- Progress Section -->
-                <StackLayout Padding="20">
-                    <Label Text="Your Progress:"
-                           FontSize="Medium"
-                           TextColor="White" />
-                    <Grid ColumnSpacing="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <StackLayout Grid.Column="0"
-                                     bindable:BindableLayout.ItemsSource="{Binding CourseProgress}">
+                <Frame Padding="20">
+                    <StackLayout>
+                        <Label Text="Daily Streaks:"
+                               FontSize="20"
+                               FontAttributes="Bold" />
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center"
+                                     bindable:BindableLayout.ItemsSource="{Binding DailyStreaks}"
+                                     Spacing="10">
                             <bindable:BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <Frame BackgroundColor="White" BorderColor="#2C2F5B" CornerRadius="10" Padding="10">
-                                        <StackLayout>
-                                            <Label Text="{Binding Level}"
-                                                   FontSize="Small"
-                                                   TextColor="Black" />
-                                            <Label Text="{Binding CourseName}"
-                                                   FontSize="Medium"
-                                                   FontAttributes="Bold"
-                                                   TextColor="Black" />
-                                            <ProgressBar Progress="{Binding Progress}"
-                                                         BackgroundColor="LightGray"
-                                                         ProgressColor="#2C2F5B" />
-                                        </StackLayout>
+                                    <Frame BackgroundColor="{Binding IsCompleted, Converter={StaticResource BooleanToColorConverter}}" 
+                                           CornerRadius="15" WidthRequest="60" HeightRequest="60">
+                                        <Label Text="{Binding Day}" 
+                                               HorizontalOptions="Center" 
+                                               VerticalOptions="Center" 
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="Black" />
                                     </Frame>
                                 </DataTemplate>
                             </bindable:BindableLayout.ItemTemplate>
                         </StackLayout>
-                    </Grid>
-                </StackLayout>
-
-                <!-- Featured Courses Section -->
-                <StackLayout Padding="20">
-                    <Label Text="Featured Courses:"
-                           FontSize="Medium"
-                           TextColor="White" />
-
-                    <StackLayout bindable:BindableLayout.ItemsSource="{Binding FeaturedCourses}">
-                        <bindable:BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Frame BackgroundColor="White" CornerRadius="10" Padding="10" Margin="0,10,0,0">
-                                    <Grid ColumnSpacing="10">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="{Binding FlagIcon, Converter={StaticResource ImagePathConverter}}"
-                                               WidthRequest="40"
-                                               HeightRequest="40"
-                                               HorizontalOptions="Start" />
-                                        <StackLayout Grid.Column="1">
-                                            <Label Text="{Binding CourseName}"
-                                                   FontSize="Medium"
-                                                   FontAttributes="Bold"
-                                                   TextColor="Black" />
-                                            <Label>
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <Span Text="{Binding Duration}" />
-                                                        <Span Text=" mins    " />
-                                                        <Span Text="{Binding Questions}" />
-                                                        <Span Text=" questions" />
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                        </StackLayout>
-                                        <Label Text="{Binding Level}"
-                                               FontSize="Small"
-                                               TextColor="Gray"
-                                               HorizontalOptions="End"
-                                               VerticalOptions="Center"
-                                               Grid.Column="2" />
-                                    </Grid>
-                                </Frame>
-                            </DataTemplate>
-                        </bindable:BindableLayout.ItemTemplate>
                     </StackLayout>
-                </StackLayout>
+                </Frame>
+
+                <!-- Progress Section -->
+                <Frame Padding="20">
+                    <StackLayout>
+                        <Label Text="Your Progress:"
+                               FontSize="20"
+                               FontAttributes="Bold" />
+                        <ProgressBar Progress="{Binding Progress}" 
+                                     BackgroundColor="LightGray"
+                                     ProgressColor="#6AB04A" 
+                                     HeightRequest="20"
+                                     VerticalOptions="Center"
+                                     Margin="0, 10, 0, 0" />
+                    </StackLayout>
+                </Frame>
+
 
                 <!-- Navigation Bar -->
-                <StackLayout Orientation="Horizontal" HeightRequest="60" Padding="10">
-                    <Button Text="Select Language" Command="{Binding NavigateToLanguageSelectionCommand}" />
-                    <Button Text="Quiz History" Command="{Binding NavigateToQuizHistoryCommand}" />
+                <StackLayout Orientation="Horizontal" HeightRequest="60" Padding="10" Spacing="20">
+                    <Button Text="Select Language" 
+                            Command="{Binding NavigateToLanguageSelectionCommand}" 
+                            BackgroundColor="#6AB04A"
+                            TextColor="White"
+                            CornerRadius="10" 
+                            WidthRequest="150"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center" />
+                    <Button Text="Quiz History" 
+                            Command="{Binding NavigateToQuizHistoryCommand}" 
+                            BackgroundColor="#6AB04A"
+                            TextColor="White"
+                            CornerRadius="10" 
+                            WidthRequest="150"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center" />
                 </StackLayout>
 
             </StackLayout>

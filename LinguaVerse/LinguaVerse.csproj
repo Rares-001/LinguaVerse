@@ -67,13 +67,52 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\MemoryCardPage.xaml.cs">
+	    <DependentUpon>MemoryCardPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\TestPage1English.xaml.cs">
+	    <DependentUpon>TestPage1English.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\TestPage2English.xaml.cs">
+	    <DependentUpon>TestPage2English.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\TestPage3English.xaml.cs">
+	    <DependentUpon>TestPage3English.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\TestPage4English.xaml.cs">
+	    <DependentUpon>TestPage4English.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\FlashcardsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MemoryCardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\QuizHistoryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\QuizPage-Italian.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\QuizPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TestPage4English.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TestPage3English.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TestPage2English.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TestPage1English.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\TestPage2.xaml">
@@ -97,6 +136,10 @@
 	  <None Update="Registration.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="DataSeeder\" />
 	</ItemGroup>
 
 </Project>

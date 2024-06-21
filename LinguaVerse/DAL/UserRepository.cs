@@ -6,8 +6,6 @@ using LinguaVerse.Model;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using System.Collections.ObjectModel;
-using Microsoft.Maui.ApplicationModel.DataTransfer;
-using static DataSeeder.Program;
 
 namespace LinguaVerse.DAL
 {
@@ -311,7 +309,7 @@ namespace LinguaVerse.DAL
             _logger.LogInformation("Fetching questions for quiz ID: {QuizID}", quizId);
             return await ExecuteWithConnectionAsync(async connection =>
             {
-                const string query = "SELECT * FROM \"Questions\" WHERE \"QuizID\" = @QuizID";
+                string query = "SELECT * FROM \"Questions\" WHERE \"QuizID\" = @QuizID";
                 var questions = await connection.QueryAsync<Question>(query, new { QuizID = quizId });
 
                 foreach (var question in questions)
@@ -362,6 +360,59 @@ namespace LinguaVerse.DAL
             {
                 const string query = "SELECT AVG(\"Score\") FROM \"UserTestProgress\" WHERE \"UserID\" = @UserId";
                 return await connection.ExecuteScalarAsync<float>(query, new { UserId = userId });
+            });
+        }
+
+        public async Task<int> GetCompletedTestsCount(int userId)
+        {
+            _logger.LogInformation("Fetching completed tests count for user ID: {UserID}", userId);
+            const string query = "SELECT COUNT(*) FROM \"UserTestProgress\" WHERE \"UserID\" = @UserId AND \"Score\" > 0"; 
+            int completedTestsCount = await ExecuteWithConnectionAsync(async connection =>
+            {
+                return await connection.ExecuteScalarAsync<int>(query, new { UserId = userId });
+            });
+
+            System.Diagnostics.Debug.WriteLine($"Completed Tests Count from DB: {completedTestsCount}");
+
+            return completedTestsCount;
+        }
+
+        //------------------------------------------------------------------------------------------------------------------
+        public async Task<float> CalculateUserProgressAsync(int userId)
+        {
+            _logger.LogInformation($"Fetching completed tests count for user ID: {userId}");
+            int completedTestsCount = await GetCompletedTestsCount(userId);
+            _logger.LogInformation($"Completed Tests Count from DB: {completedTestsCount}");
+
+            int totalTests = 4;
+            float progressPercentage = (float)completedTestsCount / totalTests;
+            _logger.LogInformation($"Raw Progress Percentage: {progressPercentage}");
+
+            // Cap the progress percentage at 100%
+            if (progressPercentage > 1)
+            {
+                progressPercentage = 1;
+            }
+
+            _logger.LogInformation($"Capped Progress Percentage: {progressPercentage}");
+            return progressPercentage;
+        }
+
+        //---------------------------------------------------------------------------------------------------------
+        public async Task<IEnumerable<Question>> GetQuestionsForQuizAsync(int quizId)
+        {
+            _logger.LogInformation("Fetching questions for quiz ID: {QuizID}", quizId);
+            return await ExecuteWithConnectionAsync(async connection =>
+            {
+                string query = "SELECT * FROM \"Questions\" WHERE \"QuizID\" = @QuizID";
+                var questions = await connection.QueryAsync<Question>(query, new { QuizID = quizId });
+
+                foreach (var question in questions)
+                {
+                    question.Choices = new ObservableCollection<string>(question.Choices);
+                }
+
+                return questions;
             });
         }
     }

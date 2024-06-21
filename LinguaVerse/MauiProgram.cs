@@ -35,30 +35,122 @@ namespace LinguaVerse
             // Register services
             builder.Services.AddSingleton<IDbConnection>(sp => new NpgsqlConnection(connectionString));
             builder.Services.AddTransient<UserRepository>();
+
+            // Register view models
             builder.Services.AddTransient<LoginViewModel>();
-            builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<LanguageSelectionViewModel>();
-            builder.Services.AddTransient<LanguageSelection>();
-            builder.Services.AddTransient<DashboardPage>();
-            builder.Services.AddTransient<QuizHistoryPage>();
-            builder.Services.AddTransient<Func<int, QuizHistoryViewModel>>(sp => userId => new QuizHistoryViewModel(sp.GetRequiredService<UserRepository>(), userId));
+            builder.Services.AddTransient<Func<int, DashboardViewModel>>(sp => userId => new DashboardViewModel(
+                sp.GetRequiredService<UserRepository>(),
+                userId,
+                sp.GetRequiredService<ILogger<DashboardViewModel>>() // Add logger to DashboardViewModel factory
+            ));
+            builder.Services.AddTransient<Func<int, QuizHistoryViewModel>>(sp => userId => new QuizHistoryViewModel(
+                sp.GetRequiredService<UserRepository>(),
+                userId
+            ));
             builder.Services.AddTransient<Func<UserRepository, DashboardViewModel, int, QuizViewModel>>(sp =>
-                (userRepository, dashboardViewModel, userId) => new QuizViewModel(userRepository, dashboardViewModel, userId));
-            builder.Services.AddTransient<QuizPage>(sp => new QuizPage(sp.GetRequiredService<Func<UserRepository, DashboardViewModel, int, QuizViewModel>>()(sp.GetRequiredService<UserRepository>(), sp.GetRequiredService<Func<int, DashboardViewModel>>()(App.CurrentUserId), App.CurrentUserId)));
+                (userRepository, dashboardViewModel, userId) => new QuizViewModel(
+                    userRepository,
+                    dashboardViewModel,
+                    userId
+                ));
+            builder.Services.AddTransient<Func<UserRepository, DashboardViewModel, int, int, TestViewModel>>(sp =>
+                (userRepository, dashboardViewModel, userId, testId) => new TestViewModel(
+                    userRepository,
+                    dashboardViewModel,
+                    userId,
+                    testId,
+                    sp.GetRequiredService<ILogger<TestViewModel>>() // Add logger to TestViewModel factory
+                ));
+            builder.Services.AddTransient<Func<UserRepository, int, int, TestViewModelEnglish>>(sp =>
+                (userRepository, userId, testId) => new TestViewModelEnglish(
+                    userRepository,
+                    userId,
+                    testId,
+                    sp.GetRequiredService<ILogger<TestViewModelEnglish>>() // Add logger to TestViewModelEnglish factory
+                ));
 
-            // Register DashboardViewModel with factory
-            builder.Services.AddTransient<Func<int, DashboardViewModel>>(sp => userId => new DashboardViewModel(sp.GetRequiredService<UserRepository>(), userId));
+            // Register pages
+            builder.Services.AddTransient<TestPage1English>();
+            builder.Services.AddTransient<TestPage2English>();
+            builder.Services.AddTransient<TestPage3English>();
+            builder.Services.AddTransient<TestPage4English>();
 
-            // Register test pages and view models
             builder.Services.AddTransient<TestPage1>();
             builder.Services.AddTransient<TestPage2>();
             builder.Services.AddTransient<TestPage3>();
             builder.Services.AddTransient<TestPage4>();
-            builder.Services.AddTransient<Func<UserRepository, DashboardViewModel, int, int, TestViewModel>>(sp =>
-                (userRepository, dashboardViewModel, userId, testId) => new TestViewModel(userRepository, dashboardViewModel, userId, testId, sp.GetRequiredService<ILogger<TestViewModel>>()));
 
-            // Register view models with logging
-            builder.Services.AddTransient<LanguageSelectionViewModel>(sp => new LanguageSelectionViewModel(sp, sp.GetRequiredService<ILogger<LanguageSelectionViewModel>>()));
+            builder.Services.AddTransient<QuizPage>();
+            builder.Services.AddTransient<QuizPageItalian>(); // Registering QuizPageItalian
+
+            builder.Services.AddTransient<LoginPage>();
+            builder.Services.AddTransient<LanguageSelection>();
+            builder.Services.AddTransient(sp =>
+            {
+                var userId = App.CurrentUserId;
+                var dashboardViewModelFactory = sp.GetRequiredService<Func<int, DashboardViewModel>>();
+                var dashboardViewModel = dashboardViewModelFactory(userId);
+                return new DashboardPage(dashboardViewModel);
+            });
+            builder.Services.AddTransient<QuizHistoryPage>();
+            builder.Services.AddTransient<QuizPage>(sp => new QuizPage(sp.GetRequiredService<Func<UserRepository, DashboardViewModel, int, QuizViewModel>>()(sp.GetRequiredService<UserRepository>(), sp.GetRequiredService<Func<int, DashboardViewModel>>()(App.CurrentUserId), App.CurrentUserId)));
+            builder.Services.AddTransient<TestPage1>(sp =>
+            {
+                var userId = App.CurrentUserId;
+                var dashboardViewModelFactory = sp.GetRequiredService<Func<int, DashboardViewModel>>();
+                var testViewModelFactory = sp.GetRequiredService<Func<UserRepository, DashboardViewModel, int, int, TestViewModel>>();
+                var testViewModel = testViewModelFactory(
+                    sp.GetRequiredService<UserRepository>(),
+                    dashboardViewModelFactory(userId),
+                    userId,
+                    1 
+                );
+                return new TestPage1(testViewModel);
+            });
+            builder.Services.AddTransient<TestPage2>(sp =>
+            {
+                var userId = App.CurrentUserId;
+                var dashboardViewModelFactory = sp.GetRequiredService<Func<int, DashboardViewModel>>();
+                var testViewModelFactory = sp.GetRequiredService<Func<UserRepository, DashboardViewModel, int, int, TestViewModel>>();
+                var testViewModel = testViewModelFactory(
+                    sp.GetRequiredService<UserRepository>(),
+                    dashboardViewModelFactory(userId),
+                    userId,
+                    2 
+                );
+                return new TestPage2(testViewModel);
+            });
+            builder.Services.AddTransient<TestPage3>(sp =>
+            {
+                var userId = App.CurrentUserId;
+                var dashboardViewModelFactory = sp.GetRequiredService<Func<int, DashboardViewModel>>();
+                var testViewModelFactory = sp.GetRequiredService<Func<UserRepository, DashboardViewModel, int, int, TestViewModel>>();
+                var testViewModel = testViewModelFactory(
+                    sp.GetRequiredService<UserRepository>(),
+                    dashboardViewModelFactory(userId),
+                    userId,
+                    3 
+                );
+                return new TestPage3(testViewModel);
+            });
+            builder.Services.AddTransient<TestPage4>(sp =>
+            {
+                var userId = App.CurrentUserId;
+                var dashboardViewModelFactory = sp.GetRequiredService<Func<int, DashboardViewModel>>();
+                var testViewModelFactory = sp.GetRequiredService<Func<UserRepository, DashboardViewModel, int, int, TestViewModel>>();
+                var testViewModel = testViewModelFactory(
+                    sp.GetRequiredService<UserRepository>(),
+                    dashboardViewModelFactory(userId),
+                    userId,
+                    4 // Use testId as needed
+                );
+                return new TestPage4(testViewModel);
+            });
+
+            builder.Services.AddTransient<FlashcardsPage>();
+            builder.Services.AddTransient<MemoryCardPage>();
+            builder.Services.AddTransient<FlashcardViewModel>(); 
 
             // Configure logging
             builder.Logging.AddConsole();

@@ -1,8 +1,9 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:LinguaVerse.ViewModel"
-             x:Class="LinguaVerse.Views.TestPage1"
+             x:Class="LinguaVerse.Views.TestPage3English"
              BackgroundColor="#1E1E2C">
+	
     <ContentPage.BindingContext>
         <viewModel:TestViewModel />
     </ContentPage.BindingContext>
@@ -47,7 +48,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="20" Spacing="20">
-                <Label Text="Test 1"
+                <Label Text="Italian Test 1"
                        FontSize="24"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"

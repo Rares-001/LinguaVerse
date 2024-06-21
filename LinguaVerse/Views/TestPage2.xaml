@@ -1,31 +1,79 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:LinguaVerse.ViewModel"
-             x:Class="LinguaVerse.Views.TestPage2">
+             x:Class="LinguaVerse.Views.TestPage2"
+             BackgroundColor="#1E1E2C">
     <ContentPage.BindingContext>
         <viewModel:TestViewModel />
     </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Label Style -->
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="Arial" />
+                <Setter Property="TextColor" Value="#FFFFFF" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Margin" Value="10,5" />
+            </Style>
+
+            <!-- Button Style -->
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#00BFA5" />
+                <Setter Property="TextColor" Value="#FFFFFF" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="CornerRadius" Value="25" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontFamily" Value="Arial" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="Shadow">
+                    <Shadow Brush="#000000" Opacity="0.5" Offset="5,5" Radius="10" />
+                </Setter>
+            </Style>
+
+            <!-- Picker Style -->
+            <Style TargetType="Picker">
+                <Setter Property="BackgroundColor" Value="#2C2C3A" />
+                <Setter Property="TextColor" Value="#FFFFFF" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="Margin" Value="10,5" />
+                <Setter Property="FontFamily" Value="Arial" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Padding="10">
-                <Label Text="Test 2"
-                       FontSize="Large"
-                       HorizontalOptions="Center" />
+            <StackLayout Padding="20" Spacing="20">
+                <Label Text="Italian Test 1"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#00BFA5" />
 
-                <CollectionView ItemsSource="{Binding Questions}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout Padding="5">
-                                <Label Text="{Binding QuestionText}" FontSize="Medium" />
-                                <Picker ItemsSource="{Binding Choices}" SelectedItem="{Binding SelectedAnswer}" />
-                            </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                <Frame BackgroundColor="#2C2C3A"
+                       CornerRadius="10"
+                       Padding="0"
+                       HasShadow="True"
+                       Margin="0,20,0,20">
+                    <CollectionView ItemsSource="{Binding Questions}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="#3E3E50" CornerRadius="10" Padding="15" Margin="10,5">
+                                    <StackLayout>
+                                        <Label Text="{Binding QuestionText}" FontSize="Medium" />
+                                        <Picker ItemsSource="{Binding Choices}" SelectedItem="{Binding SelectedAnswer}" />
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Frame>
 
                 <Button Text="Submit Test"
-                        Command="{Binding SubmitTestCommand}"
-                        HorizontalOptions="Center" />
+                        Command="{Binding SubmitTestCommand}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

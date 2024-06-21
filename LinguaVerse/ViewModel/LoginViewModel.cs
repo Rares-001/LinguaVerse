@@ -116,8 +116,6 @@ namespace LinguaVerse.ViewModel
 
                 // Navigate to DashboardPage
                 var dashboardPage = _serviceProvider.GetRequiredService<DashboardPage>();
-                var dashboardViewModelFactory = _serviceProvider.GetRequiredService<Func<int, DashboardViewModel>>();
-                dashboardPage.BindingContext = dashboardViewModelFactory(user.UserID);
                 await Application.Current.MainPage.Navigation.PushAsync(dashboardPage);
             }
             else
@@ -126,7 +124,6 @@ namespace LinguaVerse.ViewModel
                 await Application.Current.MainPage.DisplayAlert("Error", "Login Failed", "OK");
             }
         }
-
 
         private async void CheckDatabaseConnection()
         {

@@ -16,7 +16,7 @@ namespace LinguaVerse.ViewModel
         private readonly UserRepository _userRepository;
         private readonly DashboardViewModel _dashboardViewModel;
         private readonly int _userId;
-        private readonly int _quizId; 
+        private readonly int _quizId;
         private readonly ILogger<TestViewModel> _logger;
 
         public TestViewModel(UserRepository userRepository, DashboardViewModel dashboardViewModel, int userId, int quizId, ILogger<TestViewModel> logger)
@@ -66,7 +66,7 @@ namespace LinguaVerse.ViewModel
             try
             {
                 _logger.LogInformation("Loading questions for test.");
-                var questions = (await _userRepository.GetQuestionsForTestAsync(_quizId)).ToList(); 
+                var questions = (await _userRepository.GetQuestionsForTestAsync(_quizId)).ToList();
                 if (questions.Any())
                 {
                     Shuffle(questions);
@@ -111,7 +111,7 @@ namespace LinguaVerse.ViewModel
             var userTestProgress = new UserTestProgress
             {
                 UserID = _userId,
-                TestID = _quizId, 
+                TestID = _quizId,
                 Score = score,
                 CompletionTime = DateTime.Now.Second,
                 AttemptDate = DateTime.Now
@@ -126,6 +126,7 @@ namespace LinguaVerse.ViewModel
 
             await Application.Current.MainPage.DisplayAlert("Test Completed", $"You scored {score} points", "OK");
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
