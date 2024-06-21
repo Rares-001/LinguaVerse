@@ -16,7 +16,7 @@ Name the Database:
 <img width="859" alt="Screenshot 2024-06-21 at 22 47 57" src="https://github.com/Rares-001/LinguaVerse/assets/91318114/d14e2088-61cc-4910-93df-99f2c3c9a7d6">
 
 Restore the Provided Backup:
-- First locate the backup, currentlry is in DAL -> LinguaVerseDB_Backup. This is the link for it: LinguaVerse/DAL/LinguaVerseDB_Backup.sql
+- First locate the backup, currentlry is in DAL -> LinguaVerseDB_Backup. This is the link for it: [LinguaVerse/DAL/LinguaVerseDB_Backup.sql](https://github.com/Rares-001/LinguaVerse/blob/master/LinguaVerse/DAL/LinguaVerseDB_Backup.sql)
 - Once the database is created, you need to restore the provided backup file to import the necessary data. This step is critical for pre-loading the database with the required schema and initial data. The following screenshot illustrates this process:
 
 <img width="725" alt="Screenshot 2024-06-21 at 22 48 25" src="https://github.com/Rares-001/LinguaVerse/assets/91318114/d0335624-fdaf-4c8f-8b94-18797fea75fa">
