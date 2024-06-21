@@ -1,80 +1,91 @@
-﻿<!-- Views/LoginPage.xaml -->
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="LinguaVerse.Views.LoginPage">
+             x:Class="LinguaVerse.Views.LoginPage"
+             BackgroundColor="#1E1E2C">
 
-    <!-- <StackLayout Padding="20">
-    
-    <StackLayout Padding="20">
-        <Entry Placeholder="Username" Text="{Binding Username}" />
-        <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="True" />
-        <Button Text="Register" Command="{Binding RegisterCommand}" />
-        <Label Text="{Binding RegistrationStatus}" TextColor="Green" />
-        <Button Text="Login" Command="{Binding LoginCommand}" />
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Entry Style -->
+            <Style TargetType="Entry">
+                <Setter Property="BackgroundColor" Value="#252539" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="PlaceholderColor" Value="Gray" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="Margin" Value="0,10,0,0" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            </Style>
 
-        
-        <Label Text="{Binding LoginStatus}" TextColor="Green" />
-        <Label Text="{Binding ConnectionStatus}" TextColor="Blue" />
-    </StackLayout> -->
+            <!-- Button Style -->
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#6AB04A" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="CornerRadius" Value="25" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="Margin" Value="0,10,0,0" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="Shadow">
+                    <Shadow Brush="Black" Opacity="0.5" Offset="5,5" Radius="10" />
+                </Setter>
+            </Style>
 
-    <VerticalStackLayout Padding="30" VerticalOptions="CenterAndExpand">
-        <Label Text="LinguaVerse"
-               FontSize="48"
-               HorizontalOptions="Center"
-               TextColor="Orange" />
+            <!-- Label Style -->
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="Margin" Value="0,10,0,0" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-        <Label Text="Login"
-               FontSize="32"
-               HorizontalOptions="Center"
-               Margin="0,10,0,20" />
+    <ContentPage.Content>
+        <Grid VerticalOptions="CenterAndExpand" Padding="30">
+            <StackLayout Spacing="20">
+                <!-- Logo or Title -->
+                <Label Text="LinguaVerse"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="White" />
 
-        <Frame BorderColor="Purple" CornerRadius="5" Padding="0" Margin="0,20,0,0" WidthRequest="250" HorizontalOptions="Center">
-            <Entry x:Name="usernameEntry"
-                   Placeholder="Username"
-                   Text="{Binding Username}"
-                   Keyboard="Text"
-                   BackgroundColor="White"
-                   TextColor="Black"
-                   HeightRequest="40" />
-        </Frame>
+                <!-- Username Entry -->
+                <Frame BackgroundColor="Transparent"
+                       BorderColor="White"
+                       CornerRadius="25"
+                       Padding="10,0"
+                       HasShadow="True">
+                    <Entry Placeholder="Username" Text="{Binding Username}" />
+                </Frame>
 
-        <Frame BorderColor="Purple" CornerRadius="5" Padding="0" Margin="0,10,0,0" WidthRequest="250" HorizontalOptions="Center">
-            <Entry x:Name="passwordEntry"
-                   Placeholder="Password"
-                   Text="{Binding Password}"
-                   IsPassword="True"
-                   BackgroundColor="White"
-                   TextColor="Black"
-                   HeightRequest="40" />
-        </Frame>
+                <!-- Password Entry -->
+                <Frame BackgroundColor="Transparent"
+                       BorderColor="White"
+                       CornerRadius="25"
+                       Padding="10,0"
+                       HasShadow="True">
+                    <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="True" />
+                </Frame>
 
-        <Button Text="Login"
-                BackgroundColor="Purple"
-                TextColor="White"
-                Command="{Binding LoginCommand}"
-                Margin="0,20,0,0"
-                WidthRequest="250"
-                HorizontalOptions="Center"/>
+                <!-- Register Button -->
+                <Button Text="Register" Command="{Binding RegisterCommand}" />
 
-        <Button Text="Register"
-            BackgroundColor="Purple"
-            TextColor="White"
-            Command="{Binding LoginCommand}"
-            Margin="0,20,0,0"
-            WidthRequest="250"
-            HorizontalOptions="Center"/>
+                <!-- Registration Status Label -->
+                <Label Text="{Binding RegistrationStatus}" TextColor="Green" />
 
+                <!-- Login Button -->
+                <Button Text="Login" Command="{Binding LoginCommand}" />
 
-        <Label x:Name="messageLabel"
-               Text=""
-               TextColor="Red"
-               HorizontalOptions="Center"
-               Margin="10,20,10,0" />
-    </VerticalStackLayout>
+                <!-- Login Status Label -->
+                <Label Text="{Binding LoginStatus}" TextColor="Green" />
+
+                <!-- Connection Status Label -->
+                <Label Text="{Binding ConnectionStatus}" TextColor="Blue" />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>
-
-        <Label Text="{Binding LoginStatus}" TextColor="Green" />
-        <Label Text="{Binding ConnectionStatus}" TextColor="Blue" />
-    </StackLayout>
-</ContentPage>
-

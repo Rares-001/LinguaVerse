@@ -1,46 +1,69 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModel="clr-namespace:LinguaVerse.ViewModel"
-
              x:Class="LinguaVerse.Views.LanguageSelection"
-             BackgroundColor="White">
-             x:Class="LinguaVerse.Views.LanguageSelection">
+             BackgroundColor="#1E1E2C">
 
-    <ContentPage.BindingContext>
-        <viewModel:LanguageSelectionViewModel />
-    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Button Style -->
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#6AB04A" />
+                <Setter Property="TextColor" Value="#FFFFFF" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="CornerRadius" Value="25" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="Shadow">
+                    <Shadow Brush="Black" Opacity="0.5" Offset="5,5" Radius="10" />
+                </Setter>
+            </Style>
+
+            <!-- Label Style -->
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="24" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Margin" Value="0,10,0,0" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Padding="20">
-            <Label Text="LinguaVerse" 
-                   HorizontalOptions="Center" 
-                   VerticalOptions="Center" 
-                   FontSize="Large"/>
-            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" HorizontalOptions="Center">
-                <Button Grid.Row="0" Grid.Column="0" Text="Italian" Command="{Binding ItalianCommand}" Margin="10"
-                        BackgroundColor="Purple" TextColor="White"/>
-                <Button Grid.Row="0" Grid.Column="1" Text="English" Command="{Binding EnglishCommand}" Margin="10"
-                        BackgroundColor="Purple" TextColor="White"/>
-            </Grid>
+        <Grid VerticalOptions="CenterAndExpand" Padding="30">
+            <StackLayout Spacing="20">
+                <!-- Title -->
+                <Label Text="LinguaVerse"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="White" />
 
-            <StackLayout IsVisible="{Binding IsOptionsVisible}" Opacity="100" x:Name="OptionsSection" Padding="20">
-                <Button Text="Test" Command="{Binding TestCommand}" Margin="10"
-                        BackgroundColor="White" BorderColor="Purple" BorderWidth="1" TextColor="Purple"/>
-                <Button Text="Quiz" Command="{Binding QuizCommand}" Margin="10"
-                        BackgroundColor="White" BorderColor="Purple" BorderWidth="1" TextColor="Purple"/>
-                <Button Text="Flashcards" Command="{Binding FlashcardsCommand}" Margin="10"
-                        BackgroundColor="White" BorderColor="Purple" BorderWidth="1" TextColor="Purple"/>
+                <!-- Language Selection Buttons -->
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" HorizontalOptions="Center" Margin="20,0">
+                    <Button Grid.Row="0" Grid.Column="0" Text="Italian" Command="{Binding ItalianCommand}" />
+                    <Button Grid.Row="0" Grid.Column="1" Text="English" Command="{Binding EnglishCommand}" />
+                </Grid>
 
-                <Button Grid.Row="0" Grid.Column="0" Text="Italian" Command="{Binding ItalianCommand}" Margin="10" />
-                <Button Grid.Row="0" Grid.Column="1" Text="English" Command="{Binding EnglishCommand}" Margin="10" />
-            </Grid>
-            
-            <StackLayout IsVisible="{Binding IsOptionsVisible}" Opacity="100" x:Name="OptionsSection" Padding="20">
-                <Button Text="Test" Command="{Binding TestCommand}" Margin="10" />
-                <Button Text="Quiz" Command="{Binding QuizCommand}" Margin="10" />
-                <Button Text="Flashcards" Command="{Binding FlashcardsCommand}" Margin="10" />
+                <!-- Options Section -->
+                <StackLayout IsVisible="{Binding IsOptionsVisible}" x:Name="OptionsSection" Padding="20" Spacing="20">
+                    <Button Text="Test" Command="{Binding TestCommand}" />
+                    <Button Text="Quiz" Command="{Binding QuizCommand}" />
+                    <Button Text="MemoryCard" Command="{Binding MemoryCardCommand}" />
+                    <Button Text="Flashcard" Command="{Binding FlashcardsCommand}" />
 
+                    <!-- Test Options -->
+                    <StackLayout IsVisible="{Binding IsTestOptionsVisible}" Spacing="10">
+                        <Button Text="Start Test 1" Command="{Binding NavigateToTestPage1Command}" />
+                        <Button Text="Start Test 2" Command="{Binding NavigateToTestPage2Command}" />
+                        <Button Text="Start Test 3" Command="{Binding NavigateToTestPage3Command}" />
+                        <Button Text="Start Test 4" Command="{Binding NavigateToTestPage4Command}" />
+                    </StackLayout>
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

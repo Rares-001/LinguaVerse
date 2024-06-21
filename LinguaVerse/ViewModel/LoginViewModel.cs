@@ -106,16 +106,16 @@ namespace LinguaVerse.ViewModel
                 var user = await _userRepository.GetUserByUsername(Username);
                 if (user == null)
                 {
+                    System.Diagnostics.Debug.WriteLine($"User not found after login: {Username}");
                     await Application.Current.MainPage.DisplayAlert("Error", "User not found after login", "OK");
                     return;
                 }
 
                 System.Diagnostics.Debug.WriteLine($"Logged in user ID: {user.UserID}");
+                App.CurrentUserId = user.UserID; // Set the current user ID
 
                 // Navigate to DashboardPage
                 var dashboardPage = _serviceProvider.GetRequiredService<DashboardPage>();
-                var dashboardViewModel = dashboardPage.BindingContext as DashboardViewModel;
-                dashboardViewModel?.Initialize(user.UserID);
                 await Application.Current.MainPage.Navigation.PushAsync(dashboardPage);
             }
             else

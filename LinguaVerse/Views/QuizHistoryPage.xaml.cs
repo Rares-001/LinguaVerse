@@ -3,11 +3,12 @@ using LinguaVerse.ViewModel;
 
 namespace LinguaVerse.Views
 {
-    public partial class SecondPage : ContentPage
+    public partial class QuizHistoryPage : ContentPage
     {
-        public SecondPage()
+        public QuizHistoryPage(QuizHistoryViewModel viewModel)
         {
             InitializeComponent();
+            BindingContext = viewModel;
         }
     }
 }

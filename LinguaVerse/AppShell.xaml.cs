@@ -1,16 +1,12 @@
-﻿using Microsoft.Maui;
-using Microsoft.Maui.Controls.Hosting;
-using Microsoft.Maui.Hosting;
+﻿using Microsoft.Maui.Controls;
 
 namespace LinguaVerse
 {
-    public partial class App : Application
+    public partial class AppShell : Shell
     {
-        public App()
+        public AppShell()
         {
             InitializeComponent();
-
-            MainPage = new AppShell();
         }
     }
 }

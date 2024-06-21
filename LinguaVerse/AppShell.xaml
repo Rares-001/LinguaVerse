@@ -8,7 +8,22 @@
     Title="LinguaVerse">
 
     <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Route="LoginPage" />
+
+    <ShellContent
+        Title="Dashboard"
+        ContentTemplate="{DataTemplate views:DashboardPage}"
+        Route="DashboardPage" />
+
+    <ShellContent
         Title="Language Selection"
         ContentTemplate="{DataTemplate views:LanguageSelection}"
         Route="LanguageSelection" />
+
+    <ShellContent
+        Title="Quiz"
+        ContentTemplate="{DataTemplate views:QuizPage}"
+        Route="QuizPage" />
 </Shell>

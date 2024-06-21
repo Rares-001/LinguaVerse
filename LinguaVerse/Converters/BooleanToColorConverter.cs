@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.Graphics;
-using System;
+﻿using System;
 using System.Globalization;
 using Microsoft.Maui.Controls;
 
@@ -9,11 +8,11 @@ namespace LinguaVerse.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool boolValue)
+            if (value is bool isCorrect)
             {
-                return boolValue ? Colors.Green : Colors.White;
+                return isCorrect ? Colors.Green : Colors.Red;
             }
-            return Colors.White;
+            return Colors.Transparent;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

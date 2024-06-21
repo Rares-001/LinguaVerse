@@ -1,0 +1,55 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:LinguaVerse.ViewModel"
+             x:Class="LinguaVerse.Views.QuizHistoryPage"
+             BackgroundColor="#1A237E">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Label Style -->
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="Arial" />
+                <Setter Property="TextColor" Value="#FFFFFF" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Margin" Value="10,5" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Label Text="Quiz History"
+                       FontSize="36"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#FF9800"
+                       Margin="0,20,0,20" />
+
+                <CollectionView ItemsSource="{Binding QuizHistory}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="15" VerticalItemSpacing="15" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="#283593"
+                                   CornerRadius="15"
+                                   Padding="15"
+                                   Margin="10"
+                                   HasShadow="True">
+                                <StackLayout>
+                                    <Label Text="{Binding QuizID, StringFormat='Quiz ID: {0}'}" FontSize="22" />
+                                    <Label Text="{Binding Score, StringFormat='Score: {0}'}" FontSize="22" />
+                                    <Label Text="{Binding CompletionTime, StringFormat='Completion Time: {0} seconds'}" FontSize="22" />
+                                    <Label Text="{Binding AttemptDate, StringFormat='Attempt Date: {0:MM/dd/yyyy}'}" FontSize="22" />
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
