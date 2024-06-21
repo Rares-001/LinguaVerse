@@ -18,6 +18,7 @@ namespace LinguaVerse.ViewModel // Changed namespace from ViewModels to ViewMode
         public ICommand NextCommand { get; }
         public ICommand FlipCommand { get; }
 
+        // Constructor to initialize the FlashcardViewModel with some sample data and commands
         public FlashcardViewModel()
         {
             Flashcards = new ObservableCollection<Flashcard>
@@ -53,11 +54,13 @@ namespace LinguaVerse.ViewModel // Changed namespace from ViewModels to ViewMode
             _currentIndex = 0;
         }
 
+        // Method to show the answer, not used in this example
         private void ShowAnswer()
         {
             // Not used in this example, but kept for completeness
         }
 
+        // Navigates to the previous flashcard
         private void PreviousFlashcard()
         {
             if (_currentIndex > 0)
@@ -67,6 +70,7 @@ namespace LinguaVerse.ViewModel // Changed namespace from ViewModels to ViewMode
             }
         }
 
+        // Navigates to the next flashcard
         private void NextFlashcard()
         {
             if (_currentIndex < Flashcards.Count - 1)
@@ -76,6 +80,7 @@ namespace LinguaVerse.ViewModel // Changed namespace from ViewModels to ViewMode
             }
         }
 
+        // Flips the current flashcard (placeholder for actual flip logic)
         private void Flip()
         {
         }

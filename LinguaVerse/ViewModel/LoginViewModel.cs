@@ -14,6 +14,7 @@ namespace LinguaVerse.ViewModel
         private readonly UserRepository _userRepository;
         private readonly IServiceProvider _serviceProvider;
 
+        // Constructor to initialize LoginViewModel with necessary dependencies
         public LoginViewModel(UserRepository userRepository, IServiceProvider serviceProvider)
         {
             _userRepository = userRepository;
@@ -79,6 +80,7 @@ namespace LinguaVerse.ViewModel
         public ICommand RegisterCommand => new Command(async () => await RegisterUser());
         public ICommand LoginCommand => new Command(async () => await LoginUser());
 
+        // Registers a new user and updates the registration status
         private async Task RegisterUser()
         {
             var isSuccess = await _userRepository.RegisterUser(Username, Password);
@@ -94,6 +96,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        // Logs in a user and updates the login status
         private async Task LoginUser()
         {
             var isSuccess = await _userRepository.LoginUser(Username, Password);
@@ -125,6 +128,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        // Checks the database connection status and updates the connection status
         private async void CheckDatabaseConnection()
         {
             var isConnected = await _userRepository.TestDatabaseConnection();

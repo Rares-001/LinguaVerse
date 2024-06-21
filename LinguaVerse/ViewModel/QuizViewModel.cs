@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -17,10 +16,10 @@ namespace LinguaVerse.ViewModel
         private readonly DashboardViewModel _dashboardViewModel;
         private readonly int _userId;
 
-        public QuizViewModel()
-        {
-        }
+        // Default constructor for XAML design-time support
+        public QuizViewModel() { }
 
+        // Constructor initializes the repository, dashboard view model, and user ID
         public QuizViewModel(UserRepository userRepository, DashboardViewModel dashboardViewModel, int userId)
         {
             _userRepository = userRepository;
@@ -91,8 +90,8 @@ namespace LinguaVerse.ViewModel
 
         public ICommand LoadQuestionsCommand { get; }
         public ICommand CheckAnswersCommand { get; }
-        public ICommand NavigateCommand { get; }
 
+        // Loads the questions for the quiz
         private async Task LoadQuestions()
         {
             try
@@ -104,7 +103,7 @@ namespace LinguaVerse.ViewModel
                 if (quizzes.Any())
                 {
                     var quiz = quizzes.First();
-                    var questions = await _userRepository.GetQuestionsAsync(quiz.QuizID); // Remove the language parameter
+                    var questions = await _userRepository.GetQuestionsAsync(quiz.QuizID); // Removed the language parameter
                     foreach (var question in questions)
                     {
                         question.IsCorrect = null; // Reset the state of each question
@@ -123,6 +122,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        // Checks the answers provided by the user
         private async void CheckAnswers()
         {
             foreach (var question in Questions)

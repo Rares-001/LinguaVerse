@@ -14,6 +14,7 @@ namespace LinguaVerse.ViewModel
         private readonly UserRepository _userRepository;
         private readonly int _userId;
 
+        // Constructor initializes the repository and user ID, and sets up the LoadQuizHistoryCommand
         public QuizHistoryViewModel(UserRepository userRepository, int userId)
         {
             _userRepository = userRepository;
@@ -35,6 +36,7 @@ namespace LinguaVerse.ViewModel
 
         public ICommand LoadQuizHistoryCommand { get; }
 
+        // Loads the quiz history for the user
         private async Task LoadQuizHistory()
         {
             var history = await _userRepository.GetUserProgressAsync(_userId);

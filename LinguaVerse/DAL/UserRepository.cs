@@ -14,17 +14,20 @@ namespace LinguaVerse.DAL
         private readonly string _connectionString;
         private readonly ILogger<UserRepository> _logger;
 
+        // Constructor to initialize the repository with connection string and logger
         public UserRepository(string connectionString, ILogger<UserRepository> logger)
         {
             _connectionString = connectionString;
             _logger = logger;
         }
 
+        // Method to create a new database connection
         private IDbConnection CreateConnection()
         {
             return new NpgsqlConnection(_connectionString);
         }
 
+        // Generic method to execute a database query and return a result
         private async Task<T> ExecuteWithConnectionAsync<T>(Func<IDbConnection, Task<T>> getData)
         {
             try
@@ -44,6 +47,7 @@ namespace LinguaVerse.DAL
             }
         }
 
+        // Generic method to execute a database command without returning a result
         private async Task ExecuteWithConnectionAsync(Func<IDbConnection, Task> execute)
         {
             try
@@ -62,6 +66,7 @@ namespace LinguaVerse.DAL
             }
         }
 
+        // Method to register a new user
         public async Task<bool> RegisterUser(string username, string password)
         {
             _logger.LogInformation("Registering user with username: {Username}", username);
@@ -83,6 +88,7 @@ namespace LinguaVerse.DAL
                         transaction
                     );
 
+                    // Initialize course progress for the new user
                     await connection.ExecuteAsync(
                         "INSERT INTO \"CourseProgress\" (userID, courseName, progress, level) VALUES (@UserID, 'English', 0.0, 'Beginner'), (@UserID, 'Italian', 0.0, 'Beginner')",
                         new { UserID = userId },
@@ -102,6 +108,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to log in a user
         public async Task<bool> LoginUser(string username, string password)
         {
             _logger.LogInformation("Logging in user with username: {Username}", username);
@@ -123,6 +130,7 @@ namespace LinguaVerse.DAL
             return true;
         }
 
+        // Method to get user ID by username
         public async Task<int> GetUserIdByUsername(string username)
         {
             _logger.LogInformation("Fetching user ID for username: {Username}", username);
@@ -135,6 +143,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to get user details by username
         public async Task<User> GetUserByUsername(string username)
         {
             _logger.LogInformation("Fetching user details for username: {Username}", username);
@@ -158,6 +167,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to get user details by user ID
         public async Task<User> GetUserById(int userId)
         {
             _logger.LogInformation("Fetching user details for user ID: {UserID}", userId);
@@ -173,6 +183,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to get daily streaks for a user
         public async Task<IEnumerable<DailyStreak>> GetDailyStreaks(int userId)
         {
             using var connection = CreateConnection();
@@ -180,6 +191,7 @@ namespace LinguaVerse.DAL
             return await connection.QueryAsync<DailyStreak>(query, new { UserId = userId });
         }
 
+        // Method to update daily streak for a user
         public async Task UpdateDailyStreak(int userId, string day, bool isCompleted)
         {
             _logger.LogInformation("Updating daily streak for user ID: {UserID}, day: {Day}, isCompleted: {IsCompleted}", userId, day, isCompleted);
@@ -199,6 +211,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to get course progress for a user
         public async Task<IEnumerable<CourseProgress>> GetCourseProgress(int userId)
         {
             _logger.LogInformation("Fetching course progress for user ID: {UserID}", userId);
@@ -211,6 +224,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to get featured courses
         public async Task<IEnumerable<FeaturedCourse>> GetFeaturedCourses()
         {
             _logger.LogInformation("Fetching featured courses.");
@@ -222,6 +236,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to get user progress
         public async Task<IEnumerable<UserProgress>> GetUserProgressAsync(int userId)
         {
             _logger.LogInformation("Fetching user progress for user ID: {UserID}", userId);
@@ -232,6 +247,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to save user progress
         public async Task SaveUserProgressAsync(UserProgress userProgress)
         {
             _logger.LogInformation("Saving user progress for user ID: {UserID}, Quiz ID: {QuizID}, Score: {Score}", userProgress.UserID, userProgress.QuizID, userProgress.Score);
@@ -242,6 +258,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to reset password for a user
         public async Task<bool> ResetPassword(string username, string newPassword)
         {
             _logger.LogInformation("Resetting password for username: {Username}", username);
@@ -256,6 +273,7 @@ namespace LinguaVerse.DAL
             return result > 0;
         }
 
+        // Method to update user profile
         public async Task<bool> UpdateProfile(int userId, string username, string password, string languagePreference, float? progress)
         {
             _logger.LogInformation("Updating profile for user ID: {UserID}, Username: {Username}", userId, username);
@@ -277,6 +295,7 @@ namespace LinguaVerse.DAL
             return result > 0;
         }
 
+        // Method to test database connection
         public async Task<bool> TestDatabaseConnection()
         {
             _logger.LogInformation("Testing database connection.");
@@ -294,6 +313,7 @@ namespace LinguaVerse.DAL
             }
         }
 
+        // Method to fetch all quizzes
         public async Task<IEnumerable<Quiz>> GetQuizzesAsync()
         {
             _logger.LogInformation("Fetching quizzes.");
@@ -304,6 +324,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to fetch questions for a specific quiz
         public async Task<IEnumerable<Question>> GetQuestionsAsync(int quizId)
         {
             _logger.LogInformation("Fetching questions for quiz ID: {QuizID}", quizId);
@@ -321,7 +342,7 @@ namespace LinguaVerse.DAL
             });
         }
 
-        // -------------------------------------------------------------------------------------------------------
+        // Method to fetch questions for a specific test
         public async Task<IEnumerable<Question>> GetQuestionsForTestAsync(int quizId)
         {
             _logger.LogInformation("Fetching questions for quiz ID: {QuizID}", quizId);
@@ -343,6 +364,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to save user test progress
         public async Task SaveUserTestProgressAsync(UserTestProgress userTestProgress)
         {
             _logger.LogInformation("Saving user test progress for user ID: {UserID}, Test ID: {TestID}, Score: {Score}", userTestProgress.UserID, userTestProgress.TestID, userTestProgress.Score);
@@ -353,6 +375,7 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to fetch user test progress
         public async Task<float> GetUserTestProgressAsync(int userId)
         {
             _logger.LogInformation("Fetching user test progress for user ID: {UserID}", userId);
@@ -363,10 +386,11 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // Method to fetch completed tests count
         public async Task<int> GetCompletedTestsCount(int userId)
         {
             _logger.LogInformation("Fetching completed tests count for user ID: {UserID}", userId);
-            const string query = "SELECT COUNT(*) FROM \"UserTestProgress\" WHERE \"UserID\" = @UserId AND \"Score\" > 0"; 
+            const string query = "SELECT COUNT(*) FROM \"UserTestProgress\" WHERE \"UserID\" = @UserId AND \"Score\" > 0";
             int completedTestsCount = await ExecuteWithConnectionAsync(async connection =>
             {
                 return await connection.ExecuteScalarAsync<int>(query, new { UserId = userId });
@@ -377,14 +401,14 @@ namespace LinguaVerse.DAL
             return completedTestsCount;
         }
 
-        //------------------------------------------------------------------------------------------------------------------
+        // Method to calculate user progress based on completed tests
         public async Task<float> CalculateUserProgressAsync(int userId)
         {
             _logger.LogInformation($"Fetching completed tests count for user ID: {userId}");
             int completedTestsCount = await GetCompletedTestsCount(userId);
             _logger.LogInformation($"Completed Tests Count from DB: {completedTestsCount}");
 
-            int totalTests = 4;
+            int totalTests = 4; // Assuming there are 4 tests in total
             float progressPercentage = (float)completedTestsCount / totalTests;
             _logger.LogInformation($"Raw Progress Percentage: {progressPercentage}");
 
@@ -398,7 +422,7 @@ namespace LinguaVerse.DAL
             return progressPercentage;
         }
 
-        //---------------------------------------------------------------------------------------------------------
+        // Method to fetch questions for a specific quiz
         public async Task<IEnumerable<Question>> GetQuestionsForQuizAsync(int quizId)
         {
             _logger.LogInformation("Fetching questions for quiz ID: {QuizID}", quizId);
@@ -417,6 +441,7 @@ namespace LinguaVerse.DAL
         }
     }
 
+    // User class representing a user entity
     public class User
     {
         public int UserID { get; set; }
@@ -426,6 +451,7 @@ namespace LinguaVerse.DAL
         public float Progress { get; set; }
     }
 
+    // CourseProgress class representing the progress of a course for a user
     public class CourseProgress
     {
         public string CourseName { get; set; }
@@ -433,6 +459,7 @@ namespace LinguaVerse.DAL
         public string Level { get; set; }
     }
 
+    // FeaturedCourse class representing a featured course
     public class FeaturedCourse
     {
         public string CourseName { get; set; }

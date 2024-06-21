@@ -48,6 +48,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        // Constructor to initialize the LanguageSelectionViewModel with necessary dependencies and commands
         public LanguageSelectionViewModel(IServiceProvider serviceProvider, ILogger<LanguageSelectionViewModel> logger)
         {
             _serviceProvider = serviceProvider;
@@ -68,29 +69,34 @@ namespace LinguaVerse.ViewModel
             IsTestOptionsVisible = false;
         }
 
+        // Handles the click event for the Italian language selection
         private async void OnItalianClicked()
         {
             _selectedLanguage = "Italian";
             await ShowOptionsAsync();
         }
 
+        // Handles the click event for the English language selection
         private async void OnEnglishClicked()
         {
             _selectedLanguage = "English";
             await ShowOptionsAsync();
         }
 
+        // Displays the options section with a delay
         private async Task ShowOptionsAsync()
         {
             await Task.Delay(300);
             IsOptionsVisible = true;
         }
 
+        // Handles the click event for the Test option
         private async void OnTestClicked()
         {
             IsTestOptionsVisible = true;
         }
 
+        // Handles the click event for the Quiz option and navigates to the appropriate QuizPage
         private async void OnQuizClicked()
         {
             var quizPage = _selectedLanguage == "Italian"
@@ -99,12 +105,14 @@ namespace LinguaVerse.ViewModel
             await Application.Current.MainPage.Navigation.PushAsync(quizPage);
         }
 
+        // Handles the click event for the Flashcards option and navigates to the FlashcardsPage
         private async void OnFlashcardsClicked()
         {
             var flashcardsPage = _serviceProvider.GetRequiredService<FlashcardsPage>();
             await Application.Current.MainPage.Navigation.PushAsync(flashcardsPage);
         }
 
+        // Navigates to the specified test page based on the selected language and test ID
         private async void NavigateToTestPage(int testId)
         {
             _logger.LogInformation($"Navigating to {_selectedLanguage} Test Page {testId}.");

@@ -23,7 +23,7 @@ namespace LinguaVerse.ViewModel
             Questions = new ObservableCollection<Question>();
         }
 
-        // Constructor with parameters for runtime dependency injection
+        // Constructor initializes the repository, user ID, and test ID
         public TestViewModelEnglish(UserRepository userRepository, int userId, int testId, ILogger<TestViewModelEnglish> logger)
         {
             _userRepository = userRepository;
@@ -41,6 +41,7 @@ namespace LinguaVerse.ViewModel
         public ICommand SubmitTestCommand { get; }
         public ICommand LoadQuestionsCommand { get; }
 
+        // Loads the questions for the test
         private async Task LoadQuestionsAsync()
         {
             var questions = await _userRepository.GetQuestionsAsync(_testId);
@@ -51,6 +52,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        // Submits the test and calculates the score
         private async Task SubmitTestAsync()
         {
             int score = 0;

@@ -19,6 +19,7 @@ namespace LinguaVerse.ViewModel
         private readonly int _quizId;
         private readonly ILogger<TestViewModel> _logger;
 
+        // Constructor initializes the repository, dashboard view model, user ID, and quiz ID
         public TestViewModel(UserRepository userRepository, DashboardViewModel dashboardViewModel, int userId, int quizId, ILogger<TestViewModel> logger)
         {
             _userRepository = userRepository;
@@ -61,6 +62,7 @@ namespace LinguaVerse.ViewModel
         public ICommand LoadQuestionsCommand { get; }
         public ICommand SubmitTestCommand { get; }
 
+        // Loads the questions for the test
         private async Task LoadQuestions()
         {
             try
@@ -84,6 +86,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        // Shuffles the list of questions
         private void Shuffle<T>(IList<T> list)
         {
             var rng = new Random();
@@ -98,6 +101,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        // Submits the test and calculates the score
         private async void SubmitTest()
         {
             foreach (var question in Questions)
@@ -126,7 +130,6 @@ namespace LinguaVerse.ViewModel
 
             await Application.Current.MainPage.DisplayAlert("Test Completed", $"You scored {score} points", "OK");
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

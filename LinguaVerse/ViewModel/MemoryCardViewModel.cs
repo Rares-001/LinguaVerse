@@ -6,8 +6,10 @@ namespace LinguaVerse.ViewModel
 {
     public class MemoryCardViewModel
     {
+        // List of card sets containing memory cards
         public List<List<MemoryCard>> CardSets { get; }
 
+        // Constructor initializes the card sets and shuffles them
         public MemoryCardViewModel()
         {
             CardSets = new List<List<MemoryCard>>
@@ -59,6 +61,7 @@ namespace LinguaVerse.ViewModel
                 }
             };
 
+            // Shuffle each card set
             foreach (var cardSet in CardSets)
             {
                 cardSet.Shuffle();
@@ -66,6 +69,7 @@ namespace LinguaVerse.ViewModel
         }
     }
 
+    // Extension method to shuffle a list
     public static class ListExtensions
     {
         private static readonly Random rng = new Random();
@@ -82,6 +86,7 @@ namespace LinguaVerse.ViewModel
                 list[n] = value;
             }
 
+            // Ensure no two consecutive cards are the same
             for (int i = 0; i < list.Count - 1; i += 2)
             {
                 if (list[i].Equals(list[i + 1]))

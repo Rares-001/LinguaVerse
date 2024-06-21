@@ -23,6 +23,7 @@ namespace LinguaVerse.ViewModel
         public ICommand NavigateToLanguageSelectionCommand { get; }
         public ICommand NavigateToTestPage1Command { get; }
 
+        // Constructor to initialize DashboardViewModel with necessary dependencies
         public DashboardViewModel(UserRepository userRepository, int userId, ILogger<DashboardViewModel> logger)
         {
             _userRepository = userRepository;
@@ -117,6 +118,7 @@ namespace LinguaVerse.ViewModel
             }
         }
 
+        // Loads user data including username, welcome message, daily streaks, course progress, featured courses, and user progress
         public async void LoadUserData()
         {
             _logger.LogInformation($"Loading data for user ID: {_userId}");
@@ -190,6 +192,7 @@ namespace LinguaVerse.ViewModel
             _logger.LogInformation($"Final Progress value set: {Progress}");
         }
 
+        // Returns the order of the day in a week
         private int GetDayOrder(string day)
         {
             return day switch
@@ -205,17 +208,20 @@ namespace LinguaVerse.ViewModel
             };
         }
 
+        // Updates daily streaks with the provided list
         public void UpdateDailyStreaks(IEnumerable<DailyStreak> dailyStreaks)
         {
             dailyStreaks = dailyStreaks.OrderBy(ds => GetDayOrder(ds.Day)).ToList();
             DailyStreaks = new ObservableCollection<DailyStreak>(dailyStreaks);
         }
 
+        // Navigates to the language selection page
         private async void NavigateToLanguageSelection()
         {
             await Application.Current.MainPage.Navigation.PushAsync(new Views.LanguageSelection());
         }
 
+        // Navigates to the quiz history page
         private async void NavigateToQuizHistory()
         {
             var quizHistoryViewModel = App.Services.GetRequiredService<Func<int, QuizHistoryViewModel>>()(App.CurrentUserId);
@@ -223,6 +229,7 @@ namespace LinguaVerse.ViewModel
             await Application.Current.MainPage.Navigation.PushAsync(quizHistoryPage);
         }
 
+        // Navigates to the first test page
         private async void NavigateToTestPage1()
         {
             var testViewModel = new TestViewModel(_userRepository, this, _userId, 1, App.Services.GetRequiredService<ILogger<TestViewModel>>());
