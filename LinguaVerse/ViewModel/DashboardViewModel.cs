@@ -24,6 +24,7 @@ namespace LinguaVerse.ViewModel
             _userId = userId;
             NavigateToLanguageSelectionCommand = new Command(NavigateToLanguageSelection);
             NavigateToQuizHistoryCommand = new Command(NavigateToQuizHistory);
+            NavigateToTestPage1Command = new Command(NavigateToTestPage1); 
             LoadUserData();
         }
 
@@ -106,7 +107,7 @@ namespace LinguaVerse.ViewModel
 
         public ICommand NavigateToLanguageSelectionCommand { get; }
 
-        private async void LoadUserData()
+        public async void LoadUserData()
         {
             System.Diagnostics.Debug.WriteLine($"Loading data for user ID: {_userId}");
 
@@ -218,6 +219,12 @@ namespace LinguaVerse.ViewModel
             await Application.Current.MainPage.Navigation.PushAsync(quizHistoryPage);
         }
 
+        public ICommand NavigateToTestPage1Command { get; }
+        private async void NavigateToTestPage1()
+        {
+            var testPage = new TestPage1(); 
+            await Application.Current.MainPage.Navigation.PushAsync(testPage);
+        }
 
     }
 }

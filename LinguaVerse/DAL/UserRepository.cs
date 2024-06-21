@@ -6,6 +6,8 @@ using LinguaVerse.Model;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using System.Collections.ObjectModel;
+using Microsoft.Maui.ApplicationModel.DataTransfer;
+using static DataSeeder.Program;
 
 namespace LinguaVerse.DAL
 {
@@ -101,7 +103,6 @@ namespace LinguaVerse.DAL
                 }
             });
         }
-
 
         public async Task<bool> LoginUser(string username, string password)
         {
@@ -200,7 +201,6 @@ namespace LinguaVerse.DAL
             });
         }
 
-
         public async Task<IEnumerable<CourseProgress>> GetCourseProgress(int userId)
         {
             _logger.LogInformation("Fetching course progress for user ID: {UserID}", userId);
@@ -234,9 +234,6 @@ namespace LinguaVerse.DAL
             });
         }
 
-
-
-
         public async Task SaveUserProgressAsync(UserProgress userProgress)
         {
             _logger.LogInformation("Saving user progress for user ID: {UserID}, Quiz ID: {QuizID}, Score: {Score}", userProgress.UserID, userProgress.QuizID, userProgress.Score);
@@ -246,7 +243,6 @@ namespace LinguaVerse.DAL
                 await connection.ExecuteAsync(query, userProgress);
             });
         }
-
 
         public async Task<bool> ResetPassword(string username, string newPassword)
         {
@@ -262,14 +258,21 @@ namespace LinguaVerse.DAL
             return result > 0;
         }
 
-        public async Task<bool> UpdateProfile(int userId, string username, string password, string languagePreference, float progress)
+        public async Task<bool> UpdateProfile(int userId, string username, string password, string languagePreference, float? progress)
         {
             _logger.LogInformation("Updating profile for user ID: {UserID}, Username: {Username}", userId, username);
             var result = await ExecuteWithConnectionAsync(async connection =>
             {
+                // Fetch current values to avoid null constraint violations
+                var currentProfile = await GetUserById(userId);
+                var updatedUsername = username ?? currentProfile.Username;
+                var updatedPassword = password ?? currentProfile.Password;
+                var updatedLanguagePreference = languagePreference ?? currentProfile.LanguagePreference;
+                var updatedProgress = progress ?? currentProfile.Progress;
+
                 return await connection.ExecuteAsync(
                     "UPDATE \"User\" SET username = @Username, password = @Password, languagePreference = @LanguagePreference, progress = @Progress WHERE userID = @UserId",
-                    new { UserId = userId, Username = username, Password = password, LanguagePreference = languagePreference, Progress = progress }
+                    new { UserId = userId, Username = updatedUsername, Password = updatedPassword, LanguagePreference = updatedLanguagePreference, Progress = updatedProgress }
                 );
             });
 
@@ -320,32 +323,71 @@ namespace LinguaVerse.DAL
             });
         }
 
+        // -------------------------------------------------------------------------------------------------------
+        public async Task<IEnumerable<Question>> GetQuestionsForTestAsync(int quizId)
+        {
+            _logger.LogInformation("Fetching questions for quiz ID: {QuizID}", quizId);
+            return await ExecuteWithConnectionAsync(async connection =>
+            {
+                const string query = @"
+                    SELECT 
+                        ""QuestionID"", 
+                        ""QuestionText"", 
+                        ""Answer"", 
+                        ""Choices"", 
+                        ""explanation"", 
+                        ""hint"" 
+                    FROM ""Questions"" 
+                    WHERE ""QuizID"" = @QuizID";
+                var questions = await connection.QueryAsync<Question>(query, new { QuizID = quizId });
+                _logger.LogInformation($"Retrieved {questions.Count()} questions for quiz ID: {quizId}");
+                return questions;
+            });
+        }
+
+        public async Task SaveUserTestProgressAsync(UserTestProgress userTestProgress)
+        {
+            _logger.LogInformation("Saving user test progress for user ID: {UserID}, Test ID: {TestID}, Score: {Score}", userTestProgress.UserID, userTestProgress.TestID, userTestProgress.Score);
+            await ExecuteWithConnectionAsync(async connection =>
+            {
+                const string query = "INSERT INTO \"UserTestProgress\" (\"UserID\", \"TestID\", \"Score\", \"CompletionTime\", \"AttemptDate\") VALUES (@UserID, @TestID, @Score, @CompletionTime, @AttemptDate)";
+                await connection.ExecuteAsync(query, userTestProgress);
+            });
+        }
+
+        public async Task<float> GetUserTestProgressAsync(int userId)
+        {
+            _logger.LogInformation("Fetching user test progress for user ID: {UserID}", userId);
+            return await ExecuteWithConnectionAsync(async connection =>
+            {
+                const string query = "SELECT AVG(\"Score\") FROM \"UserTestProgress\" WHERE \"UserID\" = @UserId";
+                return await connection.ExecuteScalarAsync<float>(query, new { UserId = userId });
+            });
+        }
     }
-
-
 
     public class User
-        {
-            public int UserID { get; set; }
-            public string Username { get; set; }
-            public string Password { get; set; }
-            public string LanguagePreference { get; set; }
-            public float Progress { get; set; }
-        }
-
-        public class CourseProgress
-        {
-            public string CourseName { get; set; }
-            public float Progress { get; set; }
-            public string Level { get; set; }
-        }
-
-        public class FeaturedCourse
-        {
-            public string CourseName { get; set; }
-            public int Duration { get; set; }
-            public int Questions { get; set; }
-            public string Level { get; set; }
-            public string FlagIcon { get; set; }
-        }
+    {
+        public int UserID { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string LanguagePreference { get; set; }
+        public float Progress { get; set; }
     }
+
+    public class CourseProgress
+    {
+        public string CourseName { get; set; }
+        public float Progress { get; set; }
+        public string Level { get; set; }
+    }
+
+    public class FeaturedCourse
+    {
+        public string CourseName { get; set; }
+        public int Duration { get; set; }
+        public int Questions { get; set; }
+        public string Level { get; set; }
+        public string FlagIcon { get; set; }
+    }
+}

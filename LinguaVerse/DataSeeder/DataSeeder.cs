@@ -1,100 +1,55 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
+﻿using Dapper;
+using Npgsql;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Dapper;
-using LinguaVerse.Model;
 
-namespace LinguaVerse.Seeders
+namespace DataSeeder
 {
-    public class DataSeeder
+    class Program
     {
-        private readonly IDbConnection _connection;
+        private static string _connectionString = "Host=localhost;Database=LinguaVerseDB;Username=postgres;Password=admin";
 
-        public DataSeeder(IDbConnection connection)
+        static async Task Main(string[] args)
         {
-            _connection = connection;
+            using var connection = new NpgsqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            var questions = new List<Question>
+            {
+                new Question { QuizID = 1, QuestionText = "How do you say 'Good Morning' in Italian?", Answer = "Buongiorno", Choices = new[] { "Buongiorno", "Buona notte", "Buonasera", "Ciao" } },
+                new Question { QuizID = 1, QuestionText = "What is the Italian word for 'Good Night'?", Answer = "Buona notte", Choices = new[] { "Buongiorno", "Buona notte", "Buonasera", "Ciao" } },
+                new Question { QuizID = 1, QuestionText = "How do you say 'See you later' in Italian?", Answer = "A dopo", Choices = new[] { "A dopo", "Arrivederci", "Ciao", "Addio" } },
+                new Question { QuizID = 2, QuestionText = "How do you say 'Where is the bathroom?' in Italian?", Answer = "Dov'è il bagno?", Choices = new[] { "Dov'è il bagno?", "Dov'è la cucina?", "Dov'è la camera?", "Dov'è il salotto?" } },
+                new Question { QuizID = 2, QuestionText = "What is the Italian word for 'Thank you very much'?", Answer = "Grazie mille", Choices = new[] { "Grazie mille", "Molto bene", "Grazie tanto", "Molto grazie" } },
+                new Question { QuizID = 2, QuestionText = "How do you say 'Excuse me' in Italian?", Answer = "Mi scusi", Choices = new[] { "Mi scusi", "Per favore", "Grazie", "Scusa" } },
+                new Question { QuizID = 3, QuestionText = "What is the translation of 'Please' in Italian?", Answer = "Per favore", Choices = new[] { "Per favore", "Grazie", "Scusa", "Prego" } },
+                new Question { QuizID = 3, QuestionText = "How do you say 'Yes' in Italian?", Answer = "Sì", Choices = new[] { "Sì", "No", "Forse", "Mai" } },
+                new Question { QuizID = 3, QuestionText = "Which of the following is a form of the verb 'essere'?", Answer = "Sono", Choices = new[] { "Sono", "Sei", "Siamo", "Siete" } },
+                new Question { QuizID = 4, QuestionText = "How do you say 'I would like a coffee' in Italian?", Answer = "Vorrei un caffè", Choices = new[] { "Vorrei un caffè", "Voglio un caffè", "Prendo un caffè", "Dò un caffè" } },
+                new Question { QuizID = 4, QuestionText = "What is the Italian word for 'book'?", Answer = "Libro", Choices = new[] { "Libro", "Libretto", "Libreria", "Libraio" } },
+                new Question { QuizID = 4, QuestionText = "How do you say 'I am lost' in Italian?", Answer = "Mi sono perso", Choices = new[] { "Mi sono perso", "Sono perso", "Mi perdo", "Perduto" } },
+                // Add more questions here as needed
+            };
+
+            const string query = @"
+                INSERT INTO ""Questions"" (""QuizID"", ""QuestionText"", ""Answer"", ""Choices"")
+                VALUES (@QuizID, @QuestionText, @Answer, @Choices)";
+
+            foreach (var question in questions)
+            {
+                await connection.ExecuteAsync(query, question);
+            }
+
+            Console.WriteLine("Questions have been seeded successfully.");
         }
 
-        public async Task SeedDataAsync()
+        public class Question
         {
-            try
-            {
-                if (_connection.State == ConnectionState.Closed)
-                {
-                    _connection.Open(); // Use the synchronous Open method
-                }
-
-                // Insert quizzes
-                var quizzes = new List<Quiz>
-                {
-                    new Quiz { Title = "Basic Italian Phrases", Category = "Language", Level = "Beginner" },
-                    new Quiz { Title = "Advanced Italian Grammar", Category = "Language", Level = "Advanced" }
-                };
-
-                foreach (var quiz in quizzes)
-                {
-                    var existingQuiz = await _connection.QueryFirstOrDefaultAsync<Quiz>(
-                        "SELECT * FROM public.\"Quizzes\" WHERE \"Title\" = @Title AND \"Category\" = @Category AND \"Level\" = @Level",
-                        quiz
-                    );
-
-                    if (existingQuiz == null)
-                    {
-                        await _connection.ExecuteAsync(
-                            "INSERT INTO public.\"Quizzes\" (\"Title\", \"Category\", \"Level\") VALUES (@Title, @Category, @Level)",
-                            quiz
-                        );
-                    }
-                }
-
-                // Insert questions
-                var questions = new List<Question>
-                {
-                    new Question { QuizID = 1, QuestionText = "How do you say \"Hello\" in Italian?", Answer = "Ciao", Choices = new ObservableCollection<string> { "Ciao", "Bonjour", "Hola", "Hallo" } },
-                    new Question { QuizID = 1, QuestionText = "What is the Italian word for \"Thank you\"?", Answer = "Grazie", Choices = new ObservableCollection<string> { "Gracias", "Merci", "Danke", "Grazie" } },
-                    new Question { QuizID = 1, QuestionText = "How do you say \"Goodbye\" in Italian?", Answer = "Arrivederci", Choices = new ObservableCollection<string> { "Adiós", "Auf Wiedersehen", "Arrivederci", "Au revoir" } },
-                    new Question { QuizID = 1, QuestionText = "What is the translation of \"Please\" in Italian?", Answer = "Per favore", Choices = new ObservableCollection<string> { "Por favor", "S'il vous plaît", "Bitte", "Per favore" } },
-                    new Question { QuizID = 1, QuestionText = "How do you say \"Yes\" in Italian?", Answer = "Sì", Choices = new ObservableCollection<string> { "Oui", "Sí", "Ja", "Sì" } },
-
-                    new Question { QuizID = 2, QuestionText = "Which of the following is a subjunctive form of \"essere\" in Italian?", Answer = "sia", Choices = new ObservableCollection<string> { "sono", "sei", "sia", "siamo" } },
-                    new Question { QuizID = 2, QuestionText = "How do you say \"I would have eaten\" in Italian?", Answer = "Avrei mangiato", Choices = new ObservableCollection<string> { "Avrei mangiato", "Ho mangiato", "Mangerei", "Sto mangiando" } },
-                };
-
-                foreach (var question in questions)
-                {
-                    var existingQuestion = await _connection.QueryFirstOrDefaultAsync<Question>(
-                        "SELECT * FROM public.\"Questions\" WHERE \"QuizID\" = @QuizID AND \"QuestionText\" = @QuestionText AND \"Answer\" = @Answer",
-                        new
-                        {
-                            question.QuizID,
-                            question.QuestionText,
-                            question.Answer
-                        }
-                    );
-
-                    if (existingQuestion == null)
-                    {
-                        await _connection.ExecuteAsync(
-                            "INSERT INTO public.\"Questions\" (\"QuizID\", \"QuestionText\", \"Answer\", \"Choices\") VALUES (@QuizID, @QuestionText, @Answer, @Choices)",
-                            new
-                            {
-                                question.QuizID,
-                                question.QuestionText,
-                                question.Answer,
-                                Choices = question.Choices.ToArray()
-                            }
-                        );
-                    }
-                }
-            }
-            finally
-            {
-                if (_connection.State == ConnectionState.Open)
-                {
-                    _connection.Close(); // Use the synchronous Close method
-                }
-            }
+            public int QuizID { get; set; }
+            public string QuestionText { get; set; }
+            public string Answer { get; set; }
+            public string[] Choices { get; set; }
         }
     }
 }

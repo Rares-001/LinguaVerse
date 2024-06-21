@@ -17,6 +17,13 @@
                 <Button Text="Test" Command="{Binding TestCommand}" Margin="10" />
                 <Button Text="Quiz" Command="{Binding QuizCommand}" Margin="10" />
                 <Button Text="Flashcards" Command="{Binding FlashcardsCommand}" Margin="10" />
+
+                <StackLayout IsVisible="{Binding IsTestOptionsVisible}">
+                    <Button Text="Start Test 1" Command="{Binding NavigateToTestPage1Command}" />
+                    <Button Text="Start Test 2" Command="{Binding NavigateToTestPage2Command}" />
+                    <Button Text="Start Test 3" Command="{Binding NavigateToTestPage3Command}" />
+                    <Button Text="Start Test 4" Command="{Binding NavigateToTestPage4Command}" />
+                </StackLayout>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

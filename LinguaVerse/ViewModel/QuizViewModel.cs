@@ -19,8 +19,6 @@ namespace LinguaVerse.ViewModel
 
         public QuizViewModel()
         {
-            // This constructor should not be used at runtime
-            // You can put some default initialization here if needed
         }
 
         public QuizViewModel(UserRepository userRepository, DashboardViewModel dashboardViewModel, int userId)
@@ -31,7 +29,6 @@ namespace LinguaVerse.ViewModel
 
             LoadQuestionsCommand = new Command(async () => await LoadQuestions());
             CheckAnswersCommand = new Command(CheckAnswers);
-            NavigateCommand = new Command(Navigate);
 
             LoadQuestions(); // Load questions initially
         }
@@ -160,12 +157,6 @@ namespace LinguaVerse.ViewModel
             ShowResults = true; // Show the results after checking answers
         }
 
-        private async void Navigate()
-        {
-            var nextPage = new Views.SecondPage();
-            ((SecondQuizViewModel)nextPage.BindingContext).Points = this.Points;
-            await Application.Current.MainPage.Navigation.PushAsync(nextPage);
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
