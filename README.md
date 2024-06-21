@@ -32,5 +32,8 @@ To establish a connection between the database and the app, you need to modify a
 
 - Change this username with yours ``` Username=postgres ``` and ``` Password=admin"```
 - Save the file and run the app
+
 - If everything is configured correctly, you will see the following message:
 <img width="248" alt="Screenshot 2024-06-21 alle 23 14 30" src="https://github.com/Rares-001/LinguaVerse/assets/91318114/813b5f00-a927-46ed-862e-10a89ee8d59b">
+in the Login Page:
+<img width="1256" alt="Screenshot 2024-06-21 alle 23 03 50" src="https://github.com/Rares-001/LinguaVerse/assets/91318114/5c70568c-fa90-4a6f-b354-adc2bcff7e04">
