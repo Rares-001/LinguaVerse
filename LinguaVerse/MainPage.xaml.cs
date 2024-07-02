@@ -39,8 +39,8 @@ namespace LinguaVerse.Views
                     BackgroundColor = cardColors[i % cardColors.Length],
                     TextColor = Colors.White,
                     FontAttributes = FontAttributes.Bold,
-                    FontSize = 24,
-                    WidthRequest = 150,
+                    FontSize = 14,
+                    WidthRequest = 250,
                     HeightRequest = 150,
                     CornerRadius = 20
                 };
