@@ -39,7 +39,7 @@ namespace LinguaVerse.Views
                     BackgroundColor = cardColors[i % cardColors.Length],
                     TextColor = Colors.White,
                     FontAttributes = FontAttributes.Bold,
-                    FontSize = 14,
+                    FontSize = 16,
                     WidthRequest = 250,
                     HeightRequest = 150,
                     CornerRadius = 20
@@ -125,7 +125,7 @@ namespace LinguaVerse.Views
 
         private async void OnCloseButtonClicked(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            await Navigation.PushAsync(new ContentPage());
         }
     }
 }
