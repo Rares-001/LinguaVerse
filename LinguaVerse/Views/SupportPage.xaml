@@ -83,7 +83,7 @@
                 <Button Text="Send Message" Command="{Binding SendMessageCommand}" />
 
               
-                
+                <Label Text="{Binding ResponseStatus}" TextColor="Green" />
 
             </StackLayout>
         </Grid>
