@@ -11,7 +11,7 @@ namespace LinguaVerse.Views
         private Model.MemoryCard firstCard, secondCard;
         private int currentSetIndex = 0;
         private int matchedPairs = 0;
-        private readonly Color[] cardColors = { Colors.Red, Colors.Green, Colors.Blue, Colors.Orange, Colors.Purple, Colors.Yellow };
+        private readonly Color[] cardColors = { Colors.CadetBlue, Colors.Coral, Colors.MediumSeaGreen, Colors.SlateBlue, Colors.Goldenrod, Colors.IndianRed };
 
         public MainPage()
         {
@@ -29,8 +29,7 @@ namespace LinguaVerse.Views
             matchedPairs = 0;
 
             var cards = viewModel.CardSets[setIndex];
-            cards.Shuffle(); 
-
+            cards.Shuffle
             for (int i = 0; i < cards.Count; i++)
             {
                 var cardButton = new Button
@@ -41,7 +40,8 @@ namespace LinguaVerse.Views
                     FontAttributes = FontAttributes.Bold,
                     FontSize = 24,
                     WidthRequest = 150,
-                    HeightRequest = 150
+                    HeightRequest = 150,
+                    CornerRadius = 20
                 };
                 cardButton.Clicked += OnCardClicked;
                 cardButton.BindingContext = cards[i];

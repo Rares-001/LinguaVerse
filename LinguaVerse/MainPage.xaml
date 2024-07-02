@@ -4,13 +4,13 @@
              x:Class="LinguaVerse.Views.MainPage"
              BackgroundColor="Orange">
 	<StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20" Spacing="30">
-		<Label Text="Matching Card: Check your knowledge"
+		<Label Text="Matching Card: Check Your Knowledge"
                FontSize="32"
                HorizontalOptions="Center"
-               TextColor="Black"
+               TextColor="White"
                FontAttributes="Bold"/>
 		<Grid x:Name="cardGrid"
-              RowDefinitions="*,*"
+              RowDefinitions="*,*,*"
               ColumnDefinitions="*,*"
               HorizontalOptions="Center"
               VerticalOptions="Center"
@@ -21,6 +21,10 @@
                 Text="Close"
                 HorizontalOptions="Center"
                 VerticalOptions="End"
+                BackgroundColor="Red"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="10"
                 Clicked="OnCloseButtonClicked"/>
 	</StackLayout>
 </ContentPage>
