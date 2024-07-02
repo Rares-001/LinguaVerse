@@ -68,5 +68,39 @@ public class SupportViewModel : BindableObject
 
     public Command SendMessageCommand => new Command(async () => await SendMessage());
 
+    private async Task SendMessage()
+    {
+        var formData = new
+        {
+            Name = this.Name,
+            Email = this.Email,
+            Subject = this.Subject,
+            Message = this.Message
+        };
 
+        var json = JsonConvert.SerializeObject(formData);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        try
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.PostAsync("http://127.0.0.1:5000/submit_form", content);
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ResponseStatus = "Form data sent successfully!";
+                }
+                else
+                {
+                    ResponseStatus = "Failed to send form data.";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ResponseStatus = $"Error: {ex.Message}";
+        }
+    }
 }
