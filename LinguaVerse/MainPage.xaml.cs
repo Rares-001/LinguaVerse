@@ -52,7 +52,7 @@ namespace LinguaVerse
 
         private async void OnCloseButtonClicked(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            await Navigation.PushAsync(new ContentPage());
         }
     }
 }
