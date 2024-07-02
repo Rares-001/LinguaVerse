@@ -77,12 +77,16 @@
                 </Frame>
 
                 
-                
+                <Frame BackgroundColor="Transparent"
+                       BorderColor="White"
+                       CornerRadius="25"
+                       Padding="10,0"
+                       HasShadow="True">
+                    <Editor Placeholder="Your Message" Text="{Binding Message}" AutoSize="TextChanges" />
+                </Frame>
 
-               
+
                 <Button Text="Send Message" Command="{Binding SendMessageCommand}" />
-
-              
                 <Label Text="{Binding ResponseStatus}" TextColor="Green" />
 
             </StackLayout>
