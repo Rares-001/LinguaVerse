@@ -26,7 +26,26 @@
             </Style>
 
             
-            
+            <Style TargetType="Button">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#6A1B9A" Offset="0.0" />
+                            <GradientStop Color="#8E24AA" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="CornerRadius" Value="25" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="Margin" Value="0,10,0,0" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="Shadow">
+                    <Shadow Brush="Black" Opacity="0.5" Offset="5,5" Radius="10" />
+                </Setter>
+            </Style>
 
             
             <Style TargetType="Label">
@@ -42,14 +61,13 @@
     <ContentPage.Content>
         <Grid VerticalOptions="CenterAndExpand" Padding="30">
             <StackLayout Spacing="20">
-                
+       
                 <Label Text="LinguaVerse Support"
                        FontSize="32"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
                        TextColor="White" />
 
-                
                 <Frame BackgroundColor="Transparent"
                        BorderColor="White"
                        CornerRadius="25"
@@ -58,7 +76,6 @@
                     <Entry Placeholder="Your Name" Text="{Binding Name}" />
                 </Frame>
 
-                
                 <Frame BackgroundColor="Transparent"
                        BorderColor="White"
                        CornerRadius="25"
@@ -67,7 +84,6 @@
                     <Entry Placeholder="Your Email" Text="{Binding Email}" Keyboard="Email" />
                 </Frame>
 
-               
                 <Frame BackgroundColor="Transparent"
                        BorderColor="White"
                        CornerRadius="25"
@@ -76,7 +92,6 @@
                     <Entry Placeholder="Subject" Text="{Binding Subject}" />
                 </Frame>
 
-                
                 <Frame BackgroundColor="Transparent"
                        BorderColor="White"
                        CornerRadius="25"
@@ -84,7 +99,6 @@
                        HasShadow="True">
                     <Editor Placeholder="Your Message" Text="{Binding Message}" AutoSize="TextChanges" />
                 </Frame>
-
 
                 <Button Text="Send Message" Command="{Binding SendMessageCommand}" />
                 <Label Text="{Binding ResponseStatus}" TextColor="Green" />
