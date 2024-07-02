@@ -29,7 +29,8 @@ namespace LinguaVerse.Views
             matchedPairs = 0;
 
             var cards = viewModel.CardSets[setIndex];
-            cards.Shuffle
+            cards.Shuffle(); 
+
             for (int i = 0; i < cards.Count; i++)
             {
                 var cardButton = new Button
