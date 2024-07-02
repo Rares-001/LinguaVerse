@@ -25,7 +25,6 @@
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
             </Style>
 
-            
             <Style TargetType="Button">
                 <Setter Property="Background">
                     <Setter.Value>
@@ -47,7 +46,6 @@
                 </Setter>
             </Style>
 
-            
             <Style TargetType="Label">
                 <Setter Property="FontFamily" Value="OpenSansRegular" />
                 <Setter Property="TextColor" Value="White" />
