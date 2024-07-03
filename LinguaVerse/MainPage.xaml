@@ -16,12 +16,12 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Text="LinguaVerse" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" FontSize="14" TextColor="White"/>
+            <Label Text="LinguaVerse" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" FontSize="24" TextColor="Black"/>
             <Button Text="X" Grid.Column="1" WidthRequest="40" HeightRequest="40" CornerRadius="20" BackgroundColor="Transparent" BorderColor="Navy" BorderWidth="2" Clicked="OnCloseButtonClicked"/>
-            <Button Text="🔔" Grid.Column="2" WidthRequest="40" HeightRequest="40" CornerRadius="20" BackgroundColor="Transparent" BorderColor="Navy" BorderWidth="2"/>
+            <Button Text="🔔" Grid.Column="2" WidthRequest="45" HeightRequest="40" CornerRadius="20" BackgroundColor="Transparent" BorderColor="Navy" BorderWidth="2"/>
         </Grid>
 
-        <Label Text="FlashCards" FontSize="24" HorizontalOptions="Center" TextColor="White"/>
+        <Label Text="FlashCards" FontSize="16" HorizontalOptions="Center" TextColor="White"/>
 
         <Frame x:Name="CardFrame" BackgroundColor="White" CornerRadius="10" Padding="10">
             <StackLayout>
