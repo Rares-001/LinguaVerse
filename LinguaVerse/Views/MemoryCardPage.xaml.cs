@@ -12,7 +12,7 @@ namespace LinguaVerse.Views
         private Model.MemoryCard firstCard, secondCard;
         private int currentSetIndex = 0;
         private int matchedPairs = 0;
-        private readonly Color[] cardColors = { Colors.Red, Colors.Green, Colors.Blue, Colors.Orange, Colors.Purple, Colors.Yellow };
+        private readonly Color[] cardColors = { Colors.CadetBlue, Colors.Coral, Colors.MediumSeaGreen, Colors.SlateBlue, Colors.Goldenrod, Colors.IndianRed };
 
         public MemoryCardPage()
         {
@@ -40,9 +40,10 @@ namespace LinguaVerse.Views
                     BackgroundColor = cardColors[i % cardColors.Length],
                     TextColor = Colors.White,
                     FontAttributes = FontAttributes.Bold,
-                    FontSize = 24,
-                    WidthRequest = 150,
-                    HeightRequest = 150
+                    FontSize = 16,
+                    WidthRequest = 250,
+                    HeightRequest = 150,
+                    CornerRadius = 20
                 };
                 cardButton.Clicked += OnCardClicked;
                 cardButton.BindingContext = cards[i];
@@ -125,7 +126,7 @@ namespace LinguaVerse.Views
 
         private async void OnCloseButtonClicked(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            await Navigation.PushAsync(new ContentPage());
         }
     }
 }
