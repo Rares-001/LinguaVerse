@@ -1,4 +1,4 @@
-﻿using LinguaVerse.ViewModel;
+﻿using Microsoft.Maui.Controls;
 
 namespace LinguaVerse
 {
@@ -7,7 +7,6 @@ namespace LinguaVerse
         public QuestGame()
         {
             InitializeComponent();
-            BindingContext = new QuestGameViewModel();
         }
     }
 }
