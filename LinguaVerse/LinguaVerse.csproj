@@ -71,6 +71,9 @@
 	  <Compile Update="Views\MemoryCardPage.xaml.cs">
 	    <DependentUpon>MemoryCardPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\QuizPageItalian.xaml.cs">
+	    <DependentUpon>QuizPageItalian.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\TestPage1English.xaml.cs">
 	    <DependentUpon>TestPage1English.xaml</DependentUpon>
 	  </Compile>
@@ -86,9 +89,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\SupportPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Views\FlashcardsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -101,10 +101,13 @@
 	  <MauiXaml Update="Views\QuizHistoryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\QuizPage-Italian.xaml">
+	  <MauiXaml Update="Views\QuizPageItalian.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\QuizPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SupportPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\TestPage4English.xaml">

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maui.Controls;
 using System.Threading.Tasks;
+using LinguaVerse.ViewModel;
 
 namespace LinguaVerse.Views
 {
@@ -18,7 +19,7 @@ namespace LinguaVerse.Views
         private async Task FlipCard()
         {
             await CardFrame.RotateYTo(90, 250, Easing.Linear);
-            var viewModel = BindingContext as ViewModel.FlashcardViewModel;
+            var viewModel = BindingContext as FlashcardViewModel; 
             if (viewModel != null)
             {
                 if (CardLabel.Text == viewModel.CurrentFlashcard.Question)
@@ -36,7 +37,7 @@ namespace LinguaVerse.Views
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
-            if (BindingContext is ViewModel.FlashcardViewModel viewModel)
+            if (BindingContext is FlashcardViewModel viewModel) 
             {
                 viewModel.PropertyChanged += ViewModel_PropertyChanged;
             }
@@ -44,9 +45,9 @@ namespace LinguaVerse.Views
 
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ViewModel.FlashcardViewModel.CurrentFlashcard))
+            if (e.PropertyName == nameof(FlashcardViewModel.CurrentFlashcard)) 
             {
-                CardLabel.Text = (BindingContext as ViewModel.FlashcardViewModel)?.CurrentFlashcard.Question;
+                CardLabel.Text = (BindingContext as FlashcardViewModel)?.CurrentFlashcard.Question;
             }
         }
 

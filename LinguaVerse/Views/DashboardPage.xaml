@@ -115,6 +115,14 @@
                             WidthRequest="150"
                             FontAttributes="Bold"
                             VerticalOptions="Center" />
+                    <Button Text="Support" 
+                            Command="{Binding NavigateToSupportPageCommand}" 
+                            BackgroundColor="#6AB04A"
+                            TextColor="White"
+                            CornerRadius="10" 
+                            WidthRequest="150"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center" />
                 </StackLayout>
 
             </StackLayout>

@@ -49,20 +49,22 @@
                 </Grid>
 
                 <!-- Options Section -->
-                <StackLayout IsVisible="{Binding IsOptionsVisible}" x:Name="OptionsSection" Padding="20" Spacing="20">
-                    <Button Text="Test" Command="{Binding TestCommand}" />
-                    <Button Text="Quiz" Command="{Binding QuizCommand}" />
-                    <Button Text="MemoryCard" Command="{Binding MemoryCardCommand}" />
-                    <Button Text="Flashcard" Command="{Binding FlashcardsCommand}" />
+                <Grid IsVisible="{Binding IsOptionsVisible}" x:Name="OptionsSection" Padding="20" ColumnSpacing="20" RowSpacing="20" WidthRequest="800"
+                      ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                    <Button Grid.Row="0" Grid.Column="0" Text="Test" Command="{Binding TestCommand}" />
+                    <Button Grid.Row="0" Grid.Column="1" Text="Quiz" Command="{Binding QuizCommand}" />
+                    <Button Grid.Row="1" Grid.Column="0" Text="MemoryCard" Command="{Binding MemoryCardCommand}" />
+                    <Button Grid.Row="1" Grid.Column="1" Text="Flashcard" Command="{Binding FlashcardsCommand}" />
+                </Grid>
 
-                    <!-- Test Options -->
-                    <StackLayout IsVisible="{Binding IsTestOptionsVisible}" Spacing="10">
-                        <Button Text="Start Test 1" Command="{Binding NavigateToTestPage1Command}" />
-                        <Button Text="Start Test 2" Command="{Binding NavigateToTestPage2Command}" />
-                        <Button Text="Start Test 3" Command="{Binding NavigateToTestPage3Command}" />
-                        <Button Text="Start Test 4" Command="{Binding NavigateToTestPage4Command}" />
-                    </StackLayout>
-                </StackLayout>
+                <!-- Test Options -->
+                <Grid IsVisible="{Binding IsTestOptionsVisible}" Padding="20" ColumnSpacing="20" RowSpacing="20" WidthRequest="800"
+                      ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                    <Button Grid.Row="0" Grid.Column="0" Text="Start Test 1" Command="{Binding NavigateToTestPage1Command}" />
+                    <Button Grid.Row="0" Grid.Column="1" Text="Start Test 2" Command="{Binding NavigateToTestPage2Command}" />
+                    <Button Grid.Row="1" Grid.Column="0" Text="Start Test 3" Command="{Binding NavigateToTestPage3Command}" />
+                    <Button Grid.Row="1" Grid.Column="1" Text="Start Test 4" Command="{Binding NavigateToTestPage4Command}" />
+                </Grid>
             </StackLayout>
         </Grid>
     </ContentPage.Content>

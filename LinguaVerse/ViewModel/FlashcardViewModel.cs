@@ -5,7 +5,7 @@ using System.Windows.Input;
 using LinguaVerse.Model;
 using Microsoft.Maui.Controls;
 
-namespace LinguaVerse.ViewModels
+namespace LinguaVerse.ViewModel
 {
     public class FlashcardViewModel : INotifyPropertyChanged
     {

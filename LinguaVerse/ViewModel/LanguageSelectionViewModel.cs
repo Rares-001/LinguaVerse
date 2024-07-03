@@ -16,6 +16,7 @@ namespace LinguaVerse.ViewModel
         private readonly ILogger<LanguageSelectionViewModel> _logger;
         private string _selectedLanguage;
 
+        // Commands for the language selection and navigation
         public ICommand ItalianCommand { get; }
         public ICommand EnglishCommand { get; }
         public ICommand TestCommand { get; }
@@ -25,6 +26,7 @@ namespace LinguaVerse.ViewModel
         public ICommand NavigateToTestPage2Command { get; }
         public ICommand NavigateToTestPage3Command { get; }
         public ICommand NavigateToTestPage4Command { get; }
+        public ICommand MemoryCardCommand { get; }
 
         private bool _isOptionsVisible;
         public bool IsOptionsVisible
@@ -59,6 +61,7 @@ namespace LinguaVerse.ViewModel
             TestCommand = new Command(OnTestClicked);
             QuizCommand = new Command(OnQuizClicked);
             FlashcardsCommand = new Command(OnFlashcardsClicked);
+            MemoryCardCommand = new Command(OnMemoryCardClicked);
 
             NavigateToTestPage1Command = new Command(() => NavigateToTestPage(1));
             NavigateToTestPage2Command = new Command(() => NavigateToTestPage(2));
@@ -100,8 +103,8 @@ namespace LinguaVerse.ViewModel
         private async void OnQuizClicked()
         {
             var quizPage = _selectedLanguage == "Italian"
-                ? (ContentPage)_serviceProvider.GetRequiredService(typeof(QuizPageItalian))
-                : (ContentPage)_serviceProvider.GetRequiredService(typeof(QuizPage));
+                ? (ContentPage)_serviceProvider.GetRequiredService<QuizPageItalian>()
+                : (ContentPage)_serviceProvider.GetRequiredService<QuizPage>();
             await Application.Current.MainPage.Navigation.PushAsync(quizPage);
         }
 
@@ -110,6 +113,14 @@ namespace LinguaVerse.ViewModel
         {
             var flashcardsPage = _serviceProvider.GetRequiredService<FlashcardsPage>();
             await Application.Current.MainPage.Navigation.PushAsync(flashcardsPage);
+        }
+
+        // Handles the click event for the Memory Card option
+        private async void OnMemoryCardClicked()
+        {
+            // Implement the command logic here
+            var memoryCardPage = _serviceProvider.GetRequiredService<MemoryCardPage>();
+            await Application.Current.MainPage.Navigation.PushAsync(memoryCardPage);
         }
 
         // Navigates to the specified test page based on the selected language and test ID

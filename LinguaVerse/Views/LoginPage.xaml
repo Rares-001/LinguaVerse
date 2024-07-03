@@ -6,9 +6,9 @@
     <!-- Ensure no padding -->
 
     <ContentPage.Background>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#4B1B9B" Offset="0.0" />
-            <GradientStop Color="#6A1B9A" Offset="1.0" />
+        <LinearGradientBrush StartPoint="0,0" EndPoint="50,0">
+            <GradientStop Color="#FF5733" Offset="0.0" />
+            <GradientStop Color="#FFC300" Offset="50.0" />
         </LinearGradientBrush>
     </ContentPage.Background>
 
@@ -17,15 +17,15 @@
             <!-- Entry Style -->
             <Style TargetType="Entry">
                 <Setter Property="BackgroundColor" Value="Transparent" />
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="PlaceholderColor" Value="Gray" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="PlaceholderColor" Value="#B0B0B0" />
                 <Setter Property="HeightRequest" Value="50" />
-                <Setter Property="WidthRequest" Value="250" />
+                <Setter Property="WidthRequest" Value="300" />
                 <Setter Property="Margin" Value="0,10,0,0" />
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="FontFamily" Value="OpenSansRegular" />
                 <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Start" />
                 <Setter Property="VerticalTextAlignment" Value="Center" />
             </Style>
 
@@ -34,8 +34,8 @@
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#6A1B9A" Offset="0.0" />
-                            <GradientStop Color="#8E24AA" Offset="1.0" />
+                            <GradientStop Color="#FFC300" Offset="0.0" />
+                            <GradientStop Color="#FF5733" Offset="1.0" />
                         </LinearGradientBrush>
                     </Setter.Value>
                 </Setter>
@@ -63,8 +63,8 @@
             <!-- Bold Label Style -->
             <Style x:Key="BoldLabelStyle" TargetType="Label">
                 <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="HorizontalOptions" Value="Start" />
-                <Setter Property="TextColor" Value="Green" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="White" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -72,49 +72,53 @@
     <ContentPage.Content>
         <Grid VerticalOptions="CenterAndExpand" Padding="30,0">
             <!-- Ensure no top padding -->
-            <StackLayout Spacing="20">
+            <StackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                
                 <!-- Title -->
                 <Label x:Name="TitleLabel"
                        Text="LinguaVerse"
-                       FontSize="32"
+                       FontSize="36"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
                        TextColor="White" />
 
                 <!-- Username Entry -->
-                <Frame BackgroundColor="Transparent"
-                       BorderColor="White"
-                       CornerRadius="25"
-                       Padding="10,0"
+                <Frame BackgroundColor="White"
+                       CornerRadius="10"
+                       Padding="0"
                        HasShadow="True"
-                       WidthRequest="500">
-                    <Entry Placeholder="Username" Text="{Binding Username}" />
+                       WidthRequest="300">
+                    <Grid Padding="10,0" BackgroundColor="Transparent">
+                        <Entry Placeholder="Username" Text="{Binding Username}" BackgroundColor="Transparent" HorizontalTextAlignment="Center"/>
+                    </Grid>
                 </Frame>
 
                 <!-- Password Entry -->
-                <Frame BackgroundColor="Transparent"
-                       BorderColor="White"
-                       CornerRadius="25"
-                       Padding="10,0"
+                <Frame BackgroundColor="White"
+                       CornerRadius="10"
+                       Padding="0"
                        HasShadow="True"
-                       WidthRequest="500">
-                    <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="True" />
+                       WidthRequest="300">
+                    <Grid Padding="10,0">
+                        <Entry Placeholder="Password" Text="{Binding Password}" HorizontalTextAlignment="Center" IsPassword="True" />
+                    </Grid>
                 </Frame>
 
                 <!-- Button Stack Layout -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                    
                     <!-- Register Button -->
-                    <Button Text="Register" Command="{Binding RegisterCommand}" WidthRequest="120" />
+                    <Button Text="Register" Command="{Binding RegisterCommand}" WidthRequest="140" />
 
                     <!-- Login Button -->
-                    <Button Text="Login" Command="{Binding LoginCommand}" WidthRequest="120" />
+                    <Button Text="Login" Command="{Binding LoginCommand}" WidthRequest="140" />
                 </HorizontalStackLayout>
 
                 <!-- Registration Status Label -->
-                <Label Text="{Binding RegistrationStatus}" TextColor="Green" />
+                <Label Text="{Binding RegistrationStatus}" TextColor="White" HorizontalOptions="Center" />
 
                 <!-- Login Status Label -->
-                <Label Text="{Binding LoginStatus}" TextColor="Green" />
+                <Label Text="{Binding LoginStatus}" TextColor="White" HorizontalOptions="Center" />
 
                 <!-- Connection Status Label -->
                 <Label Text="{Binding ConnectionStatus}" Style="{StaticResource BoldLabelStyle}" />

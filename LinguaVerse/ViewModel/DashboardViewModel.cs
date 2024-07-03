@@ -18,6 +18,7 @@ namespace LinguaVerse.ViewModel
         private readonly UserRepository _userRepository;
         private int _userId;
         private readonly ILogger<DashboardViewModel> _logger;
+        public ICommand NavigateToSupportPageCommand { get; }
 
         public ICommand NavigateToQuizHistoryCommand { get; }
         public ICommand NavigateToLanguageSelectionCommand { get; }
@@ -33,6 +34,8 @@ namespace LinguaVerse.ViewModel
             NavigateToLanguageSelectionCommand = new Command(NavigateToLanguageSelection);
             NavigateToQuizHistoryCommand = new Command(NavigateToQuizHistory);
             NavigateToTestPage1Command = new Command(NavigateToTestPage1);
+            NavigateToSupportPageCommand = new Command(NavigateToSupportPage);
+
 
             LoadUserData();
         }
@@ -242,6 +245,11 @@ namespace LinguaVerse.ViewModel
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private async void NavigateToSupportPage()
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(new SupportPage());
         }
     }
 }

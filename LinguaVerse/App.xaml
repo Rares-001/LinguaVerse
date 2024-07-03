@@ -6,6 +6,14 @@
     <Application.Resources>
         <ResourceDictionary>
             <viewModels:ViewModelLocator x:Key="ViewModelLocator" />
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="Arial" />
+                <Setter Property="TextColor" Value="#FFFFFF" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Margin" Value="10,5" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
