@@ -2,12 +2,11 @@
 
 namespace LinguaVerse
 {
-    public partial class App : Application
+    public partial class QuestGame : ContentPage
     {
-        public App()
+        public QuestGame()
         {
             InitializeComponent();
-            MainPage = new AppShell();
         }
     }
 }

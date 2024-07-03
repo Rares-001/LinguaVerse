@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:LinguaVerse"
+             x:Class="LinguaVerse.QuestGame">
+
+    <ContentPage.BindingContext>
+        <local:QuestGameViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.BackgroundColor>
+        <Color>#6A1B9A</Color> <!-- Purple background -->
+    </ContentPage.BackgroundColor>
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+               Text="Synonyms" 
+               FontAttributes="Bold"
+               FontSize="Large"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               TextColor="White"/>
+
+        <Frame Grid.Row="1" Grid.Column="0" CornerRadius="10" Padding="10" BackgroundColor="White">
+            <CollectionView ItemsSource="{Binding Words}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Frame>
+
+        <Frame Grid.Row="1" Grid.Column="1" CornerRadius="10" Padding="10" BackgroundColor="White">
+            <CollectionView ItemsSource="{Binding Synonyms}"
+                            SelectionMode="Multiple"
+                            SelectedItems="{Binding SelectedSynonyms}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Frame>
+
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                Text="Check" 
+                BackgroundColor="Green" 
+                TextColor="White" 
+                HorizontalOptions="Center"
+                Command="{Binding CheckCommand}" />
+    </Grid>
+</ContentPage>
