@@ -13,7 +13,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            
+
             <Style TargetType="Entry">
                 <Setter Property="BackgroundColor" Value="Transparent" />
                 <Setter Property="TextColor" Value="White" />
@@ -59,7 +59,7 @@
     <ContentPage.Content>
         <Grid VerticalOptions="CenterAndExpand" Padding="30">
             <StackLayout Spacing="20">
-       
+
                 <Label Text="LinguaVerse Support"
                        FontSize="32"
                        FontAttributes="Bold"

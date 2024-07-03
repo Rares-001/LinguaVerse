@@ -29,7 +29,7 @@ namespace LinguaVerse
             SqlMapper.AddTypeHandler(new ObservableCollectionTypeHandler());
 
             // Connection string
-            var connectionString = "Host=localhost;Database=LinguaVerse;Username=postgres;Password=admin";
+            var connectionString = "Host=localhost;Database=LinguaVerseDB;Username=postgres;Password=admin";
             builder.Services.AddSingleton(connectionString); // Register the connection string
 
             // Register services
