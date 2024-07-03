@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui.Controls;
-
-namespace LinguaVerse
+﻿namespace LinguaVerse
 {
     public partial class AppShell : Shell
     {
