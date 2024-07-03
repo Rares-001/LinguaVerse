@@ -1,7 +1,9 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LinguaVerse.Views.LoginPage"
-             BackgroundColor="Transparent">
+             BackgroundColor="Transparent"
+             Padding="0">
+    <!-- Ensure no padding -->
 
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -18,10 +20,13 @@
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="PlaceholderColor" Value="Gray" />
                 <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="WidthRequest" Value="250" />
                 <Setter Property="Margin" Value="0,10,0,0" />
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="FontFamily" Value="OpenSansRegular" />
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
             </Style>
 
             <!-- Button Style -->
@@ -46,7 +51,7 @@
                 </Setter>
             </Style>
 
-            <!-- Label  Style -->
+            <!-- Label Style -->
             <Style TargetType="Label">
                 <Setter Property="FontFamily" Value="OpenSansRegular" />
                 <Setter Property="TextColor" Value="White" />
@@ -54,14 +59,23 @@
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="Margin" Value="0,10,0,0" />
             </Style>
+
+            <!-- Bold Label Style -->
+            <Style x:Key="BoldLabelStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="TextColor" Value="Green" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid VerticalOptions="CenterAndExpand" Padding="30">
+        <Grid VerticalOptions="CenterAndExpand" Padding="30,0">
+            <!-- Ensure no top padding -->
             <StackLayout Spacing="20">
                 <!-- Title -->
-                <Label Text="LinguaVerse"
+                <Label x:Name="TitleLabel"
+                       Text="LinguaVerse"
                        FontSize="32"
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
@@ -72,7 +86,8 @@
                        BorderColor="White"
                        CornerRadius="25"
                        Padding="10,0"
-                       HasShadow="True">
+                       HasShadow="True"
+                       WidthRequest="500">
                     <Entry Placeholder="Username" Text="{Binding Username}" />
                 </Frame>
 
@@ -81,24 +96,28 @@
                        BorderColor="White"
                        CornerRadius="25"
                        Padding="10,0"
-                       HasShadow="True">
+                       HasShadow="True"
+                       WidthRequest="500">
                     <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="True" />
                 </Frame>
 
-                <!-- Register Button -->
-                <Button Text="Register" Command="{Binding RegisterCommand}" />
+                <!-- Button Stack Layout -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <!-- Register Button -->
+                    <Button Text="Register" Command="{Binding RegisterCommand}" WidthRequest="120" />
+
+                    <!-- Login Button -->
+                    <Button Text="Login" Command="{Binding LoginCommand}" WidthRequest="120" />
+                </HorizontalStackLayout>
 
                 <!-- Registration Status Label -->
                 <Label Text="{Binding RegistrationStatus}" TextColor="Green" />
-
-                <!-- Login Button -->
-                <Button Text="Login" Command="{Binding LoginCommand}" />
 
                 <!-- Login Status Label -->
                 <Label Text="{Binding LoginStatus}" TextColor="Green" />
 
                 <!-- Connection Status Label -->
-                <Label Text="{Binding ConnectionStatus}" TextColor="Green" />
+                <Label Text="{Binding ConnectionStatus}" Style="{StaticResource BoldLabelStyle}" />
             </StackLayout>
         </Grid>
     </ContentPage.Content>

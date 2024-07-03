@@ -1,0 +1,61 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LinguaVerse.QuestGame"
+             BackgroundColor="Transparent">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#4B1B9B" Offset="0.0" />
+            <GradientStop Color="#6A1B9A" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ContentPage.Content>
+        <Grid Padding="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Section for Words -->
+            <StackLayout Grid.Column="0" Padding="10" Spacing="10">
+                <Label Text="Synonyms" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       HorizontalOptions="Center" 
+                       TextColor="White"/>
+
+                <CollectionView ItemsSource="{Binding Words}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="White" Padding="5" CornerRadius="10">
+                                <Label Text="{Binding}" FontSize="18" TextColor="Black"/>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+
+            <!-- Right Section for Buttons -->
+            <StackLayout Grid.Column="1" Padding="10" Spacing="10">
+                <Label Text="Select the Synonyms" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       HorizontalOptions="Center" 
+                       TextColor="White"/>
+
+                <CollectionView ItemsSource="{Binding SynonymOptions}" SelectionMode="Multiple">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="White" Padding="5" CornerRadius="10">
+                                <Label Text="{Binding}" FontSize="18" TextColor="Black"/>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button Text="Check" Command="{Binding CheckCommand}" BackgroundColor="#6AB04A" TextColor="White" CornerRadius="10" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="End"/>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
