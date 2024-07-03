@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using LinguaVerse.Model;
 using Microsoft.Maui.Controls;
 
 namespace LinguaVerse.ViewModels
