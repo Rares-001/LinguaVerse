@@ -41,7 +41,7 @@ namespace LinguaVerse
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<LanguageSelectionViewModel>();
             builder.Services.AddTransient<FlashcardViewModel>();
-            builder.Services.AddTransient<QuizViewModel>(); // Ensure QuizViewModel is registered
+            builder.Services.AddTransient<QuizViewModel>();
             builder.Services.AddTransient<Func<int, DashboardViewModel>>(sp => userId => new DashboardViewModel(
                 sp.GetRequiredService<UserRepository>(),
                 userId,
@@ -85,11 +85,7 @@ namespace LinguaVerse
             builder.Services.AddTransient<TestPage4>();
 
             builder.Services.AddTransient<QuizPage>();
-            builder.Services.AddTransient(sp =>
-            {
-                var testViewModel = sp.GetRequiredService<Func<UserRepository, DashboardViewModel, int, int, TestViewModel>>();
-                return new QuizPageItalian(testViewModel(sp.GetRequiredService<UserRepository>(), sp.GetRequiredService<Func<int, DashboardViewModel>>()(App.CurrentUserId), App.CurrentUserId, 0)); // Provide appropriate testId
-            });
+            builder.Services.AddTransient<QuizPageItalian>(); // Registering QuizPageItalian
 
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<LanguageSelection>();
@@ -101,7 +97,6 @@ namespace LinguaVerse
                 var dashboardViewModel = dashboardViewModelFactory(userId);
                 return new DashboardPage(dashboardViewModel);
             });
-
             builder.Services.AddTransient<QuizHistoryPage>();
             builder.Services.AddTransient<QuizPage>(sp => new QuizPage(sp.GetRequiredService<Func<UserRepository, DashboardViewModel, int, QuizViewModel>>()(sp.GetRequiredService<UserRepository>(), sp.GetRequiredService<Func<int, DashboardViewModel>>()(App.CurrentUserId), App.CurrentUserId)));
             builder.Services.AddTransient<TestPage1>(sp =>
@@ -117,7 +112,6 @@ namespace LinguaVerse
                 );
                 return new TestPage1(testViewModel);
             });
-
             builder.Services.AddTransient<TestPage2>(sp =>
             {
                 var userId = App.CurrentUserId;
@@ -131,7 +125,6 @@ namespace LinguaVerse
                 );
                 return new TestPage2(testViewModel);
             });
-
             builder.Services.AddTransient<TestPage3>(sp =>
             {
                 var userId = App.CurrentUserId;
@@ -145,7 +138,6 @@ namespace LinguaVerse
                 );
                 return new TestPage3(testViewModel);
             });
-
             builder.Services.AddTransient<TestPage4>(sp =>
             {
                 var userId = App.CurrentUserId;

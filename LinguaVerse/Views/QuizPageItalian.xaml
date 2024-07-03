@@ -3,6 +3,7 @@
              xmlns:viewModel="clr-namespace:LinguaVerse.ViewModel"
              xmlns:converters="clr-namespace:LinguaVerse.Converters"
              x:Class="LinguaVerse.Views.QuizPageItalian">
+    
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:BooleanToColorConverter x:Key="BooleanToColorConverter" />
