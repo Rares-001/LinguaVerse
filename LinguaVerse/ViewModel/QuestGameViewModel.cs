@@ -57,16 +57,17 @@ namespace LinguaVerse
                 return;
             }
 
-            if (SelectedSynonyms.Count < 1)
+            if (SelectedSynonyms.Count == 0)
             {
                 Application.Current.MainPage.DisplayAlert("Error", "Please select at least one synonym.", "OK");
                 return;
             }
 
             var correct = correctSynonyms[SelectedWord];
-            var correctMatchCount = SelectedSynonyms.Count(s => correct.Contains(s));
+            bool allSynonymsMatch = SelectedSynonyms.All(s => correct.Contains(s));
+            bool allCorrectSynonymsSelected = correct.All(s => SelectedSynonyms.Contains(s));
 
-            if (correctMatchCount == SelectedSynonyms.Count && SelectedSynonyms.All(s => correct.Contains(s)))
+            if (allSynonymsMatch && allCorrectSynonymsSelected)
             {
                 Application.Current.MainPage.DisplayAlert("Success", "Correct match!", "OK");
             }
@@ -86,4 +87,3 @@ namespace LinguaVerse
         }
     }
 }
- 
