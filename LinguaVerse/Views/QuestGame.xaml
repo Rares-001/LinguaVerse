@@ -45,8 +45,8 @@
 
         <Frame Grid.Row="1" Grid.Column="1" CornerRadius="10" Padding="10" BackgroundColor="White">
             <CollectionView ItemsSource="{Binding Synonyms}"
-                            SelectionMode="Multiple"
-                            SelectedItems="{Binding SelectedSynonyms}">
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedSynonym}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Label Text="{Binding .}" />
