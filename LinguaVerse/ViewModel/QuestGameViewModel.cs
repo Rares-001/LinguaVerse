@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -12,7 +11,6 @@ namespace LinguaVerse
     {
         public ObservableCollection<string> Words { get; set; }
         public ObservableCollection<string> Synonyms { get; set; }
-        public ObservableCollection<string> SelectedSynonyms { get; set; }
 
         private string _selectedWord;
         public string SelectedWord
@@ -21,6 +19,17 @@ namespace LinguaVerse
             set
             {
                 _selectedWord = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedSynonym;
+        public string SelectedSynonym
+        {
+            get => _selectedSynonym;
+            set
+            {
+                _selectedSynonym = value;
                 OnPropertyChanged();
             }
         }
@@ -42,41 +51,29 @@ namespace LinguaVerse
         public QuestGameViewModel()
         {
             Words = new ObservableCollection<string>(correctSynonyms.Keys);
-            var shuffledSynonyms = correctSynonyms.Values.SelectMany(s => s).OrderBy(_ => Guid.NewGuid()).ToList();
-            Synonyms = new ObservableCollection<string>(shuffledSynonyms);
-            SelectedSynonyms = new ObservableCollection<string>();
+            Synonyms = new ObservableCollection<string>(correctSynonyms.Values.SelectMany(s => s).Distinct());
 
             CheckCommand = new Command(OnCheck);
         }
 
         private void OnCheck()
         {
-            if (SelectedWord == null)
+            if (SelectedWord == null || SelectedSynonym == null)
             {
-                Application.Current.MainPage.DisplayAlert("Error", "Please select a word.", "OK");
+                Application.Current.MainPage.DisplayAlert("Error", "Please select both a word and a synonym.", "OK");
                 return;
             }
 
-            if (SelectedSynonyms.Count == 0)
-            {
-                Application.Current.MainPage.DisplayAlert("Error", "Please select at least one synonym.", "OK");
-                return;
-            }
-
-            var correct = correctSynonyms[SelectedWord];
-            bool allSynonymsMatch = SelectedSynonyms.All(s => correct.Contains(s));
-            bool allCorrectSynonymsSelected = correct.All(s => SelectedSynonyms.Contains(s));
-
-            if (allSynonymsMatch && allCorrectSynonymsSelected)
+            if (correctSynonyms[SelectedWord].Contains(SelectedSynonym))
             {
                 Application.Current.MainPage.DisplayAlert("Success", "Correct match!", "OK");
             }
             else
             {
-                Application.Current.MainPage.DisplayAlert("Incorrect", "The selected synonyms do not match the selected word. Try again.", "OK");
+                Application.Current.MainPage.DisplayAlert("Incorrect", "Incorrect match. Try again.", "OK");
             }
             SelectedWord = null;
-            SelectedSynonyms.Clear();
+            SelectedSynonym = null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
