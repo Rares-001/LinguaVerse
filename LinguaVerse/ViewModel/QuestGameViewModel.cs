@@ -12,7 +12,6 @@ namespace LinguaVerse
     {
         public ObservableCollection<string> Words { get; set; }
         public ObservableCollection<string> Synonyms { get; set; }
-        public ObservableCollection<string> SelectedSynonyms { get; set; }
 
         private string _selectedWord;
         public string SelectedWord
@@ -21,6 +20,17 @@ namespace LinguaVerse
             set
             {
                 _selectedWord = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedSynonym;
+        public string SelectedSynonym
+        {
+            get => _selectedSynonym;
+            set
+            {
+                _selectedSynonym = value;
                 OnPropertyChanged();
             }
         }
@@ -44,39 +54,33 @@ namespace LinguaVerse
             Words = new ObservableCollection<string>(correctSynonyms.Keys);
             var shuffledSynonyms = correctSynonyms.Values.SelectMany(s => s).OrderBy(_ => Guid.NewGuid()).ToList();
             Synonyms = new ObservableCollection<string>(shuffledSynonyms);
-            SelectedSynonyms = new ObservableCollection<string>();
 
             CheckCommand = new Command(OnCheck);
         }
 
         private async void OnCheck()
         {
-            if (SelectedWord == null)
+            if (SelectedWord == null || SelectedSynonym == null)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Please select a word.", "OK");
-                return;
-            }
-
-            if (SelectedSynonyms.Count == 0)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Please select at least one synonym.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "Please select a word and a synonym.", "OK");
                 return;
             }
 
             var correct = correctSynonyms[SelectedWord];
-            bool allSynonymsMatch = SelectedSynonyms.All(s => correct.Contains(s));
-            bool allCorrectSynonymsSelected = correct.All(s => SelectedSynonyms.Contains(s));
+            bool isMatch = correct.Contains(SelectedSynonym);
 
-            if (allSynonymsMatch && allCorrectSynonymsSelected)
+            if (isMatch)
             {
-                await Application.Current.MainPage.DisplayAlert("Match Result", "The selected synonyms match the selected word!", "OK");
+                await Application.Current.MainPage.DisplayAlert("Match Result", "The selected synonym matches the selected word!", "OK");
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Match Result", "The selected synonyms do not match the selected word.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Match Result", "The selected synonym does not match the selected word.", "OK");
             }
+
+            // Reset selections
             SelectedWord = null;
-            SelectedSynonyms.Clear();
+            SelectedSynonym = null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
