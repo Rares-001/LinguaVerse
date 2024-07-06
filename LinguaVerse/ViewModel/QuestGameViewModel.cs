@@ -77,8 +77,6 @@ namespace LinguaVerse
             {
                 await Application.Current.MainPage.DisplayAlert("Match Result", "The selected synonym does not match the selected word.", "OK");
             }
-
-            // Reset selections
             SelectedWord = null;
             SelectedSynonym = null;
         }

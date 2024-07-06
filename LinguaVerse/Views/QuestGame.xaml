@@ -10,7 +10,6 @@
 
     <ContentPage.BackgroundColor>
         <Color>#6A1B9A</Color>
-        <!-- Purple background -->
     </ContentPage.BackgroundColor>
 
     <Grid Padding="20" RowSpacing="20">
