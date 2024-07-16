@@ -42,6 +42,8 @@ namespace LinguaVerse
             builder.Services.AddTransient<LanguageSelectionViewModel>();
             builder.Services.AddTransient<FlashcardViewModel>();
             builder.Services.AddTransient<QuizViewModel>();
+            builder.Services.AddTransient<TestViewModel>();
+            builder.Services.AddTransient<TestViewModelEnglish>();
             builder.Services.AddTransient<Func<int, DashboardViewModel>>(sp => userId => new DashboardViewModel(
                 sp.GetRequiredService<UserRepository>(),
                 userId,
@@ -85,7 +87,7 @@ namespace LinguaVerse
             builder.Services.AddTransient<TestPage4>();
 
             builder.Services.AddTransient<QuizPage>();
-            builder.Services.AddTransient<QuizPageItalian>(); // Registering QuizPageItalian
+            builder.Services.AddTransient<QuizPageItalian>();
 
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<LanguageSelection>();
